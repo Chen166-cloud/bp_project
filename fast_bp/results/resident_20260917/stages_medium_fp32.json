@@ -1,0 +1,226 @@
+{
+  "note": "Instrumented eager execution; events add overhead. Kernel attributes are compiler resource counts, not achieved occupancy or hardware counters.",
+  "outer_ms": 4.831136226654053,
+  "records": [
+    {
+      "name": "batched_bp_polar_fp32",
+      "elapsed_ms": 3.922528028488159,
+      "grid": [
+        37153
+      ],
+      "block": [
+        128
+      ],
+      "attributes": {
+        "max_threads_per_block": 1024,
+        "shared_size_bytes": 0,
+        "const_size_bytes": 0,
+        "local_size_bytes": 32,
+        "num_regs": 35,
+        "ptx_version": 89,
+        "binary_version": 89,
+        "cache_mode_ca": 0,
+        "max_dynamic_shared_size_bytes": 49152,
+        "preferred_shared_memory_carveout": -1
+      }
+    },
+    {
+      "name": "batched_merge_regrid_fp32",
+      "elapsed_ms": 0.27852800488471985,
+      "grid": [
+        19449
+      ],
+      "block": [
+        128
+      ],
+      "attributes": {
+        "max_threads_per_block": 1024,
+        "shared_size_bytes": 0,
+        "const_size_bytes": 0,
+        "local_size_bytes": 32,
+        "num_regs": 46,
+        "ptx_version": 89,
+        "binary_version": 89,
+        "cache_mode_ca": 0,
+        "max_dynamic_shared_size_bytes": 49152,
+        "preferred_shared_memory_carveout": -1
+      }
+    },
+    {
+      "name": "batched_merge_regrid_fp32",
+      "elapsed_ms": 0.159743994474411,
+      "grid": [
+        12783
+      ],
+      "block": [
+        128
+      ],
+      "attributes": {
+        "max_threads_per_block": 1024,
+        "shared_size_bytes": 0,
+        "const_size_bytes": 0,
+        "local_size_bytes": 32,
+        "num_regs": 46,
+        "ptx_version": 89,
+        "binary_version": 89,
+        "cache_mode_ca": 0,
+        "max_dynamic_shared_size_bytes": 49152,
+        "preferred_shared_memory_carveout": -1
+      }
+    },
+    {
+      "name": "batched_merge_regrid_fp32",
+      "elapsed_ms": 0.09932799637317657,
+      "grid": [
+        9424
+      ],
+      "block": [
+        128
+      ],
+      "attributes": {
+        "max_threads_per_block": 1024,
+        "shared_size_bytes": 0,
+        "const_size_bytes": 0,
+        "local_size_bytes": 32,
+        "num_regs": 46,
+        "ptx_version": 89,
+        "binary_version": 89,
+        "cache_mode_ca": 0,
+        "max_dynamic_shared_size_bytes": 49152,
+        "preferred_shared_memory_carveout": -1
+      }
+    },
+    {
+      "name": "batched_merge_regrid_fp32",
+      "elapsed_ms": 0.07884799689054489,
+      "grid": [
+        7730
+      ],
+      "block": [
+        128
+      ],
+      "attributes": {
+        "max_threads_per_block": 1024,
+        "shared_size_bytes": 0,
+        "const_size_bytes": 0,
+        "local_size_bytes": 32,
+        "num_regs": 46,
+        "ptx_version": 89,
+        "binary_version": 89,
+        "cache_mode_ca": 0,
+        "max_dynamic_shared_size_bytes": 49152,
+        "preferred_shared_memory_carveout": -1
+      }
+    },
+    {
+      "name": "batched_merge_regrid_fp32",
+      "elapsed_ms": 0.0727040022611618,
+      "grid": [
+        6889
+      ],
+      "block": [
+        128
+      ],
+      "attributes": {
+        "max_threads_per_block": 1024,
+        "shared_size_bytes": 0,
+        "const_size_bytes": 0,
+        "local_size_bytes": 32,
+        "num_regs": 46,
+        "ptx_version": 89,
+        "binary_version": 89,
+        "cache_mode_ca": 0,
+        "max_dynamic_shared_size_bytes": 49152,
+        "preferred_shared_memory_carveout": -1
+      }
+    },
+    {
+      "name": "batched_merge_regrid_fp32",
+      "elapsed_ms": 0.06758400052785873,
+      "grid": [
+        6477
+      ],
+      "block": [
+        128
+      ],
+      "attributes": {
+        "max_threads_per_block": 1024,
+        "shared_size_bytes": 0,
+        "const_size_bytes": 0,
+        "local_size_bytes": 32,
+        "num_regs": 46,
+        "ptx_version": 89,
+        "binary_version": 89,
+        "cache_mode_ca": 0,
+        "max_dynamic_shared_size_bytes": 49152,
+        "preferred_shared_memory_carveout": -1
+      }
+    },
+    {
+      "name": "batched_merge_regrid_fp32",
+      "elapsed_ms": 0.0655359998345375,
+      "grid": [
+        6262
+      ],
+      "block": [
+        128
+      ],
+      "attributes": {
+        "max_threads_per_block": 1024,
+        "shared_size_bytes": 0,
+        "const_size_bytes": 0,
+        "local_size_bytes": 32,
+        "num_regs": 46,
+        "ptx_version": 89,
+        "binary_version": 89,
+        "cache_mode_ca": 0,
+        "max_dynamic_shared_size_bytes": 49152,
+        "preferred_shared_memory_carveout": -1
+      }
+    },
+    {
+      "name": "batched_merge_regrid_fp32",
+      "elapsed_ms": 0.060416001826524734,
+      "grid": [
+        5720
+      ],
+      "block": [
+        128
+      ],
+      "attributes": {
+        "max_threads_per_block": 1024,
+        "shared_size_bytes": 0,
+        "const_size_bytes": 0,
+        "local_size_bytes": 32,
+        "num_regs": 46,
+        "ptx_version": 89,
+        "binary_version": 89,
+        "cache_mode_ca": 0,
+        "max_dynamic_shared_size_bytes": 49152,
+        "preferred_shared_memory_carveout": -1
+      }
+    },
+    {
+      "name": "crop_float2",
+      "elapsed_ms": 0.010239999741315842,
+      "grid": [
+        5487
+      ],
+      "block": [
+        128
+      ],
+      "attributes": {
+        "max_threads_per_block": 1024,
+        "shared_size_bytes": 0,
+        "const_size_bytes": 0,
+        "local_size_bytes": 0,
+        "num_regs": 10,
+        "ptx_version": 89,
+        "binary_version": 89,
+        "cache_mode_ca": 0,
+        "max_dynamic_shared_size_bytes": 49152,
+        "preferred_shared_memory_carveout": -1
+      }
+    }
+  ]
+}

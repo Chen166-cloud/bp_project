@@ -1,0 +1,19 @@
+{
+  "targets": 4,
+  "cutoff_hz": 15.0,
+  "median_gradient_coherence": 0.999882125954265,
+  "delta_rms_m": [
+    0.04093284695582298,
+    0.08317893032422997,
+    0.0
+  ],
+  "delta_max_m": [
+    0.06852377717932534,
+    0.11802888876565829,
+    0.0
+  ],
+  "initial_coordinate_rmse_m": 0.0668318520295223,
+  "corrected_coordinate_rmse_m": 0.0015207859919501737,
+  "passed": true,
+  "scope": "synthetic known targets; does not establish true navigation accuracy on the real collection"
+}

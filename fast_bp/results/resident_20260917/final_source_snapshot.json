@@ -1,0 +1,141 @@
+{
+  "description": "Complete local Python/CUDA source snapshot after the first decision round; original measured manifests remain intact.",
+  "files": [
+    {
+      "file": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\autofocus.py",
+      "sha256": "7834f2f90375c1d0d80c11fe5af841ada226f640f64f06cd0ad8b334177e3baa",
+      "snapshot": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\results\\resident_20260917\\source_snapshot\\7834f2f90375\\autofocus.py"
+    },
+    {
+      "file": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\batched_resident_backend.py",
+      "sha256": "707a111b35802328fce07d9be53d11a9b57012ef8a5b2f80b832d4ca5b9550c2",
+      "snapshot": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\results\\resident_20260917\\source_snapshot\\707a111b3580\\batched_resident_backend.py"
+    },
+    {
+      "file": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\benchmark.py",
+      "sha256": "a53c781ca51035f4cd53cf2937f1293f3607ce2b6cdac764c500d3e3410fdb43",
+      "snapshot": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\results\\resident_20260917\\source_snapshot\\a53c781ca510\\benchmark.py"
+    },
+    {
+      "file": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\diagnose.py",
+      "sha256": "3e01c6a47d9216a1323f2f3bbbfef5ee34e18e9481eed707205ca9a2e950429d",
+      "snapshot": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\results\\resident_20260917\\source_snapshot\\3e01c6a47d92\\diagnose.py"
+    },
+    {
+      "file": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\ffbp.py",
+      "sha256": "9fda65dbbf5c36e773fd98122352fa39ead3f7856134f836a541b21b19774883",
+      "snapshot": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\results\\resident_20260917\\source_snapshot\\9fda65dbbf5c\\ffbp.py"
+    },
+    {
+      "file": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\focus_diagnostic.py",
+      "sha256": "3dd7689d0fc8a0bb7659137404f9d77a122a59aaca60787b0c614bd73dca2e7d",
+      "snapshot": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\results\\resident_20260917\\source_snapshot\\3dd7689d0fc8\\focus_diagnostic.py"
+    },
+    {
+      "file": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\gpu_backend.py",
+      "sha256": "41510cec2824436bc793d4dd260f536caa9bab75853b221d30c55ed2246ad36e",
+      "snapshot": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\results\\resident_20260917\\source_snapshot\\41510cec2824\\gpu_backend.py"
+    },
+    {
+      "file": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\gpu_baseline.py",
+      "sha256": "78d8bd3f87bb3c9b29ff5f5660eb204d0b10c54bec9518e8a000e75eaa99f4e4",
+      "snapshot": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\results\\resident_20260917\\source_snapshot\\78d8bd3f87bb\\gpu_baseline.py"
+    },
+    {
+      "file": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\pilot.py",
+      "sha256": "844972091430f0191fc00baa1800e30c00cfb4d1bca3c9f411aa6a622df95fc5",
+      "snapshot": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\results\\resident_20260917\\source_snapshot\\844972091430\\pilot.py"
+    },
+    {
+      "file": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\render_results.py",
+      "sha256": "66703af9069fb3280bd1d85a56788e99bd4fdabcf22deae1306083308a3016d2",
+      "snapshot": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\results\\resident_20260917\\source_snapshot\\66703af9069f\\render_results.py"
+    },
+    {
+      "file": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\resident_backend.py",
+      "sha256": "4ec15d025e8d8d280d41accb777c3f8fefbef174742640b3bcd2b73f4a0820ee",
+      "snapshot": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\results\\resident_20260917\\source_snapshot\\4ec15d025e8d\\resident_backend.py"
+    },
+    {
+      "file": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\resident_experiment.py",
+      "sha256": "c84651ad8d2477a2d1f87801eb6a01a3345f1e0bfdeca9e66ee12631cb88f40a",
+      "snapshot": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\results\\resident_20260917\\source_snapshot\\c84651ad8d24\\resident_experiment.py"
+    },
+    {
+      "file": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\resident_followup.py",
+      "sha256": "cec528ca2d3efdca516413818ad37c2a534dfa7c8b0cd8a0526821966116c642",
+      "snapshot": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\results\\resident_20260917\\source_snapshot\\cec528ca2d3e\\resident_followup.py"
+    },
+    {
+      "file": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\resident_plan_audit.py",
+      "sha256": "fbd861c13ea8db1f631507303b717ddaac366bcefd6c3c7c7ab41892c22946bd",
+      "snapshot": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\results\\resident_20260917\\source_snapshot\\fbd861c13ea8\\resident_plan_audit.py"
+    },
+    {
+      "file": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\resident_precision.py",
+      "sha256": "767865f7af309966bc4648bd5c066abb5d54aa1fd1a2d25945c3c2d711e78528",
+      "snapshot": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\results\\resident_20260917\\source_snapshot\\767865f7af30\\resident_precision.py"
+    },
+    {
+      "file": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\resident_profile_target.py",
+      "sha256": "da30f4ca30b92a900f6efa2b0c641e807adc068eb7a2368e72ab639376843d51",
+      "snapshot": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\results\\resident_20260917\\source_snapshot\\da30f4ca30b9\\resident_profile_target.py"
+    },
+    {
+      "file": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\resident_stage_probe.py",
+      "sha256": "d7aaa68960871dc51c268f7c5bc15fb661dcdee8bb235b0f99338159f42ca739",
+      "snapshot": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\results\\resident_20260917\\source_snapshot\\d7aaa6896087\\resident_stage_probe.py"
+    },
+    {
+      "file": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\run.py",
+      "sha256": "3e6744114c581e0100c9e641822340bdadec5f0259af1198e739ce1d318ea088",
+      "snapshot": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\results\\resident_20260917\\source_snapshot\\3e6744114c58\\run.py"
+    },
+    {
+      "file": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\sar_io.py",
+      "sha256": "95f27fb54d79bdb832e21abc680b002288f8a27eec4ded1ab3f422fa30056ca1",
+      "snapshot": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\results\\resident_20260917\\source_snapshot\\95f27fb54d79\\sar_io.py"
+    },
+    {
+      "file": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\validate.py",
+      "sha256": "16f66dfb958188ea5bade9551d6f9713b6c4a4ed1d1359c720d28442b8c128fd",
+      "snapshot": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\results\\resident_20260917\\source_snapshot\\16f66dfb9581\\validate.py"
+    },
+    {
+      "file": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\validate_autofocus.py",
+      "sha256": "6ca8506cf2c484be9948f6d291ad632bda681945fb892d571dd164706d32e6df",
+      "snapshot": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\results\\resident_20260917\\source_snapshot\\6ca8506cf2c4\\validate_autofocus.py"
+    },
+    {
+      "file": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\gpu\\batched_resident_kernels.cu",
+      "sha256": "13dc50463376e48a865c79309c0ea715a5000d604c5ef7fbadd5ce395ab0d08a",
+      "snapshot": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\results\\resident_20260917\\source_snapshot\\13dc50463376\\batched_resident_kernels.cu"
+    },
+    {
+      "file": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\gpu\\kernels.cu",
+      "sha256": "516be4ff3c11c82e344ff8d1d330653d53e48f787036930bd3077d2dc0f153f9",
+      "snapshot": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\results\\resident_20260917\\source_snapshot\\516be4ff3c11\\kernels.cu"
+    },
+    {
+      "file": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\gpu\\precision_probe.cu",
+      "sha256": "394e43024c4cc83a862970cb085178c0746d1cca4c4baff99de5b03b7c6dbed4",
+      "snapshot": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\results\\resident_20260917\\source_snapshot\\394e43024c4c\\precision_probe.cu"
+    },
+    {
+      "file": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\gpu\\resident_kernels.cu",
+      "sha256": "8c6735fd7ba4858e05819268c83f2292a233fdfc72618f1c086ea4312544342e",
+      "snapshot": "D:\\Users\\Chen\\Desktop\\research\\\u8bd5\u9a8c\u6570\u636e\\fast_bp\\results\\resident_20260917\\source_snapshot\\8c6735fd7ba4\\resident_kernels.cu"
+    }
+  ],
+  "nsight_installed": false,
+  "profile_target_smoke": {
+    "variant": "batched",
+    "mode": "fp32",
+    "scale": "small",
+    "graph": true,
+    "iterations": 1,
+    "warmups": 1,
+    "exit_code": 0,
+    "nsight_attached": false
+  }
+}

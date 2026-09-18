@@ -1,0 +1,89 @@
+{
+  "bitmap_audit": [
+    {
+      "file": "SAR_RDA_2.bmp",
+      "shape": [
+        5000,
+        10000
+      ],
+      "dtype": "uint8",
+      "min": 0,
+      "max": 0,
+      "unique_levels": 1,
+      "zero_fraction": 1.0,
+      "maxcode_fraction": 0.0,
+      "status": "invalid_zero_image"
+    },
+    {
+      "file": "SAR_CSA.bmp",
+      "shape": [
+        1728,
+        3200
+      ],
+      "dtype": "uint8",
+      "min": 0,
+      "max": 255,
+      "unique_levels": 230,
+      "zero_fraction": 0.7081884765625,
+      "maxcode_fraction": 3.616898148148148e-07,
+      "status": "display_only_no_metric_ranking"
+    },
+    {
+      "file": "SAR_BP.bmp",
+      "shape": [
+        200,
+        100
+      ],
+      "dtype": "uint8",
+      "min": 0,
+      "max": 255,
+      "unique_levels": 253,
+      "zero_fraction": 0.1399,
+      "maxcode_fraction": 5e-05,
+      "status": "display_only_no_metric_ranking"
+    },
+    {
+      "file": "SAR_BP_visualization.bmp",
+      "shape": [
+        200,
+        100
+      ],
+      "dtype": "uint8",
+      "min": 0,
+      "max": 255,
+      "unique_levels": 176,
+      "zero_fraction": 0.1831,
+      "maxcode_fraction": 5e-05,
+      "status": "display_only_no_metric_ranking"
+    }
+  ],
+  "legacy_bp": {
+    "file": "SAR_BP_raw_data.mat",
+    "shape": [
+      200,
+      100
+    ],
+    "x_bounds_m": [
+      449.685,
+      4196.6852625
+    ],
+    "y_bounds_m": [
+      -42.4915,
+      42.4915
+    ],
+    "dx_m": 37.848487500000005,
+    "dy_m": 0.42705025125628143,
+    "metrics": {
+      "samples": 20000,
+      "finite_fraction": 1.0,
+      "nonzero_fraction": 0.88,
+      "valid": true,
+      "entropy_nats": 6.643605690379501,
+      "normalized_entropy": 0.6708349614351944,
+      "intensity_contrast": 7.868640761370567,
+      "amplitude_contrast": 2.463899084079816,
+      "brightest_1pct_energy_fraction": 0.6332430745621116
+    },
+    "provenance": "Generator and input pulse interval not recorded; not a common-scene comparison"
+  }
+}

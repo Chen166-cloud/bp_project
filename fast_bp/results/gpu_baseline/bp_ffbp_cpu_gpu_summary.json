@@ -1,0 +1,55 @@
+{
+  "selection": {
+    "cpu": "FP64 arithmetic with complex64 input/output reference",
+    "gpu": "fixed mixed: FP64 geometry and phase; FP32 interpolation and accumulation; complex64 storage"
+  },
+  "time_ms": {
+    "cpu_bp": 10200.506600000153,
+    "gpu_bp": 611.3594970703125,
+    "cpu_ffbp": 538.2051999986288,
+    "gpu_ffbp": 50.0849609375
+  },
+  "speedup": {
+    "gpu_bp_vs_cpu_bp": 16.684956476315264,
+    "gpu_ffbp_vs_cpu_ffbp": 10.74584445958227,
+    "cpu_ffbp_vs_cpu_bp": 18.95282059709966,
+    "gpu_ffbp_vs_gpu_bp": 12.206448515218282,
+    "gpu_ffbp_vs_cpu_bp_combined": 203.6640622068001
+  },
+  "fidelity": {
+    "gpu_bp_vs_cpu_bp": {
+      "relative_complex_error": 1.8790380528505353e-06,
+      "ser_db": 114.52128849617289,
+      "complex_coherence": 0.9999999999982341
+    },
+    "cpu_ffbp_vs_cpu_bp": {
+      "relative_complex_error": 0.03285835356051881,
+      "ser_db": 29.66708403256295,
+      "complex_coherence": 0.9998334812113384
+    },
+    "gpu_ffbp_vs_cpu_ffbp": {
+      "relative_complex_error": 2.0398300668990405e-07,
+      "ser_db": 133.80812022091382,
+      "complex_coherence": 0.9999999999999788
+    },
+    "gpu_ffbp_vs_cpu_bp_total": {
+      "relative_complex_error": 0.032858348609230356,
+      "ser_db": 29.667085341403585,
+      "complex_coherence": 0.999833481315341
+    }
+  },
+  "grid": {
+    "shape": [
+      360,
+      365
+    ],
+    "r_m": [
+      1380.2499999999998,
+      1469.9999999999998
+    ],
+    "u": [
+      -0.0298358876449322,
+      0.029901009599748948
+    ]
+  }
+}

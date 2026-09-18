@@ -1,0 +1,26 @@
+{
+  "bp_nav": {
+    "enl_proxy": 1.0150272596774919,
+    "tile_mean_cv": 0.11173059469044948,
+    "tile_mean_max_to_min": 1.4329415056371815,
+    "assumption": "R5 candidate homogeneous ROI, uncalibrated and not independently validated; spatially correlated samples"
+  },
+  "ffbp_nav": {
+    "enl_proxy": 1.0119187019391191,
+    "tile_mean_cv": 0.1139632586612198,
+    "tile_mean_max_to_min": 1.4525365287330958,
+    "assumption": "R5 candidate homogeneous ROI, uncalibrated and not independently validated; spatially correlated samples"
+  },
+  "bp_autofocus": {
+    "enl_proxy": 0.9248038366190554,
+    "tile_mean_cv": 0.12662485570594015,
+    "tile_mean_max_to_min": 1.5458473506554116,
+    "assumption": "R5 candidate homogeneous ROI, uncalibrated and not independently validated; spatially correlated samples"
+  },
+  "ffbp_autofocus": {
+    "enl_proxy": 0.920961914712881,
+    "tile_mean_cv": 0.12895321142918956,
+    "tile_mean_max_to_min": 1.5609211863705754,
+    "assumption": "R5 candidate homogeneous ROI, uncalibrated and not independently validated; spatially correlated samples"
+  }
+}

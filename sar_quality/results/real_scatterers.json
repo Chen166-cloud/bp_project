@@ -1,0 +1,127 @@
+[
+  {
+    "target": 1,
+    "selected_center_xyz_m": [
+      1435.5,
+      5.0,
+      0.0
+    ],
+    "quality": "apparent_scatterer_width_only",
+    "nav": {
+      "center_xyz_m": [
+        1435.4,
+        1.7000000000000006,
+        0.0
+      ],
+      "ground_range": {
+        "valid": true,
+        "irw_m": 1.0025746195095655,
+        "peak_offset_m": 0.05000000000000071
+      },
+      "along_track": {
+        "valid": true,
+        "irw_m": 1.4053523657176274,
+        "peak_offset_m": 0.02500000000000213
+      }
+    },
+    "autofocus": {
+      "center_xyz_m": [
+        1435.5,
+        5.400000000000004,
+        0.0
+      ],
+      "ground_range": {
+        "valid": true,
+        "irw_m": 1.0232324555869567,
+        "peak_offset_m": 0.05000000000000071
+      },
+      "along_track": {
+        "valid": true,
+        "irw_m": 1.6002284629034071,
+        "peak_offset_m": 0.0
+      }
+    }
+  },
+  {
+    "target": 2,
+    "selected_center_xyz_m": [
+      1445.75,
+      3.5,
+      0.0
+    ],
+    "quality": "apparent_scatterer_width_only",
+    "nav": {
+      "center_xyz_m": [
+        1445.55,
+        4.440892098500626e-16,
+        0.0
+      ],
+      "ground_range": {
+        "valid": false
+      },
+      "along_track": {
+        "valid": true,
+        "irw_m": 1.1494857058023165,
+        "peak_offset_m": 0.02500000000000213
+      }
+    },
+    "autofocus": {
+      "center_xyz_m": [
+        1445.65,
+        3.4000000000000035,
+        0.0
+      ],
+      "ground_range": {
+        "valid": false
+      },
+      "along_track": {
+        "valid": true,
+        "irw_m": 1.3094746779535416,
+        "peak_offset_m": 0.0
+      }
+    }
+  },
+  {
+    "target": 3,
+    "selected_center_xyz_m": [
+      1415.5,
+      -17.75,
+      0.0
+    ],
+    "quality": "apparent_scatterer_width_only",
+    "nav": {
+      "center_xyz_m": [
+        1415.5,
+        -21.25,
+        0.0
+      ],
+      "ground_range": {
+        "valid": true,
+        "irw_m": 0.9483789877988389,
+        "peak_offset_m": -0.049999999999998934
+      },
+      "along_track": {
+        "valid": true,
+        "irw_m": 1.7448708117931873,
+        "peak_offset_m": -0.04999999999999716
+      }
+    },
+    "autofocus": {
+      "center_xyz_m": [
+        1415.6,
+        -17.749999999999996,
+        0.0
+      ],
+      "ground_range": {
+        "valid": true,
+        "irw_m": 0.9740346646074061,
+        "peak_offset_m": -0.02499999999999858
+      },
+      "along_track": {
+        "valid": true,
+        "irw_m": 1.7039239083001347,
+        "peak_offset_m": 0.0
+      }
+    }
+  }
+]

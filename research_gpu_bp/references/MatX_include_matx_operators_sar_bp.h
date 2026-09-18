@@ -1,0 +1,406 @@
+////////////////////////////////////////////////////////////////////////////////
+// BSD 3-Clause License
+//
+// Copyright (c) 2026, NVIDIA Corporation
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// 1. Redistributions of source code must retain the above copyright notice, this
+//    list of conditions and the following disclaimer.
+//
+// 2. Redistributions in binary form must reproduce the above copyright notice,
+//    this list of conditions and the following disclaimer in the documentation
+//    and/or other materials provided with the distribution.
+//
+// 3. Neither the name of the copyright holder nor the names of its
+//    contributors may be used to endorse or promote products derived from
+//    this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+// DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+// FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+// SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+// CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+// OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+/////////////////////////////////////////////////////////////////////////////////
+
+#pragma once
+
+#include "matx/core/props.h"
+#include "matx/core/type_utils.h"
+#include "matx/operators/base_operator.h"
+
+namespace matx {
+
+  /**
+ * @brief Floating point compute type for the SAR BP kernel.
+ *
+ * The compute type controls the floating point precision of intermediate calculations in the SAR BP kernel.
+ * While the inputs (range profiles, antenna positions, etc.) and output (image) have their own data
+ * types, we may wish to use a different precision for the internal calculations. For example, the
+ * output may be cuda::std::complex<float> while the intermediate calculations are done in double.
+ * For some compute types, additional approximations will be applied to further improve run-time performance.
+ */
+enum class SarBpComputeType {
+  Double, /**< Uses double precision for all intermediate calculations. The backprojection kernel works with user-provided input
+              for the range profiles, platform positions, ranges to mocomp point, and voxel locations. Thus, the user should provide
+              values in double precision if needed. Typically, the platform positions and ranges to mocomp point will be double
+              precision and range profiles and voxel locations will be single precision, but users can provide double precision
+              range profiles and voxel locations if needed. */
+  Mixed, /**< Uses mixed precision for intermediate calculations. This compute type offers a trade-off between
+              performance and precision. With \p Mixed precision, the range calculated per pixel-pulse pair will 
+              still typically be done in double-precision, but interpolation and accumulation will be single-precision.
+              When combined with \p PhaseLUTOptimization, the sine/cosine calculations will no longer be double-precision
+              either. */
+  FloatFloat, /**< The \p FloatFloat compute type combines mixed precision (i.e., fp32 when possible) with a
+              float-float handling of the values for which fp64 would otherwise be needed. The float-float
+              representation offers increased precision relative to fp32, but not full fp64 precision,
+              through the use of increased fp32 computation and representing each value as an unevaluated
+              sum of two fp32 components. For optimal performance, users can provide any inputs that require
+              additional precision (e.g., platform positions and range to mocomp point) directly in \c fltflt format.
+              Otherwise, the kernel will perform double-to-fltflt conversions internally.
+              FloatFloat requires \p PhaseLUTOptimization. */
+  TaylorFast, /**< Uses a local Taylor approximation of the pulse-to-pixel range about a centered per-thread-block
+              reference point. This mode prioritizes throughput and requires \p PhaseLUTOptimization.
+              The \p PropSarBpTaylorFastAddThirdOrder property can be used to add a third-order term to the Taylor approximation.
+              On systems with reduced double-precision throughput, TaylorFast is typically the fastest compute type using either
+              second order or third order Taylor approximation. TaylorFast will divide by reference range values to certain image
+              pixels and thus does not support geometries where the antenna phase center is located at any of the image pixels
+              (i.e., at range 0 from some pixel). In such cases, the user should choose a different compute type.*/
+  Float /**< Uses single precision for all intermediate calculations. This mode is fast, but typically does not provide
+              sufficient precision for cases where the ranges exceed several kilometers. It is not suited for spaceborne SAR geometries. */
+};
+
+/**
+ * @brief Compile-time assumption about the pixel z (height) coordinates.
+ *
+ * Many SAR imaging geometries place every output pixel on a single horizontal
+ * focal plane, so the pixel z coordinate is either identically 0 or some other
+ * value that is the same for all pixels. When the caller asserts one of these
+ * cases (via PropSarBpPixelZIsZero / PropSarBpPixelZIsFixed), the kernel can
+ * specialize the per-pulse range computation. This is a compile-time
+ * assumption: the kernel does NOT validate it at run time, so the caller is
+ * responsible for only setting it when it actually holds.
+ */
+enum class SarBpPixelZMode {
+  Variable, /**< No assumption: each pixel may have a distinct z coordinate (default). */
+  Zero,     /**< Every pixel z coordinate is 0. The z difference term collapses to
+                 the antenna z, dropping the pixel-z load/subtraction. */
+  Fixed     /**< Every pixel z coordinate is identical (to an arbitrary value). The
+                 per-pulse z contribution is uniform across pixels and can be hoisted
+                 out of the per-pixel inner loop on the shared-cache compute paths. */
+};
+
+/**
+ * @brief Features that can be enabled or disabled for the SAR BP kernel.
+ */
+enum class SarBpFeature : uint32_t {
+  None = 0x0, //!<  No features enabled.
+  PhaseLUTOptimization = 0x1, /**< Enable the phase LUT optimization. This feature uses a precomputed lookup table
+  to store partial values for the reference phases used during backprojection. The value from the lookup table will
+  be combined with an incremental phase calculation within a single range bin that is computed using the lower-precision
+  intrinsic sine/cosine functions. This optimization will utilize a small amount of device memory as a workspace
+  buffer. This optimization is typically useful for the \p Mixed, \p FloatFloat, and \p TaylorFast compute types.
+  It is required for \p FloatFloat and \p TaylorFast. */
+};
+
+/**
+ * @brief Adds the third-order local range term to SarBpComputeType::TaylorFast.
+ *
+ * TaylorFast uses a second-order local Taylor range approximation by default.
+ * This property instantiates a TaylorFast kernel variant that also evaluates
+ * the third-order term. It has no effect unless SarBpParams::compute_type is
+ * SarBpComputeType::TaylorFast. This is primarily useful for short stand-off
+ * ranges where the second-order approximation may not be accurate enough.
+ */
+struct PropSarBpTaylorFastAddThirdOrder {};
+
+/**
+ * @brief Asserts that every output pixel has a z (height) coordinate of 0.
+ *
+ * Selects SarBpPixelZMode::Zero, which lets the kernel drop the pixel-z term
+ * from the per-pulse range computation. This is a compile-time assumption that
+ * is NOT validated at run time; it must only be set when it actually holds for
+ * the supplied voxel locations. If PropSarBpPixelZIsFixed is also set, this
+ * property (Zero, the stronger assumption) takes precedence and the Fixed
+ * property has no effect.
+ */
+struct PropSarBpPixelZIsZero {};
+
+/**
+ * @brief Asserts that every output pixel shares one (arbitrary) z coordinate.
+ *
+ * Selects SarBpPixelZMode::Fixed. On the shared-cache compute paths the per-pulse
+ * z contribution is uniform across pixels and can be hoisted out of the
+ * per-pixel inner loop. This is a compile-time assumption that is NOT validated
+ * at run time. PropSarBpPixelZIsZero (z == 0) is a stronger special case and
+ * takes precedence if both are set.
+ */
+struct PropSarBpPixelZIsFixed {};
+
+// Enable bitmask operations for SarBpFeature
+constexpr SarBpFeature operator|(SarBpFeature lhs, SarBpFeature rhs) noexcept {
+  return static_cast<SarBpFeature>(static_cast<uint32_t>(lhs) | static_cast<uint32_t>(rhs));
+}
+
+constexpr SarBpFeature operator&(SarBpFeature lhs, SarBpFeature rhs) noexcept {
+  return static_cast<SarBpFeature>(static_cast<uint32_t>(lhs) & static_cast<uint32_t>(rhs));
+}
+
+constexpr SarBpFeature& operator|=(SarBpFeature& lhs, SarBpFeature rhs) noexcept {
+  return lhs = lhs | rhs;
+}
+
+// Helper function to test if a feature is enabled
+constexpr bool has_feature(SarBpFeature features, SarBpFeature feature) noexcept {
+  return (features & feature) != SarBpFeature::None;
+}
+
+/**
+ * @brief Parameters used for SAR backprojection.
+ */
+struct SarBpParams {
+  SarBpComputeType compute_type{SarBpComputeType::Double}; //!<  The floating point compute type (precision) of the kernel.
+  SarBpFeature features{SarBpFeature::None}; //!<  The features to enable or disable in the kernel.
+  double center_frequency{0.0}; //!<  The range-profile phase-reference frequency in Hz; for FFT-compressed FX data, this is the frequency placed at IFFT DC.
+  double del_r{0.0}; //!<  The range per compressed range bin. The units should match those of the other locations and distances provided to the backprojector.
+};
+
+}
+
+#include "matx/transforms/sar_bp.h"
+
+namespace matx {
+
+namespace detail {
+  template <typename ImageType, typename RangeProfilesType, typename PlatPosType, typename VoxLocType, typename RangeToMcpType, typename List>
+  struct make_sar_bp_op;
+
+  template<typename ImageType, typename RangeProfilesType, typename PlatPosType, typename VoxLocType, typename RangeToMcpType, typename... CurrentProps>
+  class SarBpOp : public BaseOp<SarBpOp<ImageType, RangeProfilesType, PlatPosType, VoxLocType, RangeToMcpType, CurrentProps...>>
+  {
+    static_assert(is_complex_v<typename RangeProfilesType::value_type>, "Phase history must be complex");
+    static_assert(is_complex_v<typename ImageType::value_type>, "Image must be complex");
+    static_assert(RangeProfilesType::Rank() == 2, "Phase history must be a 2D tensor");
+    static_assert(ImageType::Rank() == 2, "Image must be a 2D tensor");
+    private:
+      using out_t = typename detail::base_type_t<ImageType>;
+      SarBpParams params_;
+      ImageType initial_image_;
+      RangeProfilesType range_profiles_;
+      PlatPosType platform_positions_;
+      VoxLocType voxel_locations_;
+      RangeToMcpType range_to_mcp_;
+      cuda::std::array<index_t, RangeProfilesType::Rank()> out_dims_;
+      mutable detail::tensor_impl_t<out_t, RangeProfilesType::Rank()> tmp_out_;
+      mutable out_t *ptr = nullptr;
+
+    public:
+      using matxop = bool;
+      using matx_transform_op = bool;
+      using sar_bp_xform_op = bool;
+      using value_type = out_t;
+
+      __MATX_INLINE__ std::string str() const { return "sar_bp(" + get_type_str(range_profiles_) + ")";}
+      __MATX_INLINE__ SarBpOp(const ImageType &initial_image, const RangeProfilesType &range_profiles, const PlatPosType &platform_positions, const VoxLocType &voxel_locations, const RangeToMcpType &range_to_mcp, const SarBpParams &params) :
+          initial_image_(initial_image), range_profiles_(range_profiles), platform_positions_(platform_positions), voxel_locations_(voxel_locations), range_to_mcp_(range_to_mcp), params_(params)
+      { 
+        for (int r = 0; r < ImageType::Rank(); r++) {
+          out_dims_[r] = initial_image.Size(r);
+        }
+      }
+
+      __MATX_HOST__ __MATX_INLINE__ auto Data() const noexcept { return ptr; }
+
+      // Const versions
+      template <ElementsPerThread EPT, typename... Is>
+      __MATX_INLINE__ __MATX_DEVICE__ __MATX_HOST__ decltype(auto) operator()(Is... indices) const {
+        return tmp_out_.template operator()<EPT>(indices...);
+      }
+
+      template <typename... Is>
+      __MATX_INLINE__ __MATX_DEVICE__ __MATX_HOST__ decltype(auto) operator()(Is... indices) const {
+        return this->operator()<detail::ElementsPerThread::ONE>(indices...);
+      }
+
+
+      template <OperatorCapability Cap>
+      __MATX_INLINE__ __MATX_HOST__ auto get_capability() const {
+        auto self_has_cap = capability_attributes<Cap>::default_value;
+        return combine_capabilities<Cap>(self_has_cap,
+                                           detail::get_operator_capability<Cap>(initial_image_),
+                                           detail::get_operator_capability<Cap>(range_profiles_),
+                                           detail::get_operator_capability<Cap>(platform_positions_),
+                                           detail::get_operator_capability<Cap>(voxel_locations_),
+                                           detail::get_operator_capability<Cap>(range_to_mcp_));
+      }
+
+      template <typename Out, typename Executor>
+      void Exec(Out &&out, Executor &&ex) const {
+        static_assert(is_cuda_executor_v<Executor>, "sarbp() only supports the CUDA executor currently");
+
+        constexpr bool TaylorFastAddThirdOrder =
+          has_property_tag<PropSarBpTaylorFastAddThirdOrder, CurrentProps...>;
+        // Zero (z == 0) is the stronger assumption and takes precedence over
+        // Fixed (z == const) when both props are present.
+        constexpr SarBpPixelZMode PixelZMode =
+          has_property_tag<PropSarBpPixelZIsZero, CurrentProps...> ? SarBpPixelZMode::Zero :
+          (has_property_tag<PropSarBpPixelZIsFixed, CurrentProps...> ? SarBpPixelZMode::Fixed :
+           SarBpPixelZMode::Variable);
+        sar_bp_impl<TaylorFastAddThirdOrder, PixelZMode>(
+          cuda::std::get<0>(out), initial_image_, range_profiles_, platform_positions_,
+          voxel_locations_, range_to_mcp_, params_, ex.getStream());
+      }
+
+      static __MATX_INLINE__ constexpr __MATX_HOST__ __MATX_DEVICE__ int32_t Rank()
+      {
+        return ImageType::Rank();
+      }
+
+      template <typename ShapeType, typename Executor>
+      __MATX_INLINE__ void InnerPreRun([[maybe_unused]] ShapeType &&shape, Executor &&ex) const noexcept
+      {
+        if constexpr (is_matx_op<ImageType>()) {
+          initial_image_.PreRun(std::forward<ShapeType>(shape), std::forward<Executor>(ex));
+        }     
+
+        if constexpr (is_matx_op<RangeProfilesType>()) {
+          range_profiles_.PreRun(std::forward<ShapeType>(shape), std::forward<Executor>(ex));
+        }
+
+        if constexpr (is_matx_op<PlatPosType>()) {
+          platform_positions_.PreRun(std::forward<ShapeType>(shape), std::forward<Executor>(ex));
+        }
+
+        if constexpr (is_matx_op<VoxLocType>()) {
+          voxel_locations_.PreRun(std::forward<ShapeType>(shape), std::forward<Executor>(ex));
+        }
+
+        if constexpr (is_matx_op<RangeToMcpType>()) {
+          range_to_mcp_.PreRun(std::forward<ShapeType>(shape), std::forward<Executor>(ex));
+        }
+      }
+
+      template <typename ShapeType, typename Executor>
+      __MATX_INLINE__ void PreRun([[maybe_unused]] ShapeType &&shape, Executor &&ex) const noexcept
+      {
+        InnerPreRun(std::forward<ShapeType>(shape), std::forward<Executor>(ex));           
+
+        detail::AllocateTempTensor(tmp_out_, std::forward<Executor>(ex), out_dims_, &ptr);
+
+        Exec(cuda::std::make_tuple(tmp_out_), std::forward<Executor>(ex));
+      }
+
+      template <typename ShapeType, typename Executor>
+      __MATX_INLINE__ void PostRun(ShapeType &&shape, Executor &&ex) const noexcept
+      {
+        if constexpr (is_matx_op<ImageType>()) {
+          initial_image_.PostRun(std::forward<ShapeType>(shape), std::forward<Executor>(ex));
+        }     
+
+        if constexpr (is_matx_op<RangeProfilesType>()) {
+          range_profiles_.PostRun(std::forward<ShapeType>(shape), std::forward<Executor>(ex));
+        } 
+
+        if constexpr (is_matx_op<PlatPosType>()) {
+          platform_positions_.PostRun(std::forward<ShapeType>(shape), std::forward<Executor>(ex));
+        }
+
+        if constexpr (is_matx_op<VoxLocType>()) {
+          voxel_locations_.PostRun(std::forward<ShapeType>(shape), std::forward<Executor>(ex));
+        }
+
+        if constexpr (is_matx_op<RangeToMcpType>()) {
+          range_to_mcp_.PostRun(std::forward<ShapeType>(shape), std::forward<Executor>(ex));
+        }
+
+        matxFree(ptr);
+        ptr = nullptr;
+      }
+
+      constexpr __MATX_INLINE__ __MATX_HOST__ __MATX_DEVICE__ index_t Size(int dim) const
+      {
+        return out_dims_[dim];
+      }
+
+      template <typename... NewProps>
+      constexpr auto props() const {
+        using AllProps = typename merge_props_unique<type_list<CurrentProps...>, NewProps...>::type;
+        return make_sar_bp_op<ImageType, RangeProfilesType, PlatPosType, VoxLocType, RangeToMcpType, AllProps>::make(
+          initial_image_, range_profiles_, platform_positions_, voxel_locations_, range_to_mcp_, params_);
+      }
+
+  };
+
+  template <typename ImageType, typename RangeProfilesType, typename PlatPosType, typename VoxLocType, typename RangeToMcpType, typename... Props>
+  struct make_sar_bp_op<ImageType, RangeProfilesType, PlatPosType, VoxLocType, RangeToMcpType, type_list<Props...>> {
+    static constexpr auto make(const ImageType &initial_image, const RangeProfilesType &range_profiles,
+      const PlatPosType &platform_positions, const VoxLocType &voxel_locations,
+      const RangeToMcpType &range_to_mcp, const SarBpParams &params) {
+      return SarBpOp<ImageType, RangeProfilesType, PlatPosType, VoxLocType, RangeToMcpType, Props...>(
+        initial_image, range_profiles, platform_positions, voxel_locations, range_to_mcp, params);
+    }
+  };
+}
+
+namespace experimental {
+
+/**
+* @brief sar_bp implements standard or direct SAR backprojection. Backprojection is an image formation algorithm
+* that reconstructs a complex-valued image from a set of range-compressed complex samples. The runtime complexity
+* of the sar_bp transform is O(MNP) where there are MxN pixels and P pulses. In the case that M=N=P, sar_bp is
+* O(N^3).
+*
+* @note The number of range bins is constrained as follows:
+* - For the Float, Mixed, FloatFloat, and TaylorFast compute types, num_range_bins is capped at 2^24 (16,777,216).
+* Those paths compute the per-pulse bin offset and (for Float / FloatFloat / TaylorFast) the bin floor in fp32, and
+* fp32 can exactly represent all integers only in [-2^24, 2^24]. Exceeding 2^24 would result in loss of precision
+* in the bin index used for range profile sampling.
+* - The Double compute type uses fp64 throughout for the bin computation and is only constrained by the
+* int32_t tensor-indexing limit (num_range_bins <= cuda::std::numeric_limits<int32_t>::max()). The transform throws \c matxInvalidParameter
+* at launch if these limits are exceeded. Typical raw num_range_bins is on the
+* order of 10^4-10^5 and well below the 2^24 bound. The fp32 limit can be reached, however, when heavy
+* range oversampling is applied. An upsample factor that pushes the FFT length above ~2^24 /
+* num_samples_raw (e.g., upsampling 32k raw samples by 512x or more) for non-Double compute types will trigger the runtime check.
+*
+* @tparam ImageType Type of initial_image and output image. ImageType must represent a 2D operator of size image_height x image_width for an image of the corresponding dimensions.
+* ImageType must be a complex type. Typical data types are cuda::std::complex<float> or cuda::std::complex<double>.
+* @tparam RangeProfilesType Type of range_profiles. RangeProfilesType must represent a 2D operator of size num_pulses x num_range_bins containing the range-compressed complex samples.
+* RangeProfilesType must be a complex type. Typical data types are cuda::std::complex<float> or cuda::std::complex<double>.
+* @tparam PlatPosType Type of platform positions. PlatPosType must represent a 1D operator of size num_pulses containing the platform positions. Currently, the only supported data
+* types for PlatPosType are double3, double4, float3, and float4. For the float4 and double4 data types, the w coordinate is ignored.
+* If the user has three separate operators for the x, y, and z coordinates, they can be combined using the zipvec operator.
+* @tparam VoxLocType Type of voxel locations. VoxLocType must represent a 2D operator of size image_height x image_width containing the voxel locations. Currently, the only supported
+* data types for VoxLocType are double3, double4, float3, and float4. For the float4 and double4 data types, the w coordinate is ignored.
+* If the user has three separate operators for the x, y, and z coordinates, they can be combined using the zipvec operator.
+* @tparam RangeToMcpType Type of range to motion compensation point. RangeToMcpType must represent a 0D or 1D real-valued operator of size 1 or num_pulses, respectively.
+* @param initial_image Initial image. Initial image must represent a 2D operator of size image_height x image_width for an image of the corresponding dimensions. Contributions computed
+* during backprojection will be added to the initial image. The user can use the zeros generator (i.e., matx::zeros) if no initial image is needed.
+* See \p ImageType documentation for details on supported rank and data types.
+* @param range_profiles Range profiles. Range profiles must represent a 2D operator of size num_pulses x num_range_bins containing the range-compressed complex samples.
+* They must use the FFT-shift convention in which zero differential range is at bin floor(num_range_bins / 2).
+* See \p RangeProfilesType documentation for details on supported rank and data types.
+* @param platform_positions Platform positions represent the x, y, and z coordinates of the aperture phase center for each pulse. The coordinates should be in
+* the same coordinate system and units as the voxel locations. See \p PlatPosType documentation for details on supported rank and data types.
+* @param voxel_locations Voxel locations represent the x, y, and z coordinates of the voxels in the image. The coordinates should be in
+* the same coordinate system and units as the platform positions. See \p VoxLocType documentation for details on supported rank and data types.
+* @param range_to_mcp Range to motion compensation point is the distance (range) from each platform position to the motion compensation point.
+* See \p RangeToMcpType documentation for details on supported rank and data types.
+* @param params SAR backprojection parameters. See \p SarBpParams documentation for details on supported parameters. Note that the \p TaylorFast
+* compute type does not support geometries where the antenna phase center is located at any of the image pixels (i.e., at range 0 from some pixel).
+* In such cases, the user should choose another compute type to avoid potential divide-by-zero errors at run-time.
+*/
+template <typename ImageType, typename RangeProfilesType, typename PlatPosType, typename VoxLocType, typename RangeToMcpType>
+inline auto sar_bp(const ImageType &initial_image, const RangeProfilesType &range_profiles,
+    const PlatPosType &platform_positions, const VoxLocType &voxel_locations, const RangeToMcpType &range_to_mcp, const SarBpParams &params) {
+  return matx::detail::SarBpOp<ImageType, RangeProfilesType, PlatPosType, VoxLocType, RangeToMcpType>(initial_image, range_profiles, platform_positions, voxel_locations, range_to_mcp, params);
+}
+
+} // end namespace experimental
+} // end namespace matx

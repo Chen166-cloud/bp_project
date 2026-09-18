@@ -1,0 +1,518 @@
+[
+  {
+    "roi": 1,
+    "center_m": [
+      900.0,
+      -150.0
+    ],
+    "bounds_m": [
+      870.0,
+      930.0,
+      -180.0,
+      -120.0
+    ],
+    "shape": [
+      241,
+      241
+    ],
+    "pixel_spacing_m": 0.25,
+    "metrics": {
+      "bp_nav": {
+        "samples": 58081,
+        "finite_fraction": 1.0,
+        "nonzero_fraction": 1.0,
+        "valid": true,
+        "entropy_nats": 8.62119826551498,
+        "normalized_entropy": 0.7859177258571947,
+        "intensity_contrast": 4.816367115314844,
+        "amplitude_contrast": 1.687692667713035,
+        "brightest_1pct_energy_fraction": 0.4023727138760803
+      },
+      "ffbp_nav": {
+        "samples": 58081,
+        "finite_fraction": 1.0,
+        "nonzero_fraction": 1.0,
+        "valid": true,
+        "entropy_nats": 8.61971723397524,
+        "normalized_entropy": 0.7857827134257683,
+        "intensity_contrast": 4.829316245233898,
+        "amplitude_contrast": 1.6875466561236228,
+        "brightest_1pct_energy_fraction": 0.4029881373609865
+      },
+      "bp_autofocus": {
+        "samples": 58081,
+        "finite_fraction": 1.0,
+        "nonzero_fraction": 1.0,
+        "valid": true,
+        "entropy_nats": 8.264503892013092,
+        "normalized_entropy": 0.7534010823216901,
+        "intensity_contrast": 6.437780145673433,
+        "amplitude_contrast": 1.8577084969613653,
+        "brightest_1pct_energy_fraction": 0.5084571391485115
+      },
+      "ffbp_autofocus": {
+        "samples": 58081,
+        "finite_fraction": 1.0,
+        "nonzero_fraction": 1.0,
+        "valid": true,
+        "entropy_nats": 8.265687228572265,
+        "normalized_entropy": 0.7535089565578307,
+        "intensity_contrast": 6.427096573930317,
+        "amplitude_contrast": 1.8564771450228557,
+        "brightest_1pct_energy_fraction": 0.5084389313141251
+      }
+    },
+    "fidelity": {
+      "nav": {
+        "relative_complex_error": 0.034304514996361515,
+        "ser_db": 29.29297432861287,
+        "complex_coherence": 0.9997712023471361,
+        "phase_bias_deg": -0.0024944972697777874,
+        "phase_std_deg_above_minus30db": 1.4065022910087617,
+        "phase_mask_samples": 19596,
+        "direct_seconds": 3.5780699999959324,
+        "ffbp_seconds": 0.5401535000055446
+      },
+      "autofocus": {
+        "relative_complex_error": 0.034972724784530375,
+        "ser_db": 29.125410595001284,
+        "complex_coherence": 0.999759562863666,
+        "phase_bias_deg": -0.048345488755820974,
+        "phase_std_deg_above_minus30db": 1.2933969379071006,
+        "phase_mask_samples": 9727,
+        "direct_seconds": 3.4956239000021014,
+        "ffbp_seconds": 0.4536664000042947
+      }
+    }
+  },
+  {
+    "roi": 2,
+    "center_m": [
+      900.0,
+      150.0
+    ],
+    "bounds_m": [
+      870.0,
+      930.0,
+      120.0,
+      180.0
+    ],
+    "shape": [
+      241,
+      241
+    ],
+    "pixel_spacing_m": 0.25,
+    "metrics": {
+      "bp_nav": {
+        "samples": 58081,
+        "finite_fraction": 1.0,
+        "nonzero_fraction": 1.0,
+        "valid": true,
+        "entropy_nats": 9.578937532989476,
+        "normalized_entropy": 0.8732262697365911,
+        "intensity_contrast": 2.85508127466166,
+        "amplitude_contrast": 1.0693289734764477,
+        "brightest_1pct_energy_fraction": 0.22214556725020168
+      },
+      "ffbp_nav": {
+        "samples": 58081,
+        "finite_fraction": 1.0,
+        "nonzero_fraction": 1.0,
+        "valid": true,
+        "entropy_nats": 9.580423833620095,
+        "normalized_entropy": 0.873361762504021,
+        "intensity_contrast": 2.84996916711163,
+        "amplitude_contrast": 1.0687059505927772,
+        "brightest_1pct_energy_fraction": 0.22166435126523054
+      },
+      "bp_autofocus": {
+        "samples": 58081,
+        "finite_fraction": 1.0,
+        "nonzero_fraction": 1.0,
+        "valid": true,
+        "entropy_nats": 9.287132930491067,
+        "normalized_entropy": 0.8466250476643002,
+        "intensity_contrast": 3.733795182442666,
+        "amplitude_contrast": 1.2057137596658658,
+        "brightest_1pct_energy_fraction": 0.28413948431344477
+      },
+      "ffbp_autofocus": {
+        "samples": 58081,
+        "finite_fraction": 1.0,
+        "nonzero_fraction": 1.0,
+        "valid": true,
+        "entropy_nats": 9.288505693841957,
+        "normalized_entropy": 0.846750190250939,
+        "intensity_contrast": 3.7323971143394417,
+        "amplitude_contrast": 1.2050919175921506,
+        "brightest_1pct_energy_fraction": 0.28385991032808616
+      }
+    },
+    "fidelity": {
+      "nav": {
+        "relative_complex_error": 0.03343876744872026,
+        "ser_db": 29.514994780213488,
+        "complex_coherence": 0.9998033825728864,
+        "phase_bias_deg": 0.019595869226433603,
+        "phase_std_deg_above_minus30db": 1.3122729252674643,
+        "phase_mask_samples": 40871,
+        "direct_seconds": 3.3035469000024023,
+        "ffbp_seconds": 0.480668299998797
+      },
+      "autofocus": {
+        "relative_complex_error": 0.03355564817994322,
+        "ser_db": 29.48468735375975,
+        "complex_coherence": 0.9998004885190898,
+        "phase_bias_deg": 0.022204252341959975,
+        "phase_std_deg_above_minus30db": 1.1872131130306434,
+        "phase_mask_samples": 28846,
+        "direct_seconds": 3.787985800001479,
+        "ffbp_seconds": 0.5064285000044038
+      }
+    }
+  },
+  {
+    "roi": 3,
+    "center_m": [
+      1425.0,
+      -25.0
+    ],
+    "bounds_m": [
+      1395.0,
+      1455.0,
+      -55.0,
+      5.0
+    ],
+    "shape": [
+      241,
+      241
+    ],
+    "pixel_spacing_m": 0.25,
+    "metrics": {
+      "bp_nav": {
+        "samples": 58081,
+        "finite_fraction": 1.0,
+        "nonzero_fraction": 1.0,
+        "valid": true,
+        "entropy_nats": 7.5733622770020546,
+        "normalized_entropy": 0.690395867781215,
+        "intensity_contrast": 10.667303236384603,
+        "amplitude_contrast": 2.3152281524324714,
+        "brightest_1pct_energy_fraction": 0.6592299226840657
+      },
+      "ffbp_nav": {
+        "samples": 58081,
+        "finite_fraction": 1.0,
+        "nonzero_fraction": 1.0,
+        "valid": true,
+        "entropy_nats": 7.578634902119501,
+        "normalized_entropy": 0.6908765259697844,
+        "intensity_contrast": 10.631906441419224,
+        "amplitude_contrast": 2.3143497074751527,
+        "brightest_1pct_energy_fraction": 0.6582512023314526
+      },
+      "bp_autofocus": {
+        "samples": 58081,
+        "finite_fraction": 1.0,
+        "nonzero_fraction": 1.0,
+        "valid": true,
+        "entropy_nats": 7.388326527667225,
+        "normalized_entropy": 0.6735278094393478,
+        "intensity_contrast": 11.260468452984068,
+        "amplitude_contrast": 2.4748715449197842,
+        "brightest_1pct_energy_fraction": 0.7041217616600679
+      },
+      "ffbp_autofocus": {
+        "samples": 58081,
+        "finite_fraction": 1.0,
+        "nonzero_fraction": 1.0,
+        "valid": true,
+        "entropy_nats": 7.392633073084751,
+        "normalized_entropy": 0.6739203987612267,
+        "intensity_contrast": 11.223396268256975,
+        "amplitude_contrast": 2.4731122344382346,
+        "brightest_1pct_energy_fraction": 0.7033614244098775
+      }
+    },
+    "fidelity": {
+      "nav": {
+        "relative_complex_error": 0.02851301530322363,
+        "ser_db": 30.899137056612428,
+        "complex_coherence": 0.9998816346551715,
+        "phase_bias_deg": -0.011574629437644871,
+        "phase_std_deg_above_minus30db": 0.7289545739712493,
+        "phase_mask_samples": 6062,
+        "direct_seconds": 3.7254126999978325,
+        "ffbp_seconds": 0.4014013000050909
+      },
+      "autofocus": {
+        "relative_complex_error": 0.030080343435354977,
+        "ser_db": 30.434344191908373,
+        "complex_coherence": 0.9998500003532653,
+        "phase_bias_deg": 0.036132625032863866,
+        "phase_std_deg_above_minus30db": 0.9404492016508683,
+        "phase_mask_samples": 4916,
+        "direct_seconds": 3.5226662999994005,
+        "ffbp_seconds": 0.4054494000010891
+      }
+    }
+  },
+  {
+    "roi": 4,
+    "center_m": [
+      1425.0,
+      150.0
+    ],
+    "bounds_m": [
+      1395.0,
+      1455.0,
+      120.0,
+      180.0
+    ],
+    "shape": [
+      241,
+      241
+    ],
+    "pixel_spacing_m": 0.25,
+    "metrics": {
+      "bp_nav": {
+        "samples": 58081,
+        "finite_fraction": 1.0,
+        "nonzero_fraction": 1.0,
+        "valid": true,
+        "entropy_nats": 10.093211955679154,
+        "normalized_entropy": 0.9201080803966606,
+        "intensity_contrast": 2.1139252313447487,
+        "amplitude_contrast": 0.7496977809004723,
+        "brightest_1pct_energy_fraction": 0.16720772318470836
+      },
+      "ffbp_nav": {
+        "samples": 58081,
+        "finite_fraction": 1.0,
+        "nonzero_fraction": 1.0,
+        "valid": true,
+        "entropy_nats": 10.091998547931503,
+        "normalized_entropy": 0.9199974648385675,
+        "intensity_contrast": 2.118144674024576,
+        "amplitude_contrast": 0.7501873540022477,
+        "brightest_1pct_energy_fraction": 0.1673750230240513
+      },
+      "bp_autofocus": {
+        "samples": 58081,
+        "finite_fraction": 1.0,
+        "nonzero_fraction": 1.0,
+        "valid": true,
+        "entropy_nats": 10.020890946918081,
+        "normalized_entropy": 0.9135152192900375,
+        "intensity_contrast": 2.36944407033616,
+        "amplitude_contrast": 0.7735025114277608,
+        "brightest_1pct_energy_fraction": 0.1876108947169051
+      },
+      "ffbp_autofocus": {
+        "samples": 58081,
+        "finite_fraction": 1.0,
+        "nonzero_fraction": 1.0,
+        "valid": true,
+        "entropy_nats": 10.022055384174994,
+        "normalized_entropy": 0.9136213706454143,
+        "intensity_contrast": 2.3665876982831553,
+        "amplitude_contrast": 0.7730481169096313,
+        "brightest_1pct_energy_fraction": 0.18733946463073803
+      }
+    },
+    "fidelity": {
+      "nav": {
+        "relative_complex_error": 0.039168021204413386,
+        "ser_db": 28.141367375124865,
+        "complex_coherence": 0.9995489624175103,
+        "phase_bias_deg": 0.01612877513542844,
+        "phase_std_deg_above_minus30db": 2.131346996476699,
+        "phase_mask_samples": 53006,
+        "direct_seconds": 3.5734615999972448,
+        "ffbp_seconds": 0.44920669999555685
+      },
+      "autofocus": {
+        "relative_complex_error": 0.039020842862880975,
+        "ser_db": 28.174067078766065,
+        "complex_coherence": 0.9995538193288708,
+        "phase_bias_deg": 0.04975723595447165,
+        "phase_std_deg_above_minus30db": 2.1043807131240446,
+        "phase_mask_samples": 51172,
+        "direct_seconds": 3.381563599999936,
+        "ffbp_seconds": 0.4575258999975631
+      }
+    }
+  },
+  {
+    "roi": 5,
+    "center_m": [
+      2100.0,
+      -150.0
+    ],
+    "bounds_m": [
+      2070.0,
+      2130.0,
+      -180.0,
+      -120.0
+    ],
+    "shape": [
+      241,
+      241
+    ],
+    "pixel_spacing_m": 0.25,
+    "metrics": {
+      "bp_nav": {
+        "samples": 58081,
+        "finite_fraction": 1.0,
+        "nonzero_fraction": 1.0,
+        "valid": true,
+        "entropy_nats": 10.55579765818817,
+        "normalized_entropy": 0.9622778916146866,
+        "intensity_contrast": 0.9925700054208951,
+        "amplitude_contrast": 0.5147955871260511,
+        "brightest_1pct_energy_fraction": 0.05619126350743032
+      },
+      "ffbp_nav": {
+        "samples": 58081,
+        "finite_fraction": 1.0,
+        "nonzero_fraction": 1.0,
+        "valid": true,
+        "entropy_nats": 10.554768950922943,
+        "normalized_entropy": 0.9621841135516422,
+        "intensity_contrast": 0.9940933961868099,
+        "amplitude_contrast": 0.5155113479112939,
+        "brightest_1pct_energy_fraction": 0.05622824626435642
+      },
+      "bp_autofocus": {
+        "samples": 58081,
+        "finite_fraction": 1.0,
+        "nonzero_fraction": 1.0,
+        "valid": true,
+        "entropy_nats": 10.525266132902424,
+        "normalized_entropy": 0.9594946048625992,
+        "intensity_contrast": 1.039860756532198,
+        "amplitude_contrast": 0.5357648306719384,
+        "brightest_1pct_energy_fraction": 0.058690125293672166
+      },
+      "ffbp_autofocus": {
+        "samples": 58081,
+        "finite_fraction": 1.0,
+        "nonzero_fraction": 1.0,
+        "valid": true,
+        "entropy_nats": 10.524231905986577,
+        "normalized_entropy": 0.9594003236222555,
+        "intensity_contrast": 1.0420274617627374,
+        "amplitude_contrast": 0.5363357432348252,
+        "brightest_1pct_energy_fraction": 0.05889819668863605
+      }
+    },
+    "fidelity": {
+      "nav": {
+        "relative_complex_error": 0.03776444013718894,
+        "ser_db": 28.458338987842453,
+        "complex_coherence": 0.9996345699052123,
+        "phase_bias_deg": -0.06338249699447815,
+        "phase_std_deg_above_minus30db": 2.1567280266438558,
+        "phase_mask_samples": 57462,
+        "direct_seconds": 4.093691200003377,
+        "ffbp_seconds": 0.6267185999968206
+      },
+      "autofocus": {
+        "relative_complex_error": 0.03683004755343302,
+        "ser_db": 28.675954408033306,
+        "complex_coherence": 0.9996538783891356,
+        "phase_bias_deg": -0.06335869009409492,
+        "phase_std_deg_above_minus30db": 2.1704317358999328,
+        "phase_mask_samples": 57394,
+        "direct_seconds": 6.3314747999975225,
+        "ffbp_seconds": 0.6042745000013383
+      }
+    }
+  },
+  {
+    "roi": 6,
+    "center_m": [
+      2100.0,
+      150.0
+    ],
+    "bounds_m": [
+      2070.0,
+      2130.0,
+      120.0,
+      180.0
+    ],
+    "shape": [
+      241,
+      241
+    ],
+    "pixel_spacing_m": 0.25,
+    "metrics": {
+      "bp_nav": {
+        "samples": 58081,
+        "finite_fraction": 1.0,
+        "nonzero_fraction": 1.0,
+        "valid": true,
+        "entropy_nats": 10.271858779323106,
+        "normalized_entropy": 0.9363937173865297,
+        "intensity_contrast": 1.497132553765005,
+        "amplitude_contrast": 0.6877017741152932,
+        "brightest_1pct_energy_fraction": 0.09842342349069408
+      },
+      "ffbp_nav": {
+        "samples": 58081,
+        "finite_fraction": 1.0,
+        "nonzero_fraction": 1.0,
+        "valid": true,
+        "entropy_nats": 10.271714961945225,
+        "normalized_entropy": 0.936380606839355,
+        "intensity_contrast": 1.495873143906206,
+        "amplitude_contrast": 0.6880025084645329,
+        "brightest_1pct_energy_fraction": 0.09830139635144715
+      },
+      "bp_autofocus": {
+        "samples": 58081,
+        "finite_fraction": 1.0,
+        "nonzero_fraction": 1.0,
+        "valid": true,
+        "entropy_nats": 10.267152165677746,
+        "normalized_entropy": 0.9359646574138057,
+        "intensity_contrast": 1.4836487644535563,
+        "amplitude_contrast": 0.6979032599782066,
+        "brightest_1pct_energy_fraction": 0.09681885240929446
+      },
+      "ffbp_autofocus": {
+        "samples": 58081,
+        "finite_fraction": 1.0,
+        "nonzero_fraction": 1.0,
+        "valid": true,
+        "entropy_nats": 10.268094074285404,
+        "normalized_entropy": 0.9360505228176739,
+        "intensity_contrast": 1.4808783445943052,
+        "amplitude_contrast": 0.6974007218964179,
+        "brightest_1pct_energy_fraction": 0.09644905464239077
+      }
+    },
+    "fidelity": {
+      "nav": {
+        "relative_complex_error": 0.030395544776001957,
+        "ser_db": 30.34380136795218,
+        "complex_coherence": 0.9998537203787803,
+        "phase_bias_deg": 0.0028420008846173376,
+        "phase_std_deg_above_minus30db": 1.2903162148139706,
+        "phase_mask_samples": 55070,
+        "direct_seconds": 6.1854697999951895,
+        "ffbp_seconds": 0.6069052000020747
+      },
+      "autofocus": {
+        "relative_complex_error": 0.03049007953540729,
+        "ser_db": 30.31682885494004,
+        "complex_coherence": 0.9998558477071986,
+        "phase_bias_deg": -0.005881475693531779,
+        "phase_std_deg_above_minus30db": 1.2982419079154055,
+        "phase_mask_samples": 54771,
+        "direct_seconds": 6.304717300001357,
+        "ffbp_seconds": 0.6156708999988041
+      }
+    }
+  }
+]

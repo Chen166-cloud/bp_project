@@ -1,0 +1,323 @@
+[
+  {
+    "range_m": 800.0,
+    "target_xyz_m": [
+      799.8011103982125,
+      0.7976526727789143,
+      0.0
+    ],
+    "raw_samples_per_pulse": 1034,
+    "fidelity": {
+      "relative_complex_error": 0.03305821635713221,
+      "ser_db": 29.61441164635744,
+      "complex_coherence": 0.9999199228023548,
+      "phase_bias_deg": 0.00819635811727512,
+      "phase_std_deg_above_minus30db": 0.5099029330366079,
+      "phase_mask_samples": 164
+    },
+    "metrics": {
+      "direct_bp": {
+        "ground_range": {
+          "valid": true,
+          "sidelobes_valid": true,
+          "irw_m": 0.9817100911570906,
+          "peak_offset_m": 0.0,
+          "pslr_db": -38.22380065917969,
+          "islr_db": -32.267269164048805,
+          "mainlobe_bounds_m": [
+            -1.4499999999999993,
+            1.4750000000000014
+          ],
+          "mainlobe_minima_db": [
+            -55.18530418233531,
+            -55.256997958212594
+          ],
+          "integration_bounds_m": [
+            -20.0,
+            20.0
+          ],
+          "step_m": 0.02499999999999858
+        },
+        "along_track": {
+          "valid": true,
+          "sidelobes_valid": true,
+          "irw_m": 0.5692473991928553,
+          "peak_offset_m": 0.0,
+          "pslr_db": -31.0414457321167,
+          "islr_db": -32.16035351156529,
+          "mainlobe_bounds_m": [
+            -0.7999999999999972,
+            0.8000000000000043
+          ],
+          "mainlobe_minima_db": [
+            -36.60292447862078,
+            -36.631278814257094
+          ],
+          "integration_bounds_m": [
+            -40.0,
+            40.0
+          ],
+          "step_m": 0.02499999999999858
+        }
+      },
+      "ffbp": {
+        "ground_range": {
+          "valid": true,
+          "sidelobes_valid": true,
+          "irw_m": 0.9940110779100175,
+          "peak_offset_m": 0.0,
+          "pslr_db": -37.05925941467285,
+          "islr_db": -32.319081423641535,
+          "mainlobe_bounds_m": [
+            -1.4749999999999979,
+            1.4750000000000014
+          ],
+          "mainlobe_minima_db": [
+            -58.22977945809306,
+            -63.23463264029207
+          ],
+          "integration_bounds_m": [
+            -20.0,
+            20.0
+          ],
+          "step_m": 0.02499999999999858
+        },
+        "along_track": {
+          "valid": true,
+          "sidelobes_valid": true,
+          "irw_m": 0.5694538435803023,
+          "peak_offset_m": 0.0,
+          "pslr_db": -29.977397918701172,
+          "islr_db": -30.349043442628933,
+          "mainlobe_bounds_m": [
+            -0.7999999999999972,
+            0.8000000000000043
+          ],
+          "mainlobe_minima_db": [
+            -36.606781463190146,
+            -35.66357883176966
+          ],
+          "integration_bounds_m": [
+            -40.0,
+            40.0
+          ],
+          "step_m": 0.02499999999999858
+        }
+      }
+    }
+  },
+  {
+    "range_m": 1400.0,
+    "target_xyz_m": [
+      1399.8863583142074,
+      0.7976526727789143,
+      0.0
+    ],
+    "raw_samples_per_pulse": 1026,
+    "fidelity": {
+      "relative_complex_error": 0.031069468876703966,
+      "ser_db": 30.153323416321967,
+      "complex_coherence": 0.9999199408177145,
+      "phase_bias_deg": 0.004558342974802548,
+      "phase_std_deg_above_minus30db": 0.30283046872448677,
+      "phase_mask_samples": 208
+    },
+    "metrics": {
+      "direct_bp": {
+        "ground_range": {
+          "valid": true,
+          "sidelobes_valid": true,
+          "irw_m": 0.9816413447949004,
+          "peak_offset_m": 0.0,
+          "pslr_db": -38.102593421936035,
+          "islr_db": -30.733060460115887,
+          "mainlobe_bounds_m": [
+            -1.4499999999999993,
+            1.4500000000000028
+          ],
+          "mainlobe_minima_db": [
+            -56.14800691080327,
+            -55.38764444132609
+          ],
+          "integration_bounds_m": [
+            -20.0,
+            20.0
+          ],
+          "step_m": 0.02499999999999858
+        },
+        "along_track": {
+          "valid": true,
+          "sidelobes_valid": true,
+          "irw_m": 0.9943204829207821,
+          "peak_offset_m": 0.0,
+          "pslr_db": -31.488056182861328,
+          "islr_db": -32.62941063913795,
+          "mainlobe_bounds_m": [
+            -1.3999999999999986,
+            1.4000000000000057
+          ],
+          "mainlobe_minima_db": [
+            -36.73397240692119,
+            -36.84484574036265
+          ],
+          "integration_bounds_m": [
+            -40.0,
+            40.0
+          ],
+          "step_m": 0.02499999999999858
+        }
+      },
+      "ffbp": {
+        "ground_range": {
+          "valid": true,
+          "sidelobes_valid": true,
+          "irw_m": 0.9931945613510231,
+          "peak_offset_m": 0.0,
+          "pslr_db": -36.91373109817505,
+          "islr_db": -30.85027660671851,
+          "mainlobe_bounds_m": [
+            -1.4749999999999979,
+            1.4750000000000014
+          ],
+          "mainlobe_minima_db": [
+            -56.31956164621656,
+            -62.12799682281353
+          ],
+          "integration_bounds_m": [
+            -20.0,
+            20.0
+          ],
+          "step_m": 0.02499999999999858
+        },
+        "along_track": {
+          "valid": true,
+          "sidelobes_valid": true,
+          "irw_m": 0.9903806497746973,
+          "peak_offset_m": 0.0,
+          "pslr_db": -30.498347282409668,
+          "islr_db": -30.822643215692025,
+          "mainlobe_bounds_m": [
+            -1.375,
+            1.375
+          ],
+          "mainlobe_minima_db": [
+            -36.72167168697242,
+            -36.8350965531232
+          ],
+          "integration_bounds_m": [
+            -40.0,
+            40.0
+          ],
+          "step_m": 0.02499999999999858
+        }
+      }
+    }
+  },
+  {
+    "range_m": 2200.0,
+    "target_xyz_m": [
+      2199.927684310149,
+      0.7976526727789143,
+      0.0
+    ],
+    "raw_samples_per_pulse": 1022,
+    "fidelity": {
+      "relative_complex_error": 0.026930766787799317,
+      "ser_db": 31.39502561875892,
+      "complex_coherence": 0.9999237853889048,
+      "phase_bias_deg": 0.03338482554213436,
+      "phase_std_deg_above_minus30db": 0.33825142516212026,
+      "phase_mask_samples": 268
+    },
+    "metrics": {
+      "direct_bp": {
+        "ground_range": {
+          "valid": true,
+          "sidelobes_valid": true,
+          "irw_m": 0.9813196874127951,
+          "peak_offset_m": 0.0,
+          "pslr_db": -38.055458068847656,
+          "islr_db": -30.43251182864156,
+          "mainlobe_bounds_m": [
+            -1.4499999999999993,
+            1.4500000000000028
+          ],
+          "mainlobe_minima_db": [
+            -56.36236140263086,
+            -55.75835157854611
+          ],
+          "integration_bounds_m": [
+            -20.0,
+            20.0
+          ],
+          "step_m": 0.02499999999999858
+        },
+        "along_track": {
+          "valid": true,
+          "sidelobes_valid": true,
+          "irw_m": 1.5618871181633982,
+          "peak_offset_m": 0.0,
+          "pslr_db": -31.67222499847412,
+          "islr_db": -32.84326750145082,
+          "mainlobe_bounds_m": [
+            -2.1999999999999957,
+            2.200000000000003
+          ],
+          "mainlobe_minima_db": [
+            -36.799557391348266,
+            -37.01472178333404
+          ],
+          "integration_bounds_m": [
+            -40.0,
+            40.0
+          ],
+          "step_m": 0.02499999999999858
+        }
+      },
+      "ffbp": {
+        "ground_range": {
+          "valid": true,
+          "sidelobes_valid": true,
+          "irw_m": 0.991010653488807,
+          "peak_offset_m": 0.0,
+          "pslr_db": -37.118892669677734,
+          "islr_db": -30.532876088668687,
+          "mainlobe_bounds_m": [
+            -1.4749999999999979,
+            1.4750000000000014
+          ],
+          "mainlobe_minima_db": [
+            -55.98988399534075,
+            -59.14449373892961
+          ],
+          "integration_bounds_m": [
+            -20.0,
+            20.0
+          ],
+          "step_m": 0.02499999999999858
+        },
+        "along_track": {
+          "valid": true,
+          "sidelobes_valid": true,
+          "irw_m": 1.5628675287005493,
+          "peak_offset_m": 0.0,
+          "pslr_db": -30.588552951812744,
+          "islr_db": -30.825693259674715,
+          "mainlobe_bounds_m": [
+            -2.174999999999997,
+            2.1750000000000043
+          ],
+          "mainlobe_minima_db": [
+            -36.529688251663984,
+            -36.64655599752131
+          ],
+          "integration_bounds_m": [
+            -40.0,
+            40.0
+          ],
+          "step_m": 0.02499999999999858
+        }
+      }
+    }
+  }
+]

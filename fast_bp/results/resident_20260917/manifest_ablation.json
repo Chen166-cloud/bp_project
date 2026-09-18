@@ -1,0 +1,49 @@
+{
+  "date": "2026-09-17 13:16:59 +0800",
+  "suite": "ablation",
+  "status": "completed",
+  "environment": {
+    "gpu": "NVIDIA GeForce RTX 4070 Laptop GPU",
+    "compute_capability": "8.9",
+    "gpu_memory_bytes": 8585216000,
+    "gpu_free_bytes_at_query": 7409238016,
+    "driver_version": 13030,
+    "cuda_runtime_version": 12090,
+    "nvrtc_version": [
+      12,
+      2
+    ],
+    "cupy_version": "13.6.0",
+    "numpy_version": "1.26.4",
+    "python_version": "3.12.3",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "cuda_root": "D:\\Program Files\\MATLAB\\R2024a\\sys\\cuda\\win64\\cuda",
+    "cuda_dll_dirs": [
+      "D:\\Program Files\\MATLAB\\R2024a\\sys\\cuda\\win64\\cuda\\bin",
+      "D:\\Program Files\\MATLAB\\R2024a\\bin\\win64"
+    ],
+    "kernel_backend": "CuPy RawModule / NVIDIA NVRTC",
+    "fast_math": false
+  },
+  "arguments": {
+    "suite": "ablation",
+    "scales": [
+      "small",
+      "medium",
+      "large"
+    ],
+    "repeats": 15,
+    "warmups": 5,
+    "output": "D:\\Users\\Chen\\Desktop\\research\\试验数据\\fast_bp\\results\\resident_20260917"
+  },
+  "timing_scope": "CUDA events around required initialization and complete resident execution; output remains on GPU; allocation/compile/plan/upload/download excluded uniformly",
+  "profiler": "Nsight not found; event experiments do not prove hardware-counter bottlenecks",
+  "source_sha256": {
+    "D:\\Users\\Chen\\Desktop\\research\\试验数据\\fast_bp\\resident_experiment.py": "c84651ad8d2477a2d1f87801eb6a01a3345f1e0bfdeca9e66ee12631cb88f40a",
+    "D:\\Users\\Chen\\Desktop\\research\\试验数据\\fast_bp\\resident_backend.py": "4ec15d025e8d8d280d41accb777c3f8fefbef174742640b3bcd2b73f4a0820ee",
+    "D:\\Users\\Chen\\Desktop\\research\\试验数据\\fast_bp\\gpu\\resident_kernels.cu": "8c6735fd7ba4858e05819268c83f2292a233fdfc72618f1c086ea4312544342e",
+    "D:\\Users\\Chen\\Desktop\\research\\试验数据\\fast_bp\\gpu\\kernels.cu": "516be4ff3c11c82e344ff8d1d330653d53e48f787036930bd3077d2dc0f153f9",
+    "D:\\Users\\Chen\\Desktop\\research\\试验数据\\fast_bp\\gpu\\precision_probe.cu": "394e43024c4cc83a862970cb085178c0746d1cca4c4baff99de5b03b7c6dbed4"
+  },
+  "completed_at": "2026-09-17 13:18:17 +0800"
+}

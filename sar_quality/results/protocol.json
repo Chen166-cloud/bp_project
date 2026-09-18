@@ -1,0 +1,52 @@
+{
+  "capture": {
+    "file": "D:\\Users\\Chen\\Desktop\\research\\试验数据\\2018-08-14_18-54-08.dat",
+    "bytes": 1073741824,
+    "first_frame_offset": 58112,
+    "frame_bytes": 80192,
+    "complete_frame_slots": 13388,
+    "valid_frames": 12757,
+    "invalid_slots": 631,
+    "first_pulse": 26781,
+    "last_pulse": 39537,
+    "missing_pulses": 0,
+    "range_samples": 20000,
+    "sample_rate_hz": 400000000.0,
+    "carrier_hz": 1400000000.0,
+    "bandwidth_hz": 200000000.0,
+    "pulse_width_s": 1e-06,
+    "sampling_delay_s": 3e-06,
+    "prf_hz": 1000.0,
+    "duration_s": 12.756,
+    "discarded_partial_bytes": 73216
+  },
+  "geometry": {
+    "mode": "velocity",
+    "height_reference_m": 18.0,
+    "along_enu": [
+      0.9200662491867141,
+      -0.3917628072028933
+    ],
+    "left_enu": [
+      0.3917628072028933,
+      0.9200662491867141
+    ],
+    "mean_speed_m_s": 17.090231752021637,
+    "mean_course_deg": 113.06423096595245,
+    "extent_m": [
+      0.19447183234241017,
+      218.00264752724775,
+      0.4393799999999892
+    ]
+  },
+  "point_model": "Independent fractional-delay raw rectangular LFM, constant scatterer strength, full measured trajectory; no noise, no propagation loss, no antenna pattern or motion error",
+  "range_window": "Hamming matched reference",
+  "azimuth_window": "Hann full aperture",
+  "pulse_count": 12757,
+  "ffbp_leaf_size": 64,
+  "ffbp_range_grid_m": 0.25,
+  "angular_oversample": 3,
+  "metrics": "1D first-minima negative-dB sidelobe convention; intensity Shannon entropy; both amplitude and intensity CV; no dB/8-bit focus metrics",
+  "nominal_c_over_2B_m": 0.749481145,
+  "raw_range_sample_spacing_m": 0.3747405725
+}

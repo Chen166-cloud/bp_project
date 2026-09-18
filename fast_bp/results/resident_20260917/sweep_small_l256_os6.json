@@ -1,0 +1,414 @@
+{
+  "key": "sweep_small_l256_os6",
+  "seed": 20261173,
+  "repeats": 9,
+  "warmups": 3,
+  "randomized_orders": [
+    [
+      "ffbp_small_mixed_l256_os6",
+      "ffbp_small_fp32_l256_os6",
+      "direct_control_small_l256_os6"
+    ],
+    [
+      "ffbp_small_fp32_l256_os6",
+      "ffbp_small_mixed_l256_os6",
+      "direct_control_small_l256_os6"
+    ],
+    [
+      "ffbp_small_fp32_l256_os6",
+      "direct_control_small_l256_os6",
+      "ffbp_small_mixed_l256_os6"
+    ],
+    [
+      "ffbp_small_fp32_l256_os6",
+      "ffbp_small_mixed_l256_os6",
+      "direct_control_small_l256_os6"
+    ],
+    [
+      "direct_control_small_l256_os6",
+      "ffbp_small_mixed_l256_os6",
+      "ffbp_small_fp32_l256_os6"
+    ],
+    [
+      "ffbp_small_fp32_l256_os6",
+      "ffbp_small_mixed_l256_os6",
+      "direct_control_small_l256_os6"
+    ],
+    [
+      "ffbp_small_fp32_l256_os6",
+      "ffbp_small_mixed_l256_os6",
+      "direct_control_small_l256_os6"
+    ],
+    [
+      "ffbp_small_mixed_l256_os6",
+      "ffbp_small_fp32_l256_os6",
+      "direct_control_small_l256_os6"
+    ],
+    [
+      "ffbp_small_mixed_l256_os6",
+      "ffbp_small_fp32_l256_os6",
+      "direct_control_small_l256_os6"
+    ]
+  ],
+  "records": [
+    {
+      "name": "direct_control_small_l256_os6",
+      "graph": true,
+      "algorithm": "direct",
+      "mode": "fp32",
+      "variant": "original",
+      "chunk": 256,
+      "role": "repeated_control",
+      "warmup_ms": [
+        28.796255111694336,
+        31.564512252807617,
+        36.78105545043945
+      ],
+      "quality_vs_direct_fp64": {
+        "relative_complex_error": 0.003684929016377085,
+        "ser_db": 48.67141747274802,
+        "complex_coherence": 0.9999942730041788,
+        "relative_magnitude_error": 0.00045543826088698564,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": 0.029215916556363623,
+        "phase_std_deg_above_minus30db": 0.19741861290835516,
+        "phase_median_abs_deg_above_minus30db": 0.14025359359986625,
+        "phase_p95_abs_deg_above_minus30db": 0.37777233766358403,
+        "phase_mask_samples": 7295,
+        "peak_amplitude_difference_db": 0.000808105255973625,
+        "reference_peak_pixel": [
+          222,
+          201
+        ],
+        "estimate_peak_pixel": [
+          222,
+          201
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      },
+      "timing": {
+        "samples_ms": [
+          28.687360763549805,
+          30.58483123779297,
+          34.70131301879883,
+          28.794879913330078,
+          35.34819030761719,
+          28.73529624938965,
+          34.050048828125,
+          29.387392044067383,
+          29.346464157104492
+        ],
+        "median_ms": 29.387392044067383,
+        "min_ms": 28.687360763549805,
+        "max_ms": 35.34819030761719,
+        "q1_ms": 28.794879913330078,
+        "q3_ms": 34.050048828125,
+        "coefficient_of_variation": 0.08495733982428874
+      },
+      "wall_timing": {
+        "samples_ms": [
+          28.74440000005052,
+          30.664799999840398,
+          34.779900000103225,
+          28.86069999999563,
+          35.400100000060775,
+          28.796600000077888,
+          34.11809999988691,
+          29.439400000001115,
+          29.434100000116814
+        ],
+        "median_ms": 29.439400000001115,
+        "min_ms": 28.74440000005052,
+        "max_ms": 35.400100000060775,
+        "q1_ms": 28.86069999999563,
+        "q3_ms": 34.11809999988691,
+        "coefficient_of_variation": 0.08478067386549643
+      },
+      "program": {
+        "algorithm": "direct",
+        "variant": "original",
+        "mode": "fp32",
+        "shape": [
+          360,
+          365
+        ],
+        "block_size": 128,
+        "chunk_pulses": 256,
+        "kernel_launch_count": 50,
+        "kernel_counts": {
+          "direct_chunk_fp32": 50
+        },
+        "memset_count": 1,
+        "device_operation_count": 51,
+        "workspace_bytes": 1051200,
+        "workspace_buffer_count": 1,
+        "origin_table_bytes": 6132,
+        "total_owned_device_bytes": 1057332,
+        "workspace_policy": "all schedule buffers preallocated; no liveness reuse",
+        "input_data_shared": true,
+        "output_dtype": "complex64",
+        "zeroing_in_execute": true,
+        "graph_supported": true,
+        "graph_error": null,
+        "arithmetic": "baseline kernels; no fast_math",
+        "fusion": null
+      },
+      "launch_count": 50
+    },
+    {
+      "name": "ffbp_small_fp32_l256_os6",
+      "graph": true,
+      "algorithm": "ffbp",
+      "mode": "fp32",
+      "variant": "fused",
+      "leaf": 256,
+      "internal_os": 6.0,
+      "output_os": 3.0,
+      "shape": [
+        360,
+        365
+      ],
+      "counts": {
+        "leaves": 64,
+        "merges": 63,
+        "leaf_pixel_pulse_products": 146246820,
+        "merged_pixels": 4091530,
+        "nodes": 127,
+        "shape": [
+          360,
+          365
+        ],
+        "direct_pixel_pulse_products": 1676269800
+      },
+      "warmup_ms": [
+        9.876480102539062,
+        10.063872337341309,
+        10.086112022399902
+      ],
+      "quality_vs_direct_fp64": {
+        "relative_complex_error": 0.01427839508506331,
+        "ser_db": 36.906412104518665,
+        "complex_coherence": 0.9999120727503436,
+        "relative_magnitude_error": 0.009892852040298621,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": 0.04652089687566789,
+        "phase_std_deg_above_minus30db": 0.6947683048836277,
+        "phase_median_abs_deg_above_minus30db": 0.36132222526776664,
+        "phase_p95_abs_deg_above_minus30db": 1.403372040653647,
+        "phase_mask_samples": 7295,
+        "peak_amplitude_difference_db": -0.07937536069453552,
+        "reference_peak_pixel": [
+          222,
+          201
+        ],
+        "estimate_peak_pixel": [
+          222,
+          201
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      },
+      "timing": {
+        "samples_ms": [
+          8.570879936218262,
+          8.114175796508789,
+          8.763168334960938,
+          9.490431785583496,
+          10.34227180480957,
+          8.937472343444824,
+          8.460288047790527,
+          8.763392448425293,
+          8.642560005187988
+        ],
+        "median_ms": 8.763168334960938,
+        "min_ms": 8.114175796508789,
+        "max_ms": 10.34227180480957,
+        "q1_ms": 8.570879936218262,
+        "q3_ms": 8.937472343444824,
+        "coefficient_of_variation": 0.06960960484597374
+      },
+      "wall_timing": {
+        "samples_ms": [
+          8.624999999938154,
+          8.172099999910643,
+          8.837599999878876,
+          9.555399999953806,
+          10.394200000064302,
+          8.978800000022602,
+          8.506800000077419,
+          8.82210000008854,
+          8.712800000012066
+        ],
+        "median_ms": 8.82210000008854,
+        "min_ms": 8.172099999910643,
+        "max_ms": 10.394200000064302,
+        "q1_ms": 8.624999999938154,
+        "q3_ms": 8.978800000022602,
+        "coefficient_of_variation": 0.06908196531969892
+      },
+      "program": {
+        "algorithm": "ffbp",
+        "variant": "fused",
+        "mode": "fp32",
+        "shape": [
+          360,
+          365
+        ],
+        "block_size": 128,
+        "chunk_pulses": null,
+        "kernel_launch_count": 128,
+        "kernel_counts": {
+          "bp_polar_fp32": 64,
+          "merge_regrid_fp32": 63,
+          "crop_float2": 1
+        },
+        "memset_count": 0,
+        "device_operation_count": 128,
+        "workspace_bytes": 23286888,
+        "workspace_buffer_count": 128,
+        "origin_table_bytes": 1524,
+        "total_owned_device_bytes": 23288412,
+        "workspace_policy": "all schedule buffers preallocated; no liveness reuse",
+        "input_data_shared": true,
+        "output_dtype": "complex64",
+        "zeroing_in_execute": false,
+        "graph_supported": true,
+        "graph_error": null,
+        "arithmetic": "baseline kernels; no fast_math",
+        "fusion": "two original child regrids rounded to float2 then FP32 add"
+      },
+      "launch_count": 128
+    },
+    {
+      "name": "ffbp_small_mixed_l256_os6",
+      "graph": true,
+      "algorithm": "ffbp",
+      "mode": "mixed",
+      "variant": "fused",
+      "leaf": 256,
+      "internal_os": 6.0,
+      "output_os": 3.0,
+      "shape": [
+        360,
+        365
+      ],
+      "counts": {
+        "leaves": 64,
+        "merges": 63,
+        "leaf_pixel_pulse_products": 146246820,
+        "merged_pixels": 4091530,
+        "nodes": 127,
+        "shape": [
+          360,
+          365
+        ],
+        "direct_pixel_pulse_products": 1676269800
+      },
+      "warmup_ms": [
+        73.8095703125,
+        66.95629119873047,
+        66.06028747558594
+      ],
+      "quality_vs_direct_fp64": {
+        "relative_complex_error": 0.010455379430135624,
+        "ser_db": 39.61320403660273,
+        "complex_coherence": 0.9999573372286706,
+        "relative_magnitude_error": 0.008400430355302928,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": 0.0016450120160459985,
+        "phase_std_deg_above_minus30db": 0.48454963383846444,
+        "phase_median_abs_deg_above_minus30db": 0.17207634873051034,
+        "phase_p95_abs_deg_above_minus30db": 0.9677215928249854,
+        "phase_mask_samples": 7295,
+        "peak_amplitude_difference_db": -0.07723370259048631,
+        "reference_peak_pixel": [
+          222,
+          201
+        ],
+        "estimate_peak_pixel": [
+          222,
+          201
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      },
+      "timing": {
+        "samples_ms": [
+          66.03366088867188,
+          67.57170867919922,
+          78.82854461669922,
+          69.67910766601562,
+          83.37510681152344,
+          66.10944366455078,
+          69.09337615966797,
+          73.2037124633789,
+          71.38201904296875
+        ],
+        "median_ms": 69.67910766601562,
+        "min_ms": 66.03366088867188,
+        "max_ms": 83.37510681152344,
+        "q1_ms": 67.57170867919922,
+        "q3_ms": 73.2037124633789,
+        "coefficient_of_variation": 0.0779022905193885
+      },
+      "wall_timing": {
+        "samples_ms": [
+          66.14220000005844,
+          67.6327000001038,
+          78.92190000006849,
+          69.77469999992536,
+          83.4285999999338,
+          66.15149999993264,
+          69.14549999987685,
+          73.26239999997597,
+          71.4328999999907
+        ],
+        "median_ms": 69.77469999992536,
+        "min_ms": 66.14220000005844,
+        "max_ms": 83.4285999999338,
+        "q1_ms": 67.6327000001038,
+        "q3_ms": 73.26239999997597,
+        "coefficient_of_variation": 0.07781001331948378
+      },
+      "program": {
+        "algorithm": "ffbp",
+        "variant": "fused",
+        "mode": "mixed",
+        "shape": [
+          360,
+          365
+        ],
+        "block_size": 128,
+        "chunk_pulses": null,
+        "kernel_launch_count": 128,
+        "kernel_counts": {
+          "bp_polar_mixed": 64,
+          "merge_regrid_mixed": 63,
+          "crop_float2": 1
+        },
+        "memset_count": 0,
+        "device_operation_count": 128,
+        "workspace_bytes": 23286888,
+        "workspace_buffer_count": 128,
+        "origin_table_bytes": 3048,
+        "total_owned_device_bytes": 23289936,
+        "workspace_policy": "all schedule buffers preallocated; no liveness reuse",
+        "input_data_shared": true,
+        "output_dtype": "complex64",
+        "zeroing_in_execute": false,
+        "graph_supported": true,
+        "graph_error": null,
+        "arithmetic": "baseline kernels; no fast_math",
+        "fusion": "two original child regrids rounded to float2 then FP32 add"
+      },
+      "launch_count": 128
+    }
+  ]
+}

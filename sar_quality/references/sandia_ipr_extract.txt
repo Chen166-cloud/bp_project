@@ -1,0 +1,86 @@
+PAGE 19
+ - 19 - 
+4 IPR Specifications 
+A typical IPR specification for a SAR system embodies the following elements 
+1) The −3 dB width of the IPR mainlobe typically needs to correspond to the 
+specified resolution, within some tolerance, often 10%.  This is generally taken to 
+mean that the actual achieved resolution can not be degraded more than 10% from 
+the nominal value.  Resolution is specified in units of distance, such as perhaps 
+meters, or inches, etc. 
+2) Peak sidelobes need to fall below some maximum specification.  Often this is 
+specified as an envelope curve, such as 
+30159.2log20
+2
+10 −⎟
+⎟
+⎠
+⎞
+⎜
+⎜
+⎝
+⎛
++⎟
+⎠
+⎞⎜
+⎝
+⎛=
+−uEnvdB      for 5.1≥u  (1) 
+where u is in units of the corresponding resolution of the radar, after the window 
+is applied. 
+3) Integrated sidelobe energy needs to fall below a limit specified by the allowable 
+Multiplicative Noise Ratio (MNR).  Sidelobes, especially degraded sidelobes, are 
+the principal source of multiplicative noise. 
+4) Sometimes, an IPR mainlobe width is also specified at some other level with 
+respect to the peak of the mainlobe.  For example, the −18 dB width of the IPR 
+mainlobe might be specified.  Note that equation (1) specifies the −18 dB width at 
+3 resolution unit widths. 
+5) Pixel spacing is usually specified as some fraction of the resolution.  Often this is 
+via an oversampling factor, defined as the ratio of nominal resolution to pixel 
+spacing.  Practical signal processing concerns dictate that this must be greater 
+than or equal to the broadening factor of the window function, sometimes called 
+the window bandwidth.  For the −35 dB Taylor window, this is 1.1822.   
+6) The absolute brightness or peak value of the IPR is generally specified via an 
+RCS calibration specification.  For example, the RCS indication of the image 
+might need to be within 10 dB of the actual value. 
+A radar designer will use these specifications to select an appropriate window function 
+for signal processing, which sets the basic shape of the IPR, especially the region near its 
+mainlobe response.  Of these, items 1-4 specify aspects of the shape of the IPR.  Item 5 is 
+a function of zero padding prior to the FFT.  Item 6 refers to gain calibrations. 
+ 
+PAGE 21
+ - 21 - 
+We further identify the following characteristics of this Taylor window. 
+Table 1.  Properties of −35 dB Taylor window with 4=n . 
+Window IPR −3 dB bandwidth (broadening factor) 1.1822 
+Window IPR −18 dB bandwidth relative to −3 dB bandwidth 2.2087 
+Window SNR gain with respect to uniform weighting −0.914 dB 
+Window peak sidelobe level −35.1 dB 
+Window integrated sidelobe level (outside of first nulls) −27.1 dB 
+ 
+4.2 Relationship of Pixel Spacing to Resolution 
+Resolution, like other equivocal terms such as bandwidth, may be defined with any of a 
+number of different criteria, any of which is preferred in unique circumstances.  
+Nevertheless, a common definition is the width of the IPR at points −3 dB with respect to 
+the peak of the IPR.  We adopt this convention unless otherwise noted. 
+We illustrate some points about resolution and pixel spacing with the following 
+analogous development. 
+Consider a signal sampled at some frequency sf , with dataN  uniformly spaced samples.  
+The total time span of the samples is 
+⎟⎟
+⎠
+⎞
+⎜⎜
+⎝
+⎛=
+s
+data fNT 1 . (2) 
+The nominal frequency resolution of this data is often given by 
+data
+s
+f N
+f
+T == 1
+nominal,ρ . (3) 
+However, if an FFT were taken of this data, with no weighting or window function (i.e. 
+uniform weighting), then the −3 dB width of the IPR would be measured at 
+() () nominal,dBuniform,-3, 8845.018845.0 ff T ρρ == . (4) 

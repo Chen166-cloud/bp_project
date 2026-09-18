@@ -1,0 +1,481 @@
+PAGE 1
+First Comparative Analysis of Simulated Low and High Resolution
+Hydroterra and Conventional SAR Data
+Jens Fischera, Rolf Scheibera, Ralf Horna, and Julia Kubanekb
+aGerman Aerospace Center (DLR), Microwaves and Radar Institute, Wessling, Germany
+bEuropean Space Agency (ESA), ESTEC, Noordwijk, The Netherlands
+Abstract
+Hydroterra was a mission proposal considered as one of three concepts for ESA’s Earth Explorer 10 mission. Its concept
+is to place a Synthetic Aperture Radar (SAR) into a geosynchronous orbit to measure key processes of the diurnal water
+cycle over regions in Europe and Africa. The azimuth integration time is thereby substantially longer compared to
+conventional SAR systems and it is important to know to what extent this influences the retrieval of (i) snow water
+equivalent (SWE) and (ii) surface soil moisture (SSM) estimates extracted from these data. To study these effects,
+the DLR Microwaves and Radar Institute conducted airborne SAR campaigns, 2019 at Kaufbeuren (Germany), 2021
+at Wörgetal (Austria) and 2022 at Foggia (Italy). In this paper, we compare simulated Hydroterra (long integration)
+and conventional (short integration) SAR data acquired at Foggia. We analyze (i) image amplitude, (ii) image contrast
+and (iii) interferogram (coherency and phase) degradations due to temporal decorrelation on different vegetation periods
+(April and June) in low (Hydroterra specification) and in high (airborne SAR) resolution data, respectively.
+1 Introduction
+The Hydroterra mission, formerly Geosynchroneous
+Continental Land-Atmosphere Sensing System (G-
+CLASS) [1][2], was one of the three mission candidates
+(Daedalus, Hydroterra, Harmony) for the European Space
+Agency’s 10th Earth Explorer mission and recently ESA
+decided to move on to the next phase of development
+with Harmony [3]. The Hydroterra concept was to place
+a Synthetic Aperture Radar (SAR) system into a geosyn-
+chronous orbit to enable continuous monitoring of selected
+areas of interest over Europe and Africa. The mission
+focus is to monitor the diurnal water cycle which includes,
+amongst others, the retrieval of atmospheric water vapor,
+snow water equivalent (SWE) and surface soil moisture
+(SSM) estimates. The main characteristics of a geosyn-
+chronous SAR system is that long azimuth integration
+times arise which are required to generate image products
+with an azimuth resolution comparable to those obtained
+from low-Earth orbit (LEO) SAR missions. Long in-
+tegration times, on the other hand, introduce temporal
+decorrelation and therefore studies are needed to inves-
+tigate the effect of temporal decorrelation on Hydroterra
+data compared to conventional SAR data. The German
+Aerospace Center (DLR) Microwaves and Radar Institute
+(HR) conducted several airborne campaigns towards this
+goal using F-SAR, their airborne multi-frequency (P-, L-,
+S-, C-, X-band) fully polarimetric SAR system mounted
+on a Do-228 Dornier aircraft [4]. A first experiment took
+place 2019 at Kaufbeuren (Germany) [5][6][7], another
+one, dedicated to the retrieval of snow water equivalent
+(SWE), took place 2021 at Wörgetal [8][9][10] (Austria)
+and the latest one, dedicated to the retrieval of surface soil
+moisture (SSM) took place 2022 at Foggia, Italy. This
+paper reports on the analysis of simulated Hydroterra
+data, generated from F-SAR data, which were acquired
+2022 at Foggia for the purposes of investigating the effect
+of temporal decorrelation on the retrieval of surface soil
+moisture (SSM) estimates. Foggia with its many different
+agricultural areas is a site that is under intensive obser-
+vation for research purposes by the Consiglio Nazionale
+delle Richerche (CNR), Instituto per il Rilevamento
+Elettromagnetico dell’Ambiente (IREA). In this paper,
+we focus on the analysis of Single Look Complex (SLC)
+image and interferogram quality degradations due to
+temporal decorrelation. For that, it turned out to be helpful
+to have knowledge about crop types in the fields. We do
+not investigate impacts on the soil moisture retrieval in this
+paper, it will be done in a follow-on study. In Section 2,
+we describe the airborne SAR campaign near Foggia and
+the simulation data we created, Section 3 describes quality
+measures we use and in Section 4 we present first results,
+the most important outcomes so far, on the comparison of
+simulated Hydroterra SAR data compared to conventional
+SAR data.
+2 Foggia Airborne Campaign
+The F-SAR campaign at Foggia, southern Italy, took place
+from 28-29 April 2022 (mission 01) and from 15-16 June
+2022 (mission 02). In this way, we acquired data on dif-
+ferent vegetation periods. One of the goals is to investigate
+whether the crop height has an influence on the strength of
+the observed temporal decorrelation effects. We acquired
+data in C- and L-band, simultaneously. C-band is the band
+intended for the realization of Hydroterra and L-band data
+PAGE 2
+have been recorded for comparison in support of the up-
+coming ROSE-L mission. In this paper, we only report on
+C-band results (simulated Hydroterra data). Using F-SAR,
+DLR’s airborne SAR, we acquired C-band data with 384
+MHz bandwidth at 5.3 GHz center frequency. Every day
+(28-29 April, 15-16 June), we had a morning and an after-
+noon flight. The first three flights in each mission included
+approximately 12 repetitions (passes) per flight, imaging
+the same scenery (spatial extent) but with temporal base-
+lines of approximately ten minutes. They are used to create
+simulated Hydroterra products.
+2.1 Hydroterra Products
+The first three flights in each mission (April: FL01, FL02,
+FL03 and June: FL05, FL06, FL07) are dedicated to Hy-
+droterra. We created six simulated Hydroterra products
+from these flights according to the ESA scenario 4 require-
+ment [11][12] which is given in Table 1.
+Table 1 Hydroterra Product (scenario 4).
+Parameter Value
+SLC azimuth resolution 5 m
+ML azimuth resolution 50 m
+Number of looks in azimuth 10
+Range bandwidth 6 MHz
+SLC slant range resolution 22.2 m
+ML slant range resolution 22.2 m
+Number of looks in range 1
+Noise Equivalent Sigma Zero -21.1 dB
+Long azimuth times are simulated by coherently joining
+the individual bandwidths of up to 12 passes in each flight
+(see [5][6][7] for details), the resulting products are listed
+in Table 2.
+Table 2 Simulated Images & Interferograms.
+Mission Product Hydroterra Conventional
+April SLC 01 FL01 0104
+April SLC 02 FL02 0204
+April SLC 03 FL03 0304
+June SLC 05 FL05 0504
+June SLC 06 FL06 0604
+June SLC 07 FL07 0704
+April IF 01 FL01-FL02 0104-0204
+April IF 02 FL02-FL03 0204-0304
+April IF 03 FL01-FL03 0104-0304
+June IF 05 FL05-FL06 0504-0604
+June IF 06 FL06-FL07 0604-0704
+June IF 07 FL05-FL07 0504-0704
+The technique used to fuse image bandwidths (in azimuth)
+of individually acquired passes coherently (same spatial
+scene at different times) is the one used indistributed imag-
+ing [13,14].
+The respective conventional SAR products to which we
+compare Hydroterra products are created from only one
+pass in each flight, the first one (pass 04). We refer to these
+conventional SAR image products as 0104, 0204, 0304 (in
+April) and 0504, 0604, 0704 (in June), see Table 2. The
+quality of conventional SAR data, acquired by F-SAR, is
+given in Table 3, right column, where the NESZ varies as
+a function of off-nadir angle.
+Table 3 SLC Data Quality.
+Resolution Hydroterra Conventional
+Azimuth 5 m 0.5 m
+Slant Range 22 m 0.5 m
+NESZ -21 dB -25 to -40 dB
+Furthermore, we created interferograms of these images,
+see Table 2. Three images per mission (April and June)
+allowed to form three interferograms per mission. Interfer-
+ograms allow us to investigate the impact of long azimuth
+integration times on the observation of irrigation on fields,
+for example. See the results below (Section 4.3).
+2.2 Integration Time vs. Resolution
+Hydroterra SAR compared to conventional SAR data are
+characterized by two important differences, i.e., (i) long
+versus short azimuth integration times (Table 4, on conven-
+tional SAR data we have 2.5 sec in near and 4.6 sec in far
+range) and (ii) low versus high resolution (Table 3, on con-
+ventional SAR data we have 0.5 m in azimuth and 0.5 m in
+slant range). In order study these effects separately, we cre-
+ated an intermediate product, called GEO-SAR (geosyn-
+chronous SAR satellite system), with −21 dB NESZ, Hy-
+droterra SAR azimuth integration time and F-SAR resolu-
+tion. We refer to it as GEO (high resolution) compared to
+HT (low resolution), the Hydroterra SAR satellite.
+Table 4 Long vs. Short Azimuth Integration Times.
+Pass Hydroterra Conventional
+FL01 119.05 min 2.5 - 4.6 sec
+FL02 113.70 min 2.5 - 4.6 sec
+FL03 115.15 min 2.5 - 4.6 sec
+FL05 112.36 min 2.5 - 4.6 sec
+FL06 109.62 min 2.5 - 4.6 sec
+FL07 113.64 min 2.5 - 4.6 sec
+The two data qualities, GEO and HT (Hydroterra SAR),
+compared to F-SAR data allow us to study the effect of
+short and long azimuth integration times, decoupled from
+resolution. It turns out that the effect of long azimuth in-
+tegration times leads to a noticeable quality loss in GEO
+data compared to F-SAR data but this loss can barely be
+observed in HT data due to its low resolution, as will be
+described in Section 4.
+PAGE 3
+3 Quality Measures
+In order to compare Hydroterra SAR, GEO-SAR and
+F-SAR data on single-look-complex (SLC) images and in-
+terferograms we studied the degradation of (i) image am-
+plitudes, (ii) image contrasts and (ii) interferogram co-
+herencies, respectively. Image mean values are calculated
+by the formula
+µdB = 10 log 10( E(I 2) )
+where E is the expectation value (mean) on the image in-
+tensity I 2 and I is the single-look complex image. The
+contrast is defined to be the coefficient of variation of the
+image intensity, i.e. the ratio between the standard devia-
+tion σ and the mean µ of the image intensity [15,16]
+C =
+p
+E[(I 2 − E(I 2))2]
+E(I 2) = σ
+µ
+where σ =
+p
+E[(I 2 − E(I 2))2] =
+p
+V ar(I 2) is the stan-
+dard deviation and µ = E(I 2) the mean value of the image
+intensity. Contrast is a measure to assess the focusing qual-
+ity in images [15,16]. We calculate contrast values block-
+wise using a sliding window, image blocks are normalized
+with respect to their maximum value I = I/max(I) prior
+to contrast calculation and the block size is chosen with
+respect to the image resolution. This adaption is required
+because pixels in high-resolution data (GEO) are square-
+shaped ( 0.5 m x 0.5 m) and those in low-resolution data
+(HT) are non-squared (5 m x 22.2 m). We used a block size
+of 16x16 pixels in high-resolution data and a block size of
+32x8 pixels in low-resolution data. Furthermore, the co-
+herency between two SLC images is the absolute value
+γ = | E(I1 I ∗
+2 )|p
+E(I 2
+1 ) E(I 2
+2 )
+of the normalized interferogram of image I1 and I2, the
+symbol ∗ indicates complex conjugation. We either mea-
+sure amplitude, contrast or coherency degradations on en-
+tire images or on individual fields–whose crops are known.
+It required to geocode all images, i.e., the slant range ge-
+ometry is converted to geo-referenced data which allowed
+us to cut-out fields using their bounding polygons.
+4 Simulation Data Analysis
+We present results using the three quality measures (i) im-
+age amplitude (ii) image contrast and (iii) interferogram
+coherency. Due to the many possibilities to compare short
+vs. long integration integration times: 3 measures, 2 mis-
+sions (April vs. June), 2 resolutions (GEO vs. HT), 4 polar-
+izations (HH, HV , VV , VH), 50 fields (different crop types)
+we only present most important results in this paper.
+4.1 Impact on Image Contrast
+A loss of the focusing quality in Hydroterra data is ex-
+pected due to the long azimuth integration time for all ob-
+jects that move in any way, e.g., vegetation at windy condi-
+tions: the longer the vegetation the more sensible to wind.
+This can indeed be observed in our simulated data. First of
+all, we have a look at the entire scene and later we look at
+individual fields. The entire scene is depicted in Fig. 1 for
+high-resolution data (GEO) and inFig. 2 for low-resolution
+data (HT), long integration times on the right.
+Figure 1 Image contrast (0104 vs. FL01), short inte-
+gration (left) versus long integration (right) on high-
+resolution data (GEO), drops from 0.48 to 0.43.
+Figure 2 Image contrast (0104 vs. FL01), short integra-
+tion (left) versus long integration (right) on low-resolution
+data (HT), drops from 0.51 to 0.48.
+In high-resolution data (GEO), we observe a drop in the
+overall contrast from 0.48 to 0.43, by 0.05, and in low-
+resolution data (HT), this drop is from 0.51 to 0.48, by
+merely 0.03. The start values 0.48 and 0.51 differ be-
+cause different sliding window sizes had to be used (see
+Section 3). The trend observed here is typical for (sim-
+ulated) Hydroterra data. Let us now have a look at indi-
+vidual fields, see our C-band, high-resolution F-SAR im-
+age, taken in April, in Fig. 3 as an overview. Four exam-
+ple fields (horse bean, asparagus, tomato, maize) behave
+as shown in Fig. 4 and Fig. 5. It is typical for the image
+degradations being studied on simulated Hydroterra data.
+PAGE 4
+Figure 3 High-resolution F-SAR C-band image, taken in
+April (RGB=HH,HV ,VV). Crops at the CNR CREA site,
+Foggia, see Fig. 4 and Fig. 5 below for their behavior.
+Figure 4 Mean image contrast on a horse bean field (left)
+versus an asparagus field (right), from April to June,
+GEO-SAR (VV). Other polarizations look similar.
+Figure 5 Mean image contrast on a tomato field (left)
+versus a maize field (right), from April to June, GEO-
+SAR (VV). Other polarizations look similar.
+Because this is a typical behavior we observed, the con-
+clusion can be drawn that image degradations (defocusing)
+occur with crop heights due to the sensitivity to wind.
+4.2 Impact on Image Amplitudes
+Image amplitudes are almost unaffected by the length
+of azimuth integration times and this applies to high-
+resolution (GEO) and low-resolution (HT) data likewise. It
+can be observed in Fig. 6, for example, where the blue and
+red curve do not differ considerably. The diagrams show
+mean amplitude values for field "CREA-BS", depicted in
+Fig. 7 (GEO) and Fig. 8 (HT) from April (FL01, FL02,
+FL03) to June (FL05, FL06, FL07). This field is under in-
+tensive observation by CNR, CREA. One studies, amongst
+others, the influence of drip irrigation (see Section 4.3.2)
+on this field. It can be seen (Fig. 6) that differences in mean
+image amplitude values between short (blue) and long (red)
+integrations are barely noticeable. The blue and the red
+curve are nearly identical. If the resolution of the image is
+not adequate, as can be seen in Fig. 8 , then the effect of
+resolution surpasses the defocusing effect.
+The field "CREA-BS" is obviously too small to allow mon-
+itoring the field variability in Hydroterra data (scenario 4).
+Figure 6 Mean amplitudes (HH) of FL01-FL07 in high
+(GEO, left) and low resolution (HT, right) data.
+Figure 7 Amplitude image (HH) of FL01 (April, left) vs.
+FL05 (June, right) in high resolution (GEO-SAR). Their
+mean values are shown as red dots in Fig. 6 (left).
+Figure 8 Amplitude image (HH) of FL01 (April, left)
+vs. FL05 (June, right) in low resolution (HT-SAR). Their
+mean values are shown as red dots in Fig. 6 (right).
+Its size of about 120 m by 80 m (see the UTM coordinates
+in Fig. 8, grid size given in 20 m steps) is not large enough
+to obtain reliable data. One may recall ( Table 1), data in
+HT quality are resolved 5 [m] by 22.2 [m] in azimuth and
+range, respectively.
+4.3 Impact on Interferograms
+In this section, we study the impact of long azimuth inte-
+gration times on the formation of interferograms.
+4.3.1 Strip Irrigation
+F-SAR flights (April mission) took place on April 28 and
+29, 2022 and strip irrigation activities on monitored fields
+took place from April 23 to 29, 2022, i.e., such activ-
+ities should be visible in interferograms from one flight
+(FL01, April 28 morning) to another (FL02, April 28 af-
+ternoon) and from one day (FL01, April 28 morning) to
+another (FL03, April 29 morning). Indeed, Fig. 9 shows
+the irrigation activities (dark) in all three interferograms
+(left column), In contrast, there were no (known) irrigation
+activities (during the data takes) in June (right column).
+The mean values of all six images form the red curve in
+Fig. 10 (left). We do not show short-integration images
+PAGE 5
+(blue curve) as they look very similar (seeFig. 10) to those
+in Fig. 9 . In general, it turns out that interferograms are
+almost unaffected by long azimuth integrations
+Figure 9 Coherency (HH) on field "CA01-DW", Du-
+rum wheat with strip irrigation, FL01-FL02, FL02-FL03,
+FL03-FL01 on the left (April) and FL05-FL06, FL06-
+FL07, FL07-FL05 on the right (June), on GEO data.
+Figure 10 Mean coherency (HH), field "CA01-DW" with
+strip irrigation, high (GEO) vs. low (HT) resolution. The
+red curve corresponds to the six images in Fig. 9.
+except for a very small coherency increase (see Fig. 10 )
+which can be explained by the smoothing effect due to a
+defocusing in the images used to form the interferogram.
+4.3.2 Drip Irrigation
+We also investigated interferograms formed from data in
+which we strive to detect drip irrigation activities on se-
+lected fields. Drip irrigation activities took place from
+April 26 to 29, 2022, on field "CREA-BS". Fig. 11 shows
+some of these activities and its turns out that, as above, long
+azimuth integration times have no significant influence on
+the formation of interferograms ( Fig. 12 ). In contrast to
+this, resolution is important. As mentioned above (Sec-
+tion 4.2), field "CREA-BS" is too small to monitor field
+variability in simulated Hydroterra data (scenario 4), i.e.,
+the values in Fig. 12 (right) are not representative. As a
+result of that, the diagrams on the left and on the right in
+Fig. 12 differ considerably.
+Figure 11 Coherency (HH) on field "CREA-BS", bare
+soil drip irrigation, FL01-FL02, FL02-FL03, FL03-FL01
+on the left (April) and FL05-FL06, FL06-FL07, FL07-
+FL05 on the right (June), on GEO data.
+Figure 12 Mean coherency (HH), field "CREA-BS" with
+drip irrigation, high (GEO) vs. low (HT) resolution. The
+red curve corresponds to the six images in Fig. 11.
+In contrast, field "CA01-DW" is of sufficient size (see
+Fig. 9 (right), grid size given in 100 m steps), hence, the
+results given in Hydroterra quality, appear to be similar to
+those of high-resolution data, Fig. 10 (left vs. right).
+5 Conclusions
+We investigated simulated Hydroterra SAR data to clarify
+the question of how great the influence of long azimuth
+integration times is compared to data acquired with con-
+ventional SAR systems with much shorter azimuth inte-
+gration times. To decouple the effects of (i) long azimuth
+integration times and (ii) poorer resolution compared to F-
+SAR, we did this study on GEO-SAR (geosynchronous or-
+bit high-resolution SAR) and HT-SAR (Hydroterra SAR,
+PAGE 6
+scenario 4) data. We found that, as expected, long azimuth
+integration times deteriorate the data focusing on all parts
+of the image which are influenced by movement, e.g., veg-
+etation exposed to wind, and this loss of focusing qual-
+ity goes with the sensitivity to wind, i.e., depends on crop
+types for example. It confirms our previous studies where
+we noticed a defocusing on forest areas [5][6][7]. On im-
+age amplitudes or interferogram formation we found no
+significant impact of long azimuth integrations. The fu-
+ture work, with respect to this study, will be an intensive
+investigation of the interferogram phase and its usability
+for measuring the surface soil moisture (SSM). It is one of
+the actual goals of a future Hydroterra SAR mission.
+6 Acknowledgements
+This work was partially funded under ESA contract
+4000134680/21/NL/FF/an.
+7 Literature
+[1] Hobbs, S.E., Monti-Guarnieri, A.: Geosynchronous
+Continental Land-Atmosphere Sensing System (G-
+Class): Persistent Radar Imaging for Earth Science.
+IEEE International Geoscience and Remote Sensing
+Symposium (IGARSS), 22-27 July 2018, Valencia,
+Spain, pp. 8621-8624
+[2] Hobbs, S., Calvet, J.-C., Boni, G., Haagmans, R., Hal-
+loran, G., Hanssen, R., Kubanek, J. Mattia, F., Monti
+Guarnieri, A., Moreira, A., Nagler, T., Parodi, A.,
+Lopez-Sanchez, J.M., Wadge, G., Wagner W.: Hy-
+droterra: Exploring the Science of Rapid Water Cycle
+Processes Over Land ESA Living Planet Symposium,
+23-27 May 2022, Bonn, Germany
+[3] European Space Agency (ESA) website ESA
+moves forward with Harmony , https://www.
+esa.int/Applications/Observing_
+the_Earth/FutureEO/Preparing_for_
+tomorrow/ESA_moves_forward_with_
+Harmony accessed on 08 February 2024
+[4] Reigber, A., et al.: Very-High-Resolution Airborne
+Synthetic Aperture Radar Imaging: Signal Processing
+and Applications, Proceedings of the IEEE 101 (3),
+2012, pp. 759-783.
+[5] Gracheva, V ., Horn, R., Scheiber, R., Fischer, J.,
+Keller, M., Prats, P., Reigber, A., Moreira, A.: Hy-
+droterra’s Geosynchronous Image Product Simula-
+tion using Polarimetric Airborne SAR Data, ESA
+Advanced RF Sensors and Remote Sensing Instru-
+ments (ARSI), 11-13 November 2019, Noordwijk,
+The Netherlands.
+[6] Gracheva, V ., Prats, P., Scheiber, R., Horn, R., Keller,
+M., Fischer, J., Reigber, A., Moreira, A.: Simula-
+tion of Geosynchronous Hydroterra Image Products
+with Airborne SAR Data, Proceedings of EUSAR, 29
+March - 01 April 2021, pp. 581-586
+[7] Gracheva, V ., Scheiber, R., Prats, P., Horn, R., Keller,
+M., Fischer, Moreira, A., Kubanek, J., Haagmans,
+R.: Airborne SAR Experiment to Simulate Geosyn-
+chronous Hydroterra Data and Investigate the Detec-
+tion of Diurnal Changes, Proceedings of IGARSS, 12-
+16 July 2021, pp. 3285-3288
+[8] Nagler, T., Rott, H., Scheiblauer, S., Libert, L., Mölg,
+N., Horn, R., Fischer, J., Moreira,A., Kubanek, J.:
+Airborne Experiment on InSAR Snow Mass Retrieval
+in Alpine Environment IEEE International Geo-
+science and Remote Sensing Symposium (IGARSS),
+17-22 July 2022, Kuala Lumpur, Malaysia
+[9] Nagler, T., Rott, H., Scheiblauer, S., Mölg, N., Keuris,
+L., Horn, R., Fischer, J., Moreira, A., Kubanek, J.: A
+Field Campaign on InSAR Retrieval of Snow Mass in
+Alpine Terrain, 10th EARSeL Workshop on Land Ice
+and Snow, 06-08 February 2023, Bern, Switzerland
+[10] Nagler, T., Rott, H., Scheiblauer, S., Fischer, J.,
+Horn, R., Kubanek, J.: Experimental Studies on Dual
+Frequency InSAR Application for Snow Mass Mon-
+itoring, ESA FRINGE Workshop, 11-15 September
+2023, Leeds, United Kingdom
+[11] ESA 2020, Report for Assessment: Earth Explorer
+10 Candidate Mission Hydroterra, European Space
+Agency, Noordwijjk, The Netherlands,ESAEOPSM-
+HYDRO-RP-3379, [Online]. Available:
+https://esamultimedia.esa.int/docs/
+EarthObservation/EE10_Hydroterra_
+Report-for-Assessment-v1.0_
+13Nov2020.pdf, accessed 08 February 2024
+[12] Queiroz de Almeida, V ., Matar, J., Rodriguez Cas-
+sola, M., Moreira, A., Haagmans, R., Bensi, P., Petro-
+lati, D.: Orbit, Performance and Observation Scenar-
+ios for ESA’s Earth Explorer Mission Proposal Hy-
+droterra IEEE International Geoscience and Remote
+Sensing Symposium (IGARSS), 12-16 July 2021,
+Brussels, Belgium
+[13] Prats, Pau, et al. "Distributed Imaging with
+TerraSAR-X and TanDEM-X." 2011 IEEE Interna-
+tional Geoscience and Remote Sensing Symposium.
+IEEE, 2011. IEEE International Geoscience and Re-
+mote Sensing Symposium (IGARSS), 24-29 July
+2011, Vancouver, Canada, pp. 3963-3966
+[14] R. Scheiber, M. Keller, J. Fischer, C. Andreas, R.
+Horn, and I. Hajnsek, “Radar data processing, qual-
+ity analysis and level-1b product genera- tion for
+AGRISAR and EAGLE campaigns,” in AGRISAR
+and EAGLE Campaigns Final Workshop, Noordwijk,
+The Netherlands, Oct. 15–16, 2007
+[15] Curlander, J. C., McDonough, R. N.: Synthetic
+Aperture Radar: Systems and Signal Pro-cessing,
+John Wiley, New York, 1991, p. 647
+[16] Berizzi, Fabrizio, et al. "Autofocus of wide az-
+imuth angle SAR images by contrast optimisation."
+IGARSS’96. 1996 International Geoscience and Re-
+mote Sensing Symposium. V ol. 2. IEEE, 1996.

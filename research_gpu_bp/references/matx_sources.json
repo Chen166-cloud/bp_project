@@ -1,0 +1,29 @@
+[
+  {
+    "repository": "NVIDIA/MatX",
+    "commit": "a108745201415478e17fa72e9e328dc0514ae7fb",
+    "source_url": "https://raw.githubusercontent.com/NVIDIA/MatX/a108745201415478e17fa72e9e328dc0514ae7fb/include/matx/transforms/sar_bp.h",
+    "local_file": "MatX_include_matx_transforms_sar_bp.h",
+    "sha256": "0B957A3B053339F80B2B8B18934ED3176C3F39E5E13B0AF047742878620C30C7",
+    "license": "BSD-3-Clause",
+    "retrieved": "2026-09-17"
+  },
+  {
+    "repository": "NVIDIA/MatX",
+    "commit": "a108745201415478e17fa72e9e328dc0514ae7fb",
+    "source_url": "https://raw.githubusercontent.com/NVIDIA/MatX/a108745201415478e17fa72e9e328dc0514ae7fb/include/matx/operators/sar_bp.h",
+    "local_file": "MatX_include_matx_operators_sar_bp.h",
+    "sha256": "E90D6B8A5CE0FE8EDC9FD2716C1295AF578C8D891379F87A99CEA56F727E84E1",
+    "license": "BSD-3-Clause",
+    "retrieved": "2026-09-17"
+  },
+  {
+    "repository": "NVIDIA/MatX",
+    "commit": "a108745201415478e17fa72e9e328dc0514ae7fb",
+    "source_url": "https://raw.githubusercontent.com/NVIDIA/MatX/a108745201415478e17fa72e9e328dc0514ae7fb/include/matx/kernels/sar_bp.cuh",
+    "local_file": "MatX_include_matx_kernels_sar_bp.cuh",
+    "sha256": "F15A6D61CB8CE5D2B0B4F18C89102067C29FBD8BB8AC545F804DEA8816110671",
+    "license": "BSD-3-Clause",
+    "retrieved": "2026-09-17"
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "source_bytes": 1073741824,
+  "source_mtime_ns": 1534249486000000000,
+  "frames": 12757,
+  "samples": 20000,
+  "chirp_sign": -1,
+  "sample_rate_hz": 400000000.0,
+  "pulse_width_s": 1e-06,
+  "bandwidth_hz": 200000000.0,
+  "algorithm_version": 1
+}

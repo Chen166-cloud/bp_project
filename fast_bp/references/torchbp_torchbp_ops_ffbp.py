@@ -1,0 +1,1900 @@
+import math
+import torch
+import torch.nn.functional as F
+from torch import Tensor
+from typing import TYPE_CHECKING
+from warnings import warn
+from .afbp import afbp
+from .backproj import backprojection_polar_2d, _backprojection_polar_2d_illum, _backprojection_polar_2d_tx_power_accum, _tx_power_finish
+from .polar_interp import ffbp_merge2, ffbp_merge2_poly, ffbp_merge2_poly_weighted, ffbp_tx_power_merge2, compute_knab_poly_coefs_full, select_knab_poly_degree
+from ..util import center_pos
+from copy import deepcopy
+from ._utils import AntennaPattern, unpack_polar_grid, parse_interp_method, split_bounds
+from ..data import LazyData, materialize as _materialize
+
+__all__ = [
+    "compute_subaperture_illumination",
+    "ffbp",
+    "backprojection_polar_2d_tx_power_ffbp",
+]
+
+if TYPE_CHECKING:
+    from ..grid import PolarGrid
+
+# Recursion floor: stop splitting subapertures where the steady-state theta
+# guard band would exceed this fraction of the subaperture image (see the
+# min_core comment in _ffbp_impl). 1/3 measured fastest on CPU (order 6):
+# stricter fractions stop profitable splits (0.1 was 2.3x slower), while
+# unbounded splitting wastes ~25% on guard-dominated tiny subapertures.
+_GUARD_STOP_FRAC = 1.0 / 3.0
+
+
+def compute_subaperture_illumination(
+    pos: Tensor,
+    att: Tensor,
+    g: Tensor,
+    g_extent: list,
+    grid: "PolarGrid | dict",
+    decimation: int = 1,
+    dem: Tensor | None = None,
+) -> tuple[Tensor, Tensor]:
+    """
+    Compute illumination weight maps (sum of gains and sum of squared gains) for a subaperture.
+
+    This computes both W1 (sum of gains) and W2 (sum of squared gains) for each pixel,
+    which are used to correctly weight subaperture contributions during FFBP merge.
+
+    Needed for antenna pattern weighted FFBP.
+
+    Parameters
+    ----------
+    pos : Tensor
+        Platform positions for the subaperture. Shape: [nsweeps, 3].
+    att : Tensor
+        Antenna pointing for each sweep. Shape: [nsweeps, 3] with [roll, pitch, yaw].
+    g : Tensor
+        Antenna gain pattern. Shape: [g_nel, g_naz].
+    g_extent : list
+        Pattern extent: [g_el0, g_az0, g_el1, g_az1] in radians.
+    grid : PolarGrid or dict
+        Polar grid for output weight map.
+    decimation : int
+        Decimation factor for output (1 = full resolution, 4 = 1/16 size).
+    dem : Tensor or None
+        Digital elevation model sampled on the output polar grid extent,
+        shape [dem_nr, dem_ntheta]; may be coarser than the grid. The
+        elevation look angle then references the pixel at the DEM height,
+        matching ``backprojection_polar_2d`` with the same ``dem``.
+
+    Returns
+    -------
+    tuple[Tensor, Tensor]
+        (w1_map, w2_map) where:
+        - w1_map: Sum of gains. Shape: [nr // decimation, ntheta // decimation].
+        - w2_map: Sum of squared gains. Shape: [nr // decimation, ntheta // decimation].
+    """
+    r0, r1, theta0, theta1, nr, ntheta, dr, dtheta = unpack_polar_grid(grid)
+    antenna = AntennaPattern(g, g_extent)
+    args = antenna.to_cpp_args()[:-2]
+
+    return torch.ops.torchbp.compute_illumination.default(
+        pos, att, *args,
+        r0, dr, theta0, dtheta,
+        nr, ntheta, decimation, dem
+    )
+
+
+def _illumination_pulse_decimated(
+    pos: Tensor,
+    att: Tensor,
+    g: Tensor,
+    g_extent: list,
+    grid: dict,
+    decimation: int,
+    pulse_decimation: int,
+    dem: Tensor | None = None,
+) -> tuple[Tensor, Tensor]:
+    """Illumination moment maps from a ``1/pulse_decimation`` subset of the
+    pulses, scaled back to the full pulse count.
+
+    The maps are sums of per-pulse antenna footprints that move only
+    slowly from pulse to pulse (yaw rate and parallax), so sampling the
+    pulses is accurate while the full map resolution is kept. Coarsening
+    the map grid instead is not safe: the footprint has sharp boundaries
+    (the gain lookup cuts to exactly zero at the pattern table extent, and
+    the polar domain fold at |theta| >= 1 puts guard cells outside it)
+    which map-domain interpolation would smear over a coarsened cell,
+    visibly dimming the scene edges. Used by the afbp base level, which
+    stands in for log2(nsub) recursion levels whose per-node illumination
+    would have cost 1/nsub as much; pulse decimation recovers the same
+    total cost with none of the resolution loss.
+    """
+    n = pos.shape[0]
+    k = max(1, min(int(pulse_decimation), n))
+    # Keep a minimum number of pulses so that footprint motion over the
+    # aperture (yaw oscillation, parallax) stays well sampled.
+    m = max(-(-n // k), min(n, 32))
+    if m < n:
+        idx = torch.linspace(0, n - 1, m, device=pos.device).round().long()
+        pos = pos[idx]
+        att = att[idx] if att is not None else None
+    w1, w2 = compute_subaperture_illumination(
+        pos, att, g, g_extent, grid, decimation=decimation, dem=dem)
+    if m < n:
+        w1 = w1 * (n / m)
+        w2 = w2 * (n / m)
+    return w1, w2
+
+
+def _weighted_normalize(
+    A: Tensor,
+    w1: Tensor,
+    w2: Tensor,
+    eps: float | None = None,
+    rel_floor: float = 1e-3,
+    dec: int | None = None,
+) -> Tensor:
+    """
+    Regularized (Wiener) normalization of antenna-pattern-weighted FFBP.
+
+    The weighted merge accumulates, per pixel, the gain-weighted sum
+    ``A = Sum_i g_i d_i`` and the illumination moments ``W1 = Sum_i g_i`` and
+    ``W2 = Sum_i g_i^2`` (``g_i`` is the amplitude antenna gain toward the pixel on
+    pulse ``i``). The SNR-optimal image is the matched filter ``A / W2`` rescaled
+    by ``W1`` to unweighted-backprojection brightness, i.e. ``A * W1 / W2``.
+
+    That divides by the illumination power ``W2``, which underflows to zero at
+    swath edges / antenna nulls, so a single low-gain sample blows a pixel up.
+    Regularizing the divisor fixes it::
+
+        img = A * W1 / (W2 + lambda)
+
+    ``W2 >> lambda`` (every illuminated target) recovers the matched filter
+    unchanged; ``W2 <~ lambda`` rolls off to zero instead of amplifying noise. The
+    value of ``lambda`` is not critical. It only sets how far below the signal
+    the weakly-illuminated residual sits, so by default it is a small fraction
+    ``rel_floor`` of the peak illumination power ``W2_max``.
+
+    ``A`` is modified in place and returned. The normalization is applied in
+    row chunks so that decimated weight maps are never materialized at full
+    image resolution (memory saving is the reason to decimate them in the
+    first place). Decimated maps are interpolated at the kernels' sample
+    positions ``dec * i`` (not cell centers). Pass the actual map decimation
+    as ``dec``: inferring it from the shapes alone is ambiguous (several
+    decimations can share one ``ceil(n / dec)``), which would shift the
+    interpolation positions. If None it is inferred as ``ceil(n / n_w)``.
+    """
+    # Linear interpolation cannot exceed the sample max, so the decimated
+    # max equals the upsampled max.
+    w2max = float(w2.max())
+    if w2max <= 0.0:
+        # nothing illuminated. A = 0
+        return A
+    lam = max(float(eps) ** 2 if eps is not None else 0.0, rel_floor * w2max)
+
+    nr, ntheta = A.shape[-2], A.shape[-1]
+    nr_w, ntheta_w = w1.shape[-2], w1.shape[-1]
+    full_res = nr_w == nr and ntheta_w == ntheta
+    if dec is not None:
+        dec_r = dec
+        dec_t = dec
+    else:
+        dec_r = -(-nr // nr_w)      # ceil, inverse of out = ceil(n / dec)
+        dec_t = -(-ntheta // ntheta_w)
+
+    if not full_res:
+        # Theta-axis sample positions, shared by all chunks.
+        xt = torch.arange(ntheta, device=A.device, dtype=torch.float32) / dec_t
+        t0 = xt.long().clamp(max=ntheta_w - 1)
+        t1 = torch.clamp(t0 + 1, max=ntheta_w - 1)
+        ft = (xt - t0.to(xt.dtype))[None, :]
+        w1 = w1.float()
+        w2 = w2.float()
+
+    # Bound the temporaries to ~chunk * ntheta floats.
+    chunk = max(1, 8_000_000 // ntheta)
+    for rs in range(0, nr, chunk):
+        re = min(rs + chunk, nr)
+        if full_res:
+            # w1c/w2c are views; don't modify them in place.
+            w1c = w1[..., rs:re, :]
+            w2c = w2[..., rs:re, :]
+            A[..., rs:re, :] *= w1c / (w2c + lam)
+        else:
+            xr = torch.arange(rs, re, device=A.device, dtype=torch.float32) / dec_r
+            r0 = xr.long().clamp(max=nr_w - 1)
+            r1 = torch.clamp(r0 + 1, max=nr_w - 1)
+            fr = (xr - r0.to(xr.dtype))[:, None]
+
+            def up(w):
+                rows = w.index_select(-2, r0).lerp_(w.index_select(-2, r1), fr)
+                return rows.index_select(-1, t0).lerp_(rows.index_select(-1, t1), ft)
+
+            w1c = up(w1)
+            w2c = up(w2)
+            w2c += lam
+            w1c /= w2c
+            A[..., rs:re, :] *= w1c
+    return A
+
+
+def ffbp(
+    data: Tensor | LazyData,
+    grid: "PolarGrid | dict",
+    fc: float,
+    r_res: float,
+    pos: Tensor,
+    stages: int,
+    divisions: int = 2,
+    d0: float = 0.0,
+    interp_method: tuple = ("knab", 6, 1.5),
+    data_interp_method: "str | tuple" = "linear",
+    oversample_r: float = 1.4,
+    oversample_theta: float = 1.4,
+    grid_oversample: float = 1,
+    dealias: bool = False,
+    data_fmod: float = 0,
+    alias_fmod: float = None,
+    use_poly: bool = True,
+    att: Tensor | None = None,
+    g: Tensor | None = None,
+    g_extent: list | None = None,
+    weight_map_downsample: int = 1,
+    weight_eps: float | None = None,
+    afbp_nsub: int = 1,
+    guard_max_ratio: float = 0.125,
+    dem: Tensor | None = None,
+    antenna_leaf_gain: str = "pulse",
+    nearfield: bool = True,
+    dtype: torch.dtype = torch.complex64,
+    internal_dtype: torch.dtype | None = None,
+) -> Tensor:
+    """
+    Fast factorized backprojection.
+
+    Parameters
+    ----------
+    data : Tensor or LazyData
+        Range compressed input data. Shape should be [nsweeps, samples].
+        A :class:`torchbp.data.LazyData` source is sliced lazily down the
+        recursion tree and materialized one leaf subaperture at a time, so
+        data much larger than memory can be processed; peak data residency
+        is one leaf's pulses. No gradient flows to the data through a lazy
+        source.
+    grid : PolarGrid or dict
+        Polar grid definition. Can be:
+
+        - PolarGrid object (recommended): ``PolarGrid(r_range=(50, 100), theta_range=(-1, 1), nr=200, ntheta=400)``
+        - dict (legacy): ``{"r": (r0, r1), "theta": (theta0, theta1), "nr": nr, "ntheta": ntheta}``
+
+        where ``theta`` represents sin of angle (-1, 1 for 180 degree view).
+    fc : float
+        RF center frequency in Hz.
+    r_res : float
+        Range bin resolution in data (meters).
+        For FMCW radar: c/(2*bw*oversample), where c is speed of light, bw is sweep bandwidth,
+        and oversample is FFT oversampling factor.
+    pos : Tensor
+        Position of the platform at each data point. Shape should be [nsweeps, 3].
+        Batched input is not supported. The output grid is referenced to the
+        coordinate frame origin like :func:`backprojection_polar_2d`: a
+        nonzero mean of the positions is honored, not re-centered away
+        (internal subaperture frames are centered, but the final merge lands
+        back on the input frame).
+    stages : int
+        Number of recursions. This is an upper bound: the recursion also
+        stops early where a further split would make the subaperture grids
+        guard band dominated (guard above ~1/3 of the subaperture image,
+        reached when the subaperture core drops below ~8 * (order/2 + 2)
+        theta bins), where deeper splitting costs more in guard columns
+        than it saves in backprojection. Large values are therefore safe.
+    divisions : int
+        Number of subapertures divisions per stage. Default is 2.
+
+        Subaperture grids at every level include an automatically sized
+        theta guard band so that the merge interpolation has full window
+        support at the scene theta edges. The guard band can extend past
+        |theta| = 1 (e.g. with a full 180 degree scene), where the
+        backprojection and merge kernels evaluate the smooth continuation
+        of the azimuth signal past the fold, so edge accuracy does not
+        depend on the subaperture size.
+    d0 : float
+        Zero range correction.
+    interp_method : tuple
+        Interpolation method of the polar-image merges: ("knab", order,
+        oversample) where order is the number of samples used and oversample
+        is the oversampling factor of the internal polar grids
+        (``oversample_r``/``oversample_theta``).
+    data_interp_method : str or tuple
+        Range interpolation method of the range-compressed data in the base
+        level backprojections, see :func:`backprojection_polar_2d`. Its
+        oversample is the range FFT oversampling of the data, which is
+        unrelated to the grid oversampling of ``interp_method``. The base
+        level is where range interpolation error enters the merge tree, so
+        a short ("knab", order, oversample) kernel here removes the range
+        aliasing of insufficiently smooth data at a small cost relative to
+        the merges. Default is "linear" (the previous behavior).
+    oversample_r : float
+        Internally oversample range by this amount to avoid aliasing.
+    oversample_theta : float
+        Internally oversample theta by this amount to avoid aliasing.
+    grid_oversample : float
+        Oversample ratio of the output grid. Used only for calculating the
+        alias_fmod when alias_fmod is None. 1 for critically sampled grid, 2 for
+        twice oversampled grid, etc.
+    dealias : bool
+        If True removes the range spectrum aliasing. Equivalent to applying
+        `torchbp.util.bp_polar_range_dealias` on the SAR image.
+        Default is False.
+    data_fmod : float
+        Range modulation frequency applied to input data.
+    alias_fmod : float or None
+        Range modulation frequency applied to SAR image.
+        If None, the alias frequency is calculated automatically assuming
+        that the image spectrum is at positive frequencies. grid_oversample
+        should be given when automatic calculation is used.
+
+        Note that when `dealias` is True and the `alias_fmod` is calculated
+        automatically, the output will not have `alias_fmod` modulation and
+        `alias_fmod` is used only internally to decrease interpolation errors.
+    use_poly: bool
+        Use polynomial approximation for interpolation.
+    att : Tensor or None
+        Antenna pointing for each sweep. Shape: [nsweeps, 3] with [roll, pitch, yaw].
+        Required when g is provided for antenna pattern weighting.
+    g : Tensor or None
+        Antenna gain pattern. Shape: [g_nel, g_naz].
+        When provided, applies SNR-optimal weighted combination of subapertures.
+    g_extent : list or None
+        Antenna pattern extent: [g_el0, g_az0, g_el1, g_az1] in radians.
+        Required when g is provided.
+    weight_map_downsample : int
+        Downsample factor for weight maps relative to image grid. Default 1.
+        Lower values give more accurate weights but use more memory.
+        Higher values reduce memory use and is faster to calculate, but
+        increases error especially if the antenna pattern is not wide.
+    weight_eps : float or None
+        Regularization for the antenna-pattern (Wiener) normalization
+        ``img = A*W1/(W2 + weight_eps**2)``, in units of square-root illumination
+        power. See :func:`_weighted_normalize`. If None (default) a small fixed
+        fraction of the peak illumination power is used, which keeps illuminated
+        pixels at the matched-filter value and only suppresses weakly illuminated
+        ones. Exact value should not be critical.
+        Ignored when no antenna pattern is given.
+    afbp_nsub : int
+        If greater than 1, compute the base level subaperture images with
+        :func:`afbp` using this many sub-subapertures instead of direct
+        backprojection, which reduces the base level cost roughly
+        ``afbp_nsub`` times. This does not change the image accuracy,
+        which stays dominated by the merge interpolation error; the gain
+        is that ``stages`` can be reduced by about ``log2(afbp_nsub)``
+        merge levels at constant total cost, which does reduce the error.
+        With an antenna pattern the base illumination maps are computed
+        from a ``1/afbp_nsub`` subset of the pulses (see
+        :func:`_illumination_pulse_decimated`), so their cost also drops
+        ``afbp_nsub`` times instead of dominating the base level, at full
+        map resolution. With a DEM the afbp fusion adds a small localized
+        amplitude error at bright targets on strong theta terrain slopes
+        (see the ``dem`` note of :func:`afbp`); use direct backprojection
+        base level when peak amplitude accuracy on steep terrain matters.
+        Default is 1 (direct backprojection).
+    guard_max_ratio : float
+        Cap of the automatic theta guard band width, per side, as a
+        fraction of the subaperture grid core theta bins (a minimum of a
+        few interpolation windows is always kept). The guard band adds
+        this fraction to every image in the merge tree, so it bounds the
+        memory overhead to ``1 + 2 * guard_max_ratio``. When the
+        subaperture origin offsets are comparable to the near range, full
+        interpolation support at the scene theta edges can require a guard
+        wider than the cap; a warning is emitted and edge accuracy at near
+        range degrades gracefully instead of exhausting memory. Increase
+        for full edge accuracy at more memory, decrease (0 gives the
+        minimum window support) for less memory. Default is 0.125.
+    dem : Tensor or None
+        Digital elevation model sampled on the scene polar grid. Shape
+        [dem_nr, dem_ntheta], covering the same r and theta extent as
+        `grid`; may be coarser than the image grid. Values are pixel z
+        coordinates in the same frame as `pos`. Resampled internally onto
+        every subaperture and merge grid; base images use the DEM-referenced
+        dealias carrier so the merge interpolation sees a terrain-free
+        residual. The output matches
+        ``backprojection_polar_2d(..., dem=dem)`` with the same ``dealias``
+        (with a DEM the dealias carrier is always DEM-referenced). With an
+        antenna pattern both the per-pulse gain weighting and the W1/W2
+        illumination normalization maps reference the DEM look angles.
+    antenna_leaf_gain : str
+        Granularity of the antenna gain weighting at the base level
+        subaperture backprojections (ignored without an antenna pattern):
+
+        - "pulse" (default): exact per-pulse gain toward each pixel inside
+          the backprojection kernel.
+        - "subaperture": approximate the gain as constant over each base
+          subaperture: the leaves run the plain (unweighted) backprojection
+          and are multiplied by a per-pixel mean gain map computed from a
+          few sampled pulses, with the W1/W2 moments taken consistently as
+          ``n*w`` and ``n*w**2``. The merges still weight the subapertures
+          against each other exactly, so this only freezes the gain
+          variation *within* one leaf: the approximation error scales with
+          how much the antenna footprint moves (platform motion, yaw
+          oscillation) over one leaf subaperture, so it is accurate for
+          short leaves (enough ``stages``) and fast agile-beam data should
+          keep "pulse" — except with an afbp base level (``afbp_nsub >
+          1``) on a scene that reaches the beam edges, where "pulse" has
+          two failure modes. A gain table that ends inside the scene
+          theta extent (e.g. full ``|theta| <= 1`` grids) puts a hard
+          cutoff step into the subaperture images, which the afbp
+          wavenumber fusion cannot represent — the accumulation dims and
+          smears around the cutoff while the illumination maps stay
+          exact, so the Wiener normalization cannot recover it (afbp
+          warns). And more generally per-pulse gain bakes the gain
+          envelope into the fused signal, so the fusion's spectral
+          leakage lands at full amplitude in weakly illuminated theta
+          zones, where the Wiener normalization then amplifies it.
+          "subaperture" avoids both: the plain fused image is multiplied
+          by the gain map afterwards, which attenuates any fusion leakage
+          by exactly the factor the normalization later divides by. Its
+          own error is the frozen gain over one leaf — with platform yaw
+          and the long leaves of a shallow afbp configuration it
+          concentrates at the beam edges: keep enough ``stages`` for the
+          yaw rate and roll a hard pattern table edge off smoothly
+          (:func:`torchbp.util.taper_antenna_pattern`) — the sweep of a
+          hard edge across the beam-edge pixels is not representable by
+          any frozen gain.
+    nearfield : bool
+        Enable the automatic near-field handling (default True). Where the
+        top merge subaperture images cannot be interpolated cleanly (the
+        aperture-induced range-spectrum spread at close range exceeds the
+        sampling margin), the top of the merge tree is split deeper and the
+        affected rows are re-assembled directly from the small-aperture
+        children onto the output grid.
+    dtype : torch.dtype
+        Dtype of the returned image: ``torch.complex64`` (default) or
+        ``torch.complex32``. complex32 halves the output image memory;
+        the merge computation and, with an antenna pattern, the W1/W2
+        illumination maps and the Wiener normalization arithmetic stay
+        fp32, so only the final store (and the near-field band partial
+        sums) quantize to half. Requires the polynomial merge kernel and
+        the fp16-range scaling like ``internal_dtype=torch.complex32``,
+        whose default it also sets (``internal_dtype`` of None follows
+        ``dtype``).
+    internal_dtype : torch.dtype or None
+        Storage dtype of the merge tree intermediates. None (default) follows
+        ``dtype``.  ``torch.complex32`` stores the intermediates in half
+        precision, which roughly halves the image memory of the tree while all
+        kernel computation, the W1/W2 illumination maps and the final image (at
+        the default ``dtype``) stay fp32, the quantization error is typically
+        below the merge interpolation error. Requires the polynomial merge
+        kernel (``use_poly`` with interpolation order <= 8). Like complex32 raw
+        data, the intermediate magnitudes must fit the fp16 range (max 65504):
+        the tree accumulates coherently to roughly nsweeps times the per-pulse
+        contribution at the top level, so scale the input data accordingly.
+
+    Returns
+    -------
+    img : Tensor
+        SAR image.
+    """
+    # Convert Grid object to dict for backward compatibility
+    if hasattr(grid, 'to_dict'):
+        grid = grid.to_dict()
+
+    nsweeps = data.shape[0]
+
+    output_alias = alias_fmod is not None
+    if alias_fmod is None:
+        if grid_oversample < 1:
+            warn(f"Grid is undersampled. grid_oversample={grid_oversample}")
+        im_margin = max(0, grid_oversample * oversample_r - 1)
+        alias_fmod = -torch.pi * (1 - im_margin / (1 + im_margin))
+
+    # Only knab is supported for the merges
+    interp_method = parse_interp_method(interp_method, allowed=("knab",))
+    data_interp_method = parse_interp_method(
+        data_interp_method, name="data_interp_method")
+
+    knab_order = interp_method[1]
+    knab_oversample = interp_method[2]
+
+    # Precompute polynomial coefficients once for all merge operations
+    poly_degree = select_knab_poly_degree(knab_oversample, knab_order)
+    poly_coefs = compute_knab_poly_coefs_full(knab_order, knab_oversample, poly_degree)
+
+    # Validate antenna pattern parameters
+    use_antenna_pattern = g is not None
+    if use_antenna_pattern:
+        if att is None:
+            raise ValueError("att must be provided when antenna pattern g is specified")
+        if g_extent is None:
+            raise ValueError("g_extent must be provided when antenna pattern g is specified")
+        if att.shape[0] != nsweeps:
+            raise ValueError(f"att must have {nsweeps} sweeps, got {att.shape[0]}")
+    if antenna_leaf_gain not in ("pulse", "subaperture"):
+        raise ValueError(f"antenna_leaf_gain must be 'pulse' or 'subaperture', "
+                         f"got {antenna_leaf_gain!r}")
+
+    if dtype not in (torch.complex64, torch.complex32):
+        raise ValueError(
+            f"dtype must be torch.complex64 or torch.complex32, got {dtype}")
+    if internal_dtype is None:
+        internal_dtype = dtype
+    if internal_dtype not in (torch.complex64, torch.complex32):
+        raise ValueError(
+            f"internal_dtype must be torch.complex64 or torch.complex32, "
+            f"got {internal_dtype}")
+    if (torch.complex32 in (dtype, internal_dtype)
+            and (not use_poly or knab_order > 8)):
+        raise ValueError(
+            "complex32 storage (dtype or internal_dtype) requires the "
+            "polynomial merge kernel: use_poly=True and interpolation "
+            "order <= 8")
+
+    if afbp_nsub > 1 and nsweeps >= 2:
+        # Definite no-op detection. The polar leaf grids inherit the full
+        # scene theta extent (decimated in columns only), so when the
+        # scene alpha extent alone exceeds the grating clearance of the
+        # pulse sampling, afbp falls back to direct backprojection at
+        # every leaf (see :func:`afbp`); afbp_nsub then has no effect on
+        # the output. The per-leaf afbp warning is easy to miss in a long
+        # run, so predict it loudly here.
+        from .afbp import _GRATING_FILL
+        theta0_s, theta1_s = grid["theta"]
+        r0_s, r1_s = grid["r"]
+        dr_s = (r1_s - r0_s) / grid["nr"]
+        krc = 4.0 * math.pi * fc / 299792458.0 - data_fmod / r_res
+        kr_max = abs(krc) + min(math.pi / dr_s, math.pi / r_res)
+        pos_y = pos[:, 1].double()
+        dp = float((pos_y[1:] - pos_y[:-1]).abs().max())
+        z0_s = float(pos[:, 2].double().mean())
+        r_mid = 0.5 * (r0_s + r1_s)
+        fac = r_mid / math.sqrt(r_mid ** 2 + z0_s ** 2)
+        alpha_g = 2.0 * math.pi / (kr_max * max(dp, 1e-12) * fac)
+        if theta1_s - theta0_s > _GRATING_FILL * alpha_g:
+            warn(f"ffbp: afbp_nsub={afbp_nsub} has no effect: the scene "
+                 f"theta extent ({theta1_s - theta0_s:.2f}) exceeds the "
+                 f"grating replica clearance of the pulse sampling "
+                 f"({_GRATING_FILL * alpha_g:.2f}), so the afbp base "
+                 f"level falls back to direct backprojection at every "
+                 f"subaperture; proceeding with afbp_nsub=1. afbp_nsub "
+                 f"only pays off with a narrower theta extent or denser "
+                 f"pulse spacing; use more stages instead on this grid.")
+            # Normalizing to 1 keeps the rest of the call consistent with
+            # what the fallback would produce anyway: the base level uses
+            # the exact direct paths (fused illumination on CPU, full
+            # pulse count in the "pulse"-mode maps instead of the
+            # 1/afbp_nsub subset that assumed an active afbp base) and
+            # skips the per-leaf fallback overhead.
+            afbp_nsub = 1
+
+    if dem is not None:
+        if dem.ndim != 2:
+            raise ValueError(f"dem must be a 2D [dem_nr, dem_ntheta] tensor, got shape {dem.shape}")
+        if dem.dtype != torch.float32:
+            raise ValueError(f"dem must be float32, got {dem.dtype}")
+        if (dem.device.type, dem.device.index or 0) != (data.device.type, data.device.index or 0):
+            raise ValueError(f"dem must be on the same device as data ({data.device}), got {dem.device}")
+
+    if nsweeps < divisions:
+        # Too few sweeps to split into subapertures
+        return backprojection_polar_2d(
+            data, grid, fc, r_res, pos, d0=d0,
+            dealias=dealias,
+            data_fmod=data_fmod,
+            alias_fmod=alias_fmod if (output_alias and dealias) else 0.0,
+            att=att, g=g, g_extent=g_extent, dem=dem,
+            interp_method=data_interp_method,
+        )[0].to(dtype)
+
+    # Worst (needed / cap) guard shortfall over the whole merge tree,
+    # collected during the recursion so that a capped guard warns once per
+    # call instead of once per tree node.
+    guard_shortfall = [0.0, 0, 0]
+    result = _ffbp_impl(
+        data, grid, fc, r_res, pos, stages, divisions, d0, interp_method,
+        oversample_r, oversample_theta, dealias, data_fmod, alias_fmod,
+        output_alias, use_poly, poly_coefs,
+        att, g, g_extent, weight_map_downsample,
+        is_top_level=True,
+        afbp_nsub=afbp_nsub,
+        guard_max_ratio=guard_max_ratio,
+        guard_shortfall=guard_shortfall,
+        dem=dem,
+        dem_grid=grid,
+        data_interp_method=data_interp_method,
+        antenna_leaf_gain=antenna_leaf_gain,
+        nearfield=nearfield,
+        internal_dtype=internal_dtype,
+        output_dtype=dtype,
+    )
+    # A small shortfall only truncates the window support of guard bins,
+    # whose error reaches the scene attenuated by the interpolation kernel
+    # tails; warn when a large part of the support is missing.
+    if guard_shortfall[0] > 2.0:
+        warn(f"ffbp: theta guard band capped at {guard_shortfall[2]} bins "
+             f"({guard_shortfall[1]} needed for full interpolation support "
+             f"at the near range edge). Edge accuracy at near range may be "
+             f"reduced; increase guard_max_ratio (more memory) if it "
+             f"matters.")
+    # _ffbp_impl returns (img, w1_map, w2_map, weight_grid)
+    # Without an antenna pattern the image is already normalized
+    # With it the Wiener normalization is applied here
+    img = result[0]
+    if use_antenna_pattern:
+        img = _weighted_normalize(img, result[1], result[2], eps=weight_eps,
+                                  dec=weight_map_downsample)
+    return img
+
+
+def _dem_on_node_grid(
+    dem: Tensor,
+    dem_grid: dict,
+    node_grid: dict,
+    off_xy: Tensor,
+    theta_psi_out: bool = False,
+) -> Tensor:
+    """Resample the top-level polar-grid DEM onto a tree node's polar grid.
+
+    The node grid is centered at an origin offset by ``off_xy`` (cumulative
+    over the recursion) from the top-level frame that ``dem`` is defined in
+    (extent from ``dem_grid``). The output resolution keeps the top DEM's
+    cell size, so a downsampled input stays downsampled. Points outside the
+    top DEM extent take the border value; guard band points |theta| > 1
+    sample at the clamped-cosine ground position like the kernels.
+
+    ``dem`` can be [dem_nr, dem_ntheta] or a multi-channel
+    [C, dem_nr, dem_ntheta] stack (the tx_power (z, dz/dx, dz/dy) stack;
+    the slope channels are Cartesian and translation invariant, so plain
+    offset resampling is exact up to interpolation). With ``theta_psi_out``
+    the node grid theta extents are in psi radians (tx_power subaperture
+    grids) and the output is sampled uniformly in psi.
+    """
+    device = dem.device
+    dem_nr, dem_ntheta = dem.shape[-2:]
+    top_r0, top_r1 = dem_grid["r"]
+    top_t0, top_t1 = dem_grid["theta"]
+    dem_dr = (top_r1 - top_r0) / dem_nr
+    dem_dt = (top_t1 - top_t0) / dem_ntheta
+
+    node_r0, node_r1 = node_grid["r"]
+    node_t0, node_t1 = node_grid["theta"]
+    out_nr = max(2, round((node_r1 - node_r0) / dem_dr))
+    out_nt = max(2, round((node_t1 - node_t0) / dem_dt))
+
+    r = node_r0 + (node_r1 - node_r0) / out_nr * torch.arange(
+        out_nr, device=device, dtype=torch.float32)
+    t = node_t0 + (node_t1 - node_t0) / out_nt * torch.arange(
+        out_nt, device=device, dtype=torch.float32)
+    if theta_psi_out:
+        sin_t = torch.sin(t)
+        cos_t = torch.cos(t)
+    else:
+        sin_t = t
+        cos_t = torch.sqrt(torch.clamp(1.0 - sin_t * sin_t, min=0.0))
+    x = r[:, None] * cos_t[None, :] + off_xy[0]
+    y = r[:, None] * sin_t[None, :] + off_xy[1]
+    rt = torch.sqrt(x * x + y * y)
+    tt = y / torch.clamp(rt, min=1e-9)
+
+    # Fractional index into the top DEM (cell start convention), normalized
+    # for grid_sample with align_corners=True.
+    fi = (rt - top_r0) / dem_dr
+    fj = (tt - top_t0) / dem_dt
+    gy = 2.0 * fi / (dem_nr - 1) - 1.0
+    gx = 2.0 * fj / (dem_ntheta - 1) - 1.0
+    coords = torch.stack([gx, gy], dim=-1)[None]
+    inp = dem[None, None] if dem.dim() == 2 else dem[None]
+    out = F.grid_sample(
+        inp, coords, mode="bilinear",
+        padding_mode="border", align_corners=True)[0]
+    return (out[0] if dem.dim() == 2 else out).contiguous()
+
+
+def _subaperture_gain_apply(
+    img: Tensor,
+    pos: Tensor,
+    att: Tensor,
+    g: Tensor,
+    g_extent: list,
+    grid: dict,
+    dem: Tensor | None,
+) -> tuple[Tensor, Tensor, Tensor]:
+    """Constant-gain-per-leaf approximation for a plain (unweighted) base
+    image: the mean gain map wbar (sampled from a few pulses, the same
+    slow-footprint argument as :func:`_illumination_pulse_decimated`)
+    multiplies the image: A = wbar * sum(s). The moments are taken
+    consistently with that model (W1 = n*wbar, W2 = n*wbar**2), so a truly
+    constant gain recovers the exact weighted result; the error is the
+    gain variation over one leaf. ``img`` is the batched [1, nr, ntheta]
+    plain accumulation; returns (img, w1_full, w2_full)."""
+    n_p = pos.shape[0]
+    m = min(n_p, 8)
+    if m < n_p:
+        pidx = torch.linspace(
+            0, n_p - 1, m, device=pos.device).round().long()
+        pos_g = pos[pidx]
+        att_g = att[pidx]
+    else:
+        pos_g = pos
+        att_g = att
+    w1_full, _ = compute_subaperture_illumination(
+        pos_g, att_g, g, g_extent, grid, decimation=1, dem=dem)
+    # Scale the m-pulse sum to the full pulse count.
+    w1_full *= n_p / m
+    img = img * (w1_full / n_p)
+    w1_full = w1_full[None]
+    w2_full = w1_full * w1_full / n_p
+    return img, w1_full, w2_full
+
+
+def _nearfield_spread(m2: float, rp: float, tp: float, z0: float,
+                      dr_child: float, fc: float) -> float:
+    """Worst-case local range-frequency spread (radians per range sample) of
+    a subaperture image's content at pixel (rp, tp).
+
+    Per-sweep d(R)/dr at the pixel is f(y) = (rp - tp*y)/R(y) over the
+    subaperture's along-track offsets y. The image's local range spectrum
+    spans 2k*dr_child*(f(y) - f(0)). To second order the excursion is the
+    odd term |f'(0)|*h plus the even term |f''(0)|*h^2/2 with h the
+    half-aperture (sqrt(3*m2) for a uniform pulse distribution). The mean
+    shift is compensated by the merge kernels (ffbp_merge2_range_fmod), but
+    the spread cannot be removed pointwise. When it exceeds the sampling
+    margin the merge interpolation of that subaperture aliases.
+    """
+    k = 4.0 * math.pi * fc / 299792458.0
+    h = math.sqrt(3.0 * max(m2, 0.0))
+    A = rp * rp + z0 * z0
+    A15 = A * math.sqrt(max(A, 1e-12))
+    fp = abs(tp) * z0 * z0 / A15
+    fpp = (rp / A15) * abs(1.0 + tp * tp * (2.0 - 3.0 * rp * rp / A))
+    return k * dr_child * (fp * h + 0.5 * fpp * h * h)
+
+
+def _nearfield_spread_max(m2: float, rp: float, t0: float, t1: float,
+                          z0: float, dr_child: float, fc: float) -> float:
+    """Maximum of _nearfield_spread over the grid theta extent (the odd term
+    peaks at the theta edges, the even term near broadside)."""
+    tps = (0.0, 0.5 * abs(t0), 0.5 * abs(t1), abs(t0), abs(t1))
+    return max(_nearfield_spread(m2, rp, tp, z0, dr_child, fc) for tp in tps)
+
+
+def _ffbp_impl(
+    data: Tensor,
+    grid: dict,
+    fc: float,
+    r_res: float,
+    pos: Tensor,
+    stages: int,
+    divisions: int,
+    d0: float,
+    interp_method: tuple,
+    oversample_r: float,
+    oversample_theta: float,
+    dealias: bool,
+    data_fmod: float,
+    alias_fmod: float,
+    output_alias: bool,
+    use_poly: bool,
+    poly_coefs: Tensor,
+    att: Tensor | None = None,
+    g: Tensor | None = None,
+    g_extent: list | None = None,
+    weight_map_downsample: int = 1,
+    is_top_level: bool = True,
+    pos_z: list | None = None,
+    afbp_nsub: int = 1,
+    core_theta: tuple | None = None,
+    guard_max_ratio: float = 0.125,
+    pos_xy: list | None = None,
+    guard_shortfall: list | None = None,
+    dem: Tensor | None = None,
+    dem_grid: dict | None = None,
+    dem_off: Tensor | None = None,
+    data_interp_method: "str | tuple" = "linear",
+    antenna_leaf_gain: str = "pulse",
+    nearfield: bool = True,
+    internal_dtype: torch.dtype = torch.complex64,
+    output_dtype: torch.dtype = torch.complex64,
+) -> Tensor:
+    """Internal implementation of ffbp with precomputed polynomial coefficients.
+
+    ``internal_dtype`` is the storage dtype of every image below this node's
+    final merge; ``output_dtype`` is the dtype of this node's result (the
+    parent's ``internal_dtype``, or the user-facing dtype at the top level).
+
+    ``dem`` is the top-level polar-grid DEM (extent from ``dem_grid``) and
+    ``dem_off`` the cumulative xy offset of this node's frame from the
+    top-level frame; each node resamples the DEM onto its own grid with
+    :func:`_dem_on_node_grid`.
+
+    ``core_theta`` is the scene theta extent, constant down the recursion;
+    the node grid covers it plus a guard band (possibly asymmetric) whose
+    bins carry valid signal but are only consumed as interpolation window
+    support by the parent's merges. The guard band may extend past
+    |theta| = 1, where the backprojection and merge kernels compute the
+    smooth continuation of the azimuth signal (exact for a straight
+    track). Each level sizes its children's guard so that every lookup
+    window of its own merges lands inside the child grids, up to a cap of
+    ``guard_max_ratio`` of the child core bins per side.
+    """
+    nsweeps = data.shape[0]
+    use_antenna_pattern = g is not None
+
+    if dem is not None and dem_off is None:
+        dem_off = torch.zeros(2, device=data.device, dtype=torch.float32)
+
+    if pos_z is None:
+        # Sweep coordinates as Python floats: the z0/new_z and guard sizing
+        # scalars then never touch the device (one sync here instead of one
+        # per tree node on GPU). center_pos doesn't modify z, so plain
+        # slices of these lists stay valid down the recursion (x/y are only
+        # used for origin differences, which centering doesn't change).
+        pos_z = pos[:, 2].tolist()
+    if pos_xy is None:
+        pos_xy = pos[:, :2].tolist()
+
+    # Scene (core) theta extent; the node grid is the core plus its guard
+    # band.
+    if core_theta is None:
+        core_theta = grid["theta"]
+    core_t0, core_t1 = core_theta
+    theta0_g, theta1_g = grid["theta"]
+    dtheta_node = (theta1_g - theta0_g) / grid["ntheta"]
+    core_ntheta = round((core_t1 - core_t0) / dtheta_node)
+
+    # The final merge interpolates aperture/divisions-sized child images. At
+    # ranges comparable to the child aperture their local range spectrum
+    # spreads beyond the sampling margin (see _nearfield_spread) and the
+    # rows decorrelate. Where the criterion fires, split the top level
+    # nf_extra levels deeper and re-assemble the affected rows directly from
+    # the small-aperture children onto the final grid (complex addition, no
+    # child-to-child interpolation) after the normal reduction. Far rows are
+    # untouched and only the near band pays the extra lookups.
+    nf_extra = 0
+    nf_band_nr = 0
+    nf_children = None
+    divisions_split = divisions
+    if (nearfield and is_top_level and stages > 1 and divisions % 2 == 0
+            and nsweeps >= 4 * divisions):
+        # Free spectral band implied by the alias_fmod placement (inverse of
+        # the alias_fmod formula); half of it as the usable margin.
+        nf_thr = 0.5 * max(0.2, 2.0 * math.pi + 2.0 * alias_fmod)
+        r0_g, r1_g = grid["r"]
+        t0_g, t1_g = core_theta
+        dr_g = (r1_g - r0_g) / grid["nr"]
+        dr_child_nf = dr_g / max(oversample_r, 1.0)
+        z0_g = sum(pos_z) / len(pos_z)
+        cy_all = sum(y for _, y in pos_xy) / nsweeps
+        m2_all = sum((y - cy_all) ** 2 for _, y in pos_xy) / nsweeps
+        # Deeper levels divide the aperture (and so the variance) by
+        # divisions^2 per level (uniform pulse spacing approximation).
+        m2_l1 = m2_all / divisions ** 2
+        if _nearfield_spread_max(m2_l1, r0_g, t0_g, t1_g, z0_g,
+                                 dr_child_nf, fc) > nf_thr:
+            # First row where the normal tree's final-merge children are
+            # cleanly interpolable; rows below it get re-assembled.
+            nr_g = grid["nr"]
+            step = max(1, nr_g // 256)
+            row = 0
+            while row < nr_g and _nearfield_spread_max(
+                    m2_l1, r0_g + dr_g * row, t0_g, t1_g, z0_g,
+                    dr_child_nf, fc) > nf_thr:
+                row += step
+            nf_band_nr = min(row + step, nr_g)
+            # Assembly depth: smallest extra depth whose subapertures are
+            # clean at the grid's minimum range.
+            nf_extra = 1
+            while (nf_extra < 4
+                   and divisions ** (2 + nf_extra) * 2 <= nsweeps
+                   and _nearfield_spread_max(
+                       m2_all / divisions ** (2 * (1 + nf_extra)), r0_g,
+                       t0_g, t1_g, z0_g, dr_child_nf, fc) > nf_thr):
+                nf_extra += 1
+            if _nearfield_spread_max(
+                    m2_all / divisions ** (2 * (1 + nf_extra)), r0_g,
+                    t0_g, t1_g, z0_g, dr_child_nf, fc) > nf_thr:
+                warn(f"ffbp: near-field criterion still exceeded at "
+                     f"r={r0_g:.1f} m with the deepest available "
+                     f"subaperture split ({divisions ** (1 + nf_extra)} "
+                     f"children); accuracy of the nearest rows may be "
+                     f"reduced. Increase the grid minimum range or use "
+                     f"direct backprojection for this grid.")
+            divisions_split = divisions ** (1 + nf_extra)
+
+    # Split at rounded boundaries so that no sweeps are dropped when
+    # divisions does not divide nsweeps. Subaperture sizes differ by at most
+    # one sweep, which the merge handles.
+    bounds = split_bounds(nsweeps, divisions_split)
+
+    # Children guard sizing. A merge output pixel at theta = t reads the
+    # child image at tp = (d*t + dy)/rp, so the child grid must cover the
+    # image of this node's own grid edges under that map, plus the
+    # interpolation window. The shift tp - t has one sign per child (set by
+    # the along-track origin offset dy), so the guard is one-sided per
+    # child up to the window margin. It is evaluated with the exact kernel
+    # formula: the linearization |dy|/r0 wildly overestimates when the
+    # subaperture offsets are comparable to the near range.
+    div_xy = [pos_xy[bounds[i]:bounds[i + 1]] for i in range(divisions_split)]
+    means = [(sum(x for x, _ in s) / len(s), sum(y for _, y in s) / len(s))
+             for s in div_xy]
+    # True centroid over all node pulses: the intermediate merges track it
+    # via pulse-count-weighted origins in the merge chain below. The final
+    # merge lands on the node frame origin, which for a center_pos-centered
+    # input (every recursive call) coincides with the centroid; at the top
+    # level the input positions may have a nonzero mean and the two differ.
+    n_all = len(pos_xy)
+    cx = sum(x for x, _ in pos_xy) / n_all
+    cy = sum(y for _, y in pos_xy) / n_all
+    r0_min, r1_max = grid["r"]
+
+    def _tp_shift(te: float, dy: float, dx: float, d: float) -> float:
+        # Lookup shift tp - te of the merge transform, same math as the
+        # kernels.
+        ct = math.sqrt(max(0.0, 1.0 - te * te))
+        rp2 = d * d + dx * dx + dy * dy + 2.0 * d * (dy * te + dx * ct)
+        rp = math.sqrt(max(rp2, 1e-12))
+        return (d * te + dy) / rp - te
+
+    def _rp_shift(te: float, dy: float, dx: float, d: float) -> float:
+        # Lookup range shift rp - d of the merge transform, same math as the
+        # kernels. A subaperture whose origin is offset from the merge frame
+        # by (dx, dy) sees a pixel at range rp != d; the shift is largest in
+        # magnitude (-> |offset| along the line of sight) toward |theta| = 1,
+        # where the along-track offset is radial, and vanishes at broadside.
+        ct = math.sqrt(max(0.0, 1.0 - te * te))
+        rp2 = d * d + dx * dx + dy * dy + 2.0 * d * (dy * te + dx * ct)
+        rp = math.sqrt(max(rp2, 1e-12))
+        return rp - d
+
+    # Interpolation window half width in bins, plus one bin of rounding
+    # slack.
+    a_bins = interp_method[1] // 2 + 1
+
+    imgs = []
+    stages_child = stages - 1 - nf_extra
+    for d_idx in range(divisions_split):
+        i0, i1 = bounds[d_idx], bounds[d_idx + 1]
+        pos_local, origin_local = center_pos(pos[i0:i1])
+        pos_z_local = pos_z[i0:i1]
+        pos_xy_local = pos_xy[i0:i1]
+        z0 = sum(pos_z_local) / len(pos_z_local)
+        # Oversample the subaperture grid to leave aliasing margin for the
+        # merges. Applies to both the recursive and the base backprojection
+        # branch; deeper levels receive oversample=1 since the grid is
+        # already increased.
+        core_nt_child = (core_ntheta + divisions_split - 1) // divisions_split
+        core_nt_child = int(oversample_theta * core_nt_child)
+        dth_child = (core_t1 - core_t0) / core_nt_child
+
+        # Worst-case signed lookup shifts at the node grid edges over the
+        # swath and over the merge-chain origin variation (dy = 0 covers
+        # the no-shift window; the 0.5/1.5 factors bound the intermediate
+        # pairwise-mean origins of unbalanced in-node merge chains).
+        offs = [(cy - means[d_idx][1], cx - means[d_idx][0])]
+        if is_top_level:
+            # The top-level final merge lands on the input frame origin
+            # (0, 0), not the pulse centroid; with a nonzero input position
+            # mean the guard must also cover the lookup shifts relative to
+            # it. pos_xy at the top level is in input frame coordinates.
+            offs.append((-means[d_idx][1], -means[d_idx][0]))
+        cand = [(sy * dy_o, sx * dx_o, d)
+                for dy_o, dx_o in offs
+                for sy in (0.0, 0.5, 1.5) for sx in (-1.5, 1.5)
+                for d in (r0_min, r1_max)]
+        s_hi = max(_tp_shift(theta1_g, *c) for c in cand)
+        s_lo = min(_tp_shift(theta0_g, *c) for c in cand)
+
+        # Range shift at the node grid edges. Unlike the theta shift the
+        # radial extreme need not fall on one theta edge (the offset
+        # direction can lie between them), so both edges are checked for
+        # each of the max (far, extends r1) and min (near, lowers r0) shift.
+        rs_hi = max(_rp_shift(te, *c) for c in cand
+                    for te in (theta0_g, theta1_g))
+        rs_lo = min(_rp_shift(te, *c) for c in cand
+                    for te in (theta0_g, theta1_g))
+
+        # The useful support saturates a couple of interpolation windows
+        # past the fold: beyond |theta| = 1 the child image holds only the
+        # smooth continuation of the scene content near the fold, so
+        # lookups further out add nothing. Without the clamp the exact
+        # shift diverges when a grid edge past the fold combines with a
+        # subaperture origin offset near the pixel ground range (rp -> 0).
+        fold_margin = 2 * a_bins * dth_child
+        hi_req = min(theta1_g + s_hi, max(theta1_g, 1.0) + fold_margin)
+        lo_req = max(theta0_g + s_lo, min(theta0_g, -1.0) - fold_margin)
+
+        # Guard bins per side: cover [lo_req, hi_req] plus the window,
+        # never shrinking inside the core. Cap the guard to bound the
+        # memory overhead: with subaperture offsets comparable to the near
+        # range the shift can reach a large fraction of the whole theta
+        # domain, which would multiply every image in the tree.
+        n_lo = math.ceil((core_t0 - lo_req) / dth_child) + a_bins + 1
+        n_hi = math.ceil((hi_req - core_t1) / dth_child) + a_bins + 1
+        g_cap = max(4 * a_bins, int(guard_max_ratio * core_nt_child))
+        if guard_shortfall is not None and max(n_lo, n_hi) > g_cap:
+            ratio = max(n_lo, n_hi) / g_cap
+            if ratio > guard_shortfall[0]:
+                guard_shortfall[:] = [ratio, max(n_lo, n_hi), g_cap]
+        n_lo = min(max(n_lo, 0), g_cap)
+        n_hi = min(max(n_hi, 0), g_cap)
+
+        # Range guard bins per side (mirror of the theta guard): cover the
+        # signed range shift plus the interpolation window so every merge
+        # lookup lands inside the child grid. On a long baseline the offset
+        # subapertures away from the origin need a longer maximum range to
+        # hold the far scene at |theta| ~ 1; the near range is lowered by
+        # the same mechanism for the opposite-looking pixels. Clamp the near
+        # range at zero. The range bandwidth is unchanged by the split, so
+        # the guard bins keep the (oversampled) core range step.
+        nr_over = int(oversample_r * grid["nr"])
+        dr_child = (r1_max - r0_min) / nr_over
+        n_r_hi = math.ceil(max(0.0, rs_hi) / dr_child) + a_bins + 1
+        n_r_lo = math.ceil(max(0.0, -rs_lo) / dr_child) + a_bins + 1
+        n_r_lo = min(n_r_lo, int(r0_min / dr_child))
+        r0_child = r0_min - n_r_lo * dr_child
+        r1_child = r1_max + n_r_hi * dr_child
+
+        grid_local = deepcopy(grid)
+        grid_local["theta"] = (core_t0 - n_lo * dth_child,
+                               core_t1 + n_hi * dth_child)
+        grid_local["ntheta"] = core_nt_child + n_lo + n_hi
+        grid_local["r"] = (r0_child, r1_child)
+        grid_local["nr"] = nr_over + n_r_lo + n_r_hi
+        data_local = data[i0:i1]
+        att_local = att[i0:i1] if att is not None else None
+
+        # Minimum subaperture size: deep in the tree the guard settles to
+        # its window-support fixed point of ~2*(a_bins+1) bins per side
+        # (each level inherits half the parent guard extent in its own
+        # bins, plus the window), while the core halves per level, so ever
+        # deeper splits become guard-dominated and stop paying off. Stop
+        # splitting when the next level's core would put the fixed-point
+        # guard above _GUARD_STOP_FRAC of the subaperture image.
+        min_core = int(4 * (a_bins + 1) * (1.0 / _GUARD_STOP_FRAC - 1.0))
+        next_core = (core_nt_child + divisions - 1) // divisions
+        dem_off_local = None
+        if dem is not None:
+            dem_off_local = dem_off + origin_local[0][:2]
+
+        if stages_child >= 1 and len(data_local) >= 2 * divisions and next_core >= min_core:
+            img, w1_map, w2_map, weight_grid = _ffbp_impl(
+                data_local,
+                grid_local,
+                fc,
+                r_res,
+                pos_local,
+                stages=stages_child,
+                divisions=divisions,
+                d0=d0,
+                interp_method=interp_method,
+                oversample_r=1,  # Grid is already increased
+                oversample_theta=1,
+                dealias=True,
+                data_fmod=data_fmod,
+                alias_fmod=alias_fmod,
+                output_alias=True,
+                use_poly=use_poly,
+                poly_coefs=poly_coefs,
+                att=att_local,
+                g=g,
+                g_extent=g_extent,
+                weight_map_downsample=weight_map_downsample,
+                is_top_level=False,
+                pos_z=pos_z_local,
+                afbp_nsub=afbp_nsub,
+                core_theta=core_theta,
+                guard_max_ratio=guard_max_ratio,
+                pos_xy=pos_xy_local,
+                guard_shortfall=guard_shortfall,
+                dem=dem,
+                dem_grid=dem_grid,
+                dem_off=dem_off_local,
+                data_interp_method=data_interp_method,
+                antenna_leaf_gain=antenna_leaf_gain,
+                internal_dtype=internal_dtype,
+                output_dtype=internal_dtype,
+            )
+        else:
+            # Leaf of the merge tree: this is the only place the recursion
+            # consumes raw data, so a lazy input is materialized here and
+            # only ever leaf-sized chunks are resident.
+            data_local = _materialize(data_local)
+            # When using antenna pattern, request unnormalized output
+            normalize = not use_antenna_pattern
+            dem_local = None
+            w1_full = None
+            w2_full = None
+            # With a DEM the dealias carrier is DEM-referenced, so the
+            # stored image residual stays terrain-free for the merge
+            # interpolation.
+            if dem is not None:
+                dem_local = _dem_on_node_grid(dem, dem_grid, grid_local,
+                                              dem_off_local)
+            sub_gain = use_antenna_pattern and antenna_leaf_gain == "subaperture"
+            if afbp_nsub > 1:
+                # With "subaperture" leaf gain the base image is formed
+                # without the antenna pattern: a gain table that ends
+                # inside the scene puts a hard theta step into every
+                # subaperture image, which the wavenumber fusion cannot
+                # represent — the spectral leakage dims the accumulation
+                # around the cutoff (and smears it past it) while the
+                # illumination maps stay exact, so the Wiener
+                # normalization cannot recover it. The mean-gain multiply
+                # of _subaperture_gain_apply keeps the step in the image
+                # domain instead.
+                img = afbp(
+                    data_local, grid_local, fc, r_res, pos_local,
+                    nsub=afbp_nsub, d0=d0, dealias=True,
+                    data_fmod=data_fmod, alias_fmod=alias_fmod,
+                    att=None if sub_gain else att_local,
+                    g=None if sub_gain else g,
+                    g_extent=None if sub_gain else g_extent,
+                    normalize=normalize, dem=dem_local,
+                    data_interp_method=data_interp_method,
+                )[None]
+                if sub_gain:
+                    img, w1_full, w2_full = _subaperture_gain_apply(
+                        img, pos_local, att_local, g, g_extent, grid_local,
+                        dem_local)
+            else:
+                # The antenna-weighted kernel accumulates the W1/W2
+                # illumination moments per pixel anyway; on CPU the fused op
+                # returns them for free instead of recomputing the same
+                # angle pass with compute_illumination, which costs a large
+                # fraction of the backprojection itself.
+                fused_illum = (
+                    use_antenna_pattern
+                    and not sub_gain
+                    and data_local.device.type == "cpu"
+                    and data_interp_method[0] in ("linear", "knab")
+                    and not (torch.is_grad_enabled()
+                             and (data_local.requires_grad or pos_local.requires_grad))
+                )
+                if sub_gain:
+                    img = backprojection_polar_2d(
+                        data_local, grid_local, fc, r_res, pos_local, d0=d0,
+                        dealias=True,
+                        data_fmod=data_fmod, alias_fmod=alias_fmod,
+                        dem=dem_local,
+                        interp_method=data_interp_method,
+                    )
+                    img, w1_full, w2_full = _subaperture_gain_apply(
+                        img, pos_local, att_local, g, g_extent, grid_local,
+                        dem_local)
+                elif fused_illum:
+                    img, w1_full, w2_full = _backprojection_polar_2d_illum(
+                        data_local, grid_local, fc, r_res, pos_local, d0=d0,
+                        dealias=True,
+                        data_fmod=data_fmod, alias_fmod=alias_fmod,
+                        att=att_local, g=g, g_extent=g_extent,
+                        normalize=normalize,
+                        dem=dem_local,
+                        interp_method=data_interp_method,
+                    )
+                else:
+                    img = backprojection_polar_2d(
+                        data_local, grid_local, fc, r_res, pos_local, d0=d0,
+                        dealias=True,
+                        data_fmod=data_fmod, alias_fmod=alias_fmod,
+                        att=att_local, g=g, g_extent=g_extent, normalize=normalize,
+                        dem=dem_local,
+                        interp_method=data_interp_method,
+                    )
+
+            # Compute weight maps at base level for antenna pattern weighting
+            w1_map = None
+            w2_map = None
+            weight_grid = None
+            if use_antenna_pattern:
+                if w1_full is not None:
+                    # Fused full-resolution maps; the decimated map
+                    # convention samples the full-grid pixels dec * i, which
+                    # is exactly a stride slice.
+                    dec = weight_map_downsample
+                    w1_map = w1_full[0, ::dec, ::dec].contiguous()
+                    w2_map = w2_full[0, ::dec, ::dec].contiguous()
+                else:
+                    # An afbp base level stands in for log2(afbp_nsub) more
+                    # recursion levels whose per-node illumination would have
+                    # cost 1/afbp_nsub as much; decimate the pulses by the
+                    # same factor to match, otherwise the maps cost more than
+                    # the afbp base itself. afbp_nsub=1 reduces to the plain
+                    # decimated maps. CUDA kernel outputs at decimated
+                    # resolution directly.
+                    w1_map, w2_map = _illumination_pulse_decimated(
+                        pos_local, att_local, g, g_extent, grid_local,
+                        weight_map_downsample, afbp_nsub, dem=dem_local
+                    )
+                # Create weight grid matching output dimensions
+                dec = weight_map_downsample
+                out_nr = (grid_local["nr"] + dec - 1) // dec
+                out_ntheta = (grid_local["ntheta"] + dec - 1) // dec
+                r0, r1 = grid_local["r"]
+                theta0, theta1 = grid_local["theta"]
+                dr = (r1 - r0) / grid_local["nr"]
+                dtheta = (theta1 - theta0) / grid_local["ntheta"]
+                weight_grid = {
+                    "r": (r0, r0 + dr * dec * out_nr),
+                    "theta": (theta0, theta0 + dtheta * dec * out_ntheta),
+                    "nr": out_nr,
+                    "ntheta": out_ntheta,
+                }
+
+        # Along-track centroid and variance of the subaperture's pulses in
+        # the top-level frame (variance is frame-invariant): the merges use
+        # the variance to compensate the aperture-averaged range-spectrum
+        # shift of the child image at close-range lookups (see
+        # ffbp_merge2_range_fmod in the kernels). Python floats so the
+        # merge chain stays sync-free.
+        n_loc = len(pos_xy_local)
+        cy_loc = sum(y for _, y in pos_xy_local) / n_loc
+        m2_loc = sum((y - cy_loc) ** 2 for _, y in pos_xy_local) / n_loc
+
+        # Leaf images convert to the internal storage dtype here (recursive
+        # children already return it); the merge kernels read either dtype
+        # natively, so the fp32 leaf is freed right after the cast.
+        if img.dtype != internal_dtype:
+            img = img.to(internal_dtype)
+
+        imgs.append((origin_local[0], grid_local, img, z0, w1_map, w2_map,
+                     weight_grid, len(data_local), cy_loc, m2_loc))
+
+    def _merge_pair(img1, img2, is_final_merge, target_grid=None,
+                    override_z=None):
+        # Pulse-count-weighted origin so the running frame tracks the true phase
+        # center of the combined pulses. Plain 0.5/0.5 averaging only reaches
+        # the node centroid for balanced trees. The final merge lands on the
+        # node frame origin: the frame the parent expects (center_pos-centered
+        # input, where it equals the pulse centroid) and, at the top level, the
+        # frame the grid and positions are defined in — like
+        # backprojection_polar_2d, a nonzero input position mean is honored
+        # instead of silently re-centering the output grid on the centroid.
+        n1, n2 = img1[7], img2[7]
+        nsum = n1 + n2
+        if is_final_merge:
+            new_origin = torch.zeros_like(img1[0])
+        else:
+            new_origin = (n1 * img1[0] + n2 * img2[0]) / nsum
+        new_z = (n1 * img1[3] + n2 * img2[3]) / nsum
+        if override_z is not None:
+            # Near-band partial assembly: all partial sums must reference
+            # the same carrier z as the full final image so their pixel-wise
+            # sum and the row overwrite are phase-consistent.
+            new_z = override_z
+        # Combined pulse centroid / along-track variance (parallel axis
+        # theorem); the children's own variances feed this merge's spectral
+        # shift compensation.
+        cy1, m2c1 = img1[8], img1[9]
+        cy2, m2c2 = img2[8], img2[9]
+        cy_new = (n1 * cy1 + n2 * cy2) / nsum
+        m2_new = (n1 * (m2c1 + (cy1 - cy_new) ** 2)
+                  + n2 * (m2c2 + (cy2 - cy_new) ** 2)) / nsum
+        alias = False
+        # output_alias only applies to final merge
+        out_alias = output_alias
+        if is_final_merge:
+            # Interpolate the final image to the desired grid.
+            grid_polar_new = grid if target_grid is None else target_grid
+            alias = not dealias
+        else:
+            # Union of the source extents (the per-child guard bands are
+            # one-sided, so the extents differ) at half the source theta
+            # step: the azimuth bandwidth doubles when the subapertures
+            # merge.
+            g1, g2 = img1[1], img2[1]
+            t0_u = min(g1["theta"][0], g2["theta"][0])
+            t1_u = max(g1["theta"][1], g2["theta"][1])
+            dth_u = 0.5 * (g1["theta"][1] - g1["theta"][0]) / g1["ntheta"]
+            # Union of the source range extents too (the per-child range
+            # guard is asymmetric, so they differ). The range bandwidth does
+            # not change on merge, so the step is kept (no 0.5 factor).
+            r0_u = min(g1["r"][0], g2["r"][0])
+            r1_u = max(g1["r"][1], g2["r"][1])
+            dr_u = (g1["r"][1] - g1["r"][0]) / g1["nr"]
+            grid_polar_new = deepcopy(g1)
+            grid_polar_new["theta"] = (t0_u, t1_u)
+            grid_polar_new["ntheta"] = round((t1_u - t0_u) / dth_u)
+            grid_polar_new["r"] = (r0_u, r1_u)
+            grid_polar_new["nr"] = round((r1_u - r0_u) / dr_u)
+            out_alias = True
+
+        i1 = img1[2]
+        i2 = img2[2]
+        dorigin1 = new_origin - img1[0]
+        dorigin1[2] = -(new_z - img1[3])
+        dorigin2 = new_origin - img2[0]
+        dorigin2[2] = -(new_z - img2[3])
+
+        # DEM on the merge output grid: the merge carriers reference the 3D
+        # distance to the pixel at the DEM height, matching the
+        # DEM-referenced dealias carrier of the base images.
+        dem_merge = None
+        if dem is not None:
+            dem_merge = _dem_on_node_grid(dem, dem_grid, grid_polar_new,
+                                          dem_off + new_origin[:2])
+
+        # Get weight maps and grids
+        # Tuple structure: (origin, grid, img, z0, w1_map, w2_map, weight_grid)
+        w1_map1, w2_map1, wgrid1 = img1[4], img1[5], img1[6]
+        w1_map2, w2_map2, wgrid2 = img2[4], img2[5], img2[6]
+
+        # Intermediate merges store at the internal dtype; this node's final
+        # merge (and the near-band partials, which take the final-merge path)
+        # emits its result dtype: the parent's internal dtype, or the
+        # user-facing output dtype at the top level.
+        out_dt = output_dtype if is_final_merge else internal_dtype
+
+        if use_antenna_pattern and w1_map1 is not None and w2_map1 is not None:
+            # Carry the unnormalized accumulation A and the illumination moments
+            # W1, W2 up the tree. Wiener normalization is applied once in
+            # ffbp(), which upsamples decimated maps in chunks, so the
+            # top-level final merge keeps the same decimation as the rest of
+            # the tree instead of materializing full-resolution maps at the
+            # peak-memory moment.
+            out_dec = weight_map_downsample
+
+            img_sum, w1_out, w2_out, merged_weight_grid = ffbp_merge2_poly_weighted(
+                i1,
+                i2,
+                dorigin1,
+                dorigin2,
+                [img1[1], img2[1]],
+                fc,
+                grid_polar_new,
+                z0=new_z,
+                order=interp_method[1],
+                oversample=interp_method[2],
+                alias=alias,
+                alias_fmod=alias_fmod,
+                output_alias=out_alias,
+                poly_coefs=poly_coefs,
+                w1_map0=w1_map1,
+                w2_map0=w2_map1,
+                weight_grid0=wgrid1,
+                w1_map1=w1_map2,
+                w2_map1=w2_map2,
+                weight_grid1=wgrid2,
+                output_weight_map=True,
+                output_weight_decimation=out_dec,
+                dem=dem_merge,
+                m2_0=m2c1,
+                m2_1=m2c2,
+                out_dtype=out_dt,
+            )
+        else:
+            # Standard merge (no antenna pattern)
+            img_sum = ffbp_merge2(
+                i1,
+                i2,
+                dorigin1,
+                dorigin2,
+                [img1[1], img2[1]],
+                fc,
+                grid_polar_new,
+                z0=new_z,
+                method=interp_method,
+                alias=alias,
+                alias_fmod=alias_fmod,
+                output_alias=out_alias,
+                use_poly=use_poly,
+                poly_coefs=poly_coefs,
+                dem=dem_merge,
+                m2_0=m2c1,
+                m2_1=m2c2,
+                out_dtype=out_dt,
+            )
+            w1_out = None
+            w2_out = None
+            merged_weight_grid = None
+
+        return (new_origin, grid_polar_new, img_sum, new_z, w1_out, w2_out,
+                merged_weight_grid, nsum, cy_new, m2_new)
+
+    # Balanced reduction: each pass merges adjacent pairs and carries a trailing
+    # odd image to the next pass. Adjacency keeps every intermediate
+    # a contiguous aperture, the pass structure keeps the tree log-depth for any
+    # divisions. The final merge is the single pair of the last pass (len == 2).
+    nf_band_img = None
+    nf_band_w1 = None
+    nf_band_w2 = None
+    if nf_band_nr > 0:
+        # Near-band assembly
+        # Rows the final merges cannot interpolate cleanly are formed from
+        # the small-aperture children, each pair evaluated directly onto
+        # the final grid (frame origin, final carrier z, final alias mode).
+        # All partials share the same per-pixel carrier, so combining them
+        # is a plain complex addition. Done before the reduction while all
+        # children are resident anyway, so peak memory matches the normal
+        # path (only the small band partials are extra). The band rows of
+        # the final image are overwritten after the reduction.
+        z_final = sum(pos_z) / len(pos_z)
+        r0_g, r1_g = grid["r"]
+        dr_g = (r1_g - r0_g) / grid["nr"]
+        band_grid = deepcopy(grid)
+        band_grid["r"] = (r0_g, r0_g + dr_g * nf_band_nr)
+        band_grid["nr"] = nf_band_nr
+        for k in range(0, len(imgs) - 1, 2):
+            part = _merge_pair(imgs[k], imgs[k + 1], True,
+                               target_grid=band_grid, override_z=z_final)
+            if nf_band_img is None:
+                nf_band_img = part[2]
+                nf_band_w1 = part[4]
+                nf_band_w2 = part[5]
+            else:
+                nf_band_img += part[2]
+                if nf_band_w1 is not None and part[4] is not None:
+                    nf_band_w1 += part[4]
+                    nf_band_w2 += part[5]
+            part = None
+
+    while len(imgs) > 1:
+        is_final_pass = len(imgs) == 2
+        next_imgs = []
+        for k in range(0, len(imgs) - 1, 2):
+            merged = _merge_pair(imgs[k], imgs[k + 1], is_final_pass)
+            imgs[k] = None
+            imgs[k + 1] = None
+            next_imgs.append(merged)
+        if len(imgs) % 2 == 1:
+            # Odd trailing image carried unmerged to the next pass.
+            next_imgs.append(imgs[-1])
+        imgs = next_imgs
+
+    if nf_band_nr > 0:
+        top = imgs[0]
+        top[2][:nf_band_nr, :] = nf_band_img
+        nf_band_img = None
+        if use_antenna_pattern and top[4] is not None and nf_band_w1 is not None:
+            # The band partials share the top maps' decimation and r/theta
+            # start (band_grid keeps the grid r0 and theta extent), so band
+            # map row i samples the same full-grid row dec * i as top map
+            # row i; overwrite by the band map's own row count.
+            top[4][:nf_band_w1.shape[-2], :] = nf_band_w1
+            top[5][:nf_band_w2.shape[-2], :] = nf_band_w2
+        nf_band_w1 = None
+        nf_band_w2 = None
+
+    # Return different values depending on whether we're at top level or recursive
+    # At top level (called from ffbp), just return the image
+    # At recursive level, return (img, w1_map, w2_map, weight_grid)
+    if use_antenna_pattern:
+        return imgs[0][2], imgs[0][4], imgs[0][5], imgs[0][6]
+    return imgs[0][2], None, None, None
+
+
+def _tx_power_node_grid(
+    boundary: Tensor,
+    pos_local: Tensor,
+    yaw: Tensor,
+    g_extent: list,
+    g_daz: float,
+    sub_dr: float,
+    sub_dpsi: float,
+    margin: int,
+    min_nr: int,
+    min_ntheta: int,
+    altitude: float,
+) -> dict | None:
+    """Polar grid covering the output grid as seen from a subaperture origin.
+
+    boundary contains the output grid boundary in ground coordinates relative
+    to the subaperture origin. The azimuth extent is intersected with the
+    azimuth range visible through the antenna pattern given the subaperture
+    yaw range. Returns None if the subaperture cannot see the output grid.
+
+    The returned grid theta extents are the azimuth angle psi = asin(theta)
+    in radians and the map is sampled uniformly in psi (theta_psi grids).
+    Uniform psi resolves the antenna pattern with a constant number of cells
+    per beamwidth; a grid uniform in theta = sin(psi) compresses the pattern
+    features by cos(psi) towards |theta| = 1 where it would need much finer
+    sampling.
+    """
+    dx = boundary[:, 0]
+    dy = boundary[:, 1]
+    if altitude > 0.0:
+        r = torch.sqrt(dx * dx + dy * dy + altitude * altitude)
+    else:
+        r = torch.sqrt(dx * dx + dy * dy)
+    r_floor = altitude if altitude > 0.0 else 0.0
+    if bool((dx.min() < 0) & (dx.max() > 0) & (dy.min() < 0) & (dy.max() > 0)):
+        # Origin may be inside the scene footprint: the boundary samples do
+        # not bound the interior minimum.
+        r_lo = r_floor
+        r_hi = float(r.max())
+        p_lo = -math.pi / 2
+        p_hi = math.pi / 2
+    else:
+        th = dy / torch.clamp(r, min=1e-9)
+        r_lo = float(r.min())
+        r_hi = float(r.max())
+        p_lo = math.asin(max(-1.0, min(1.0, float(th.min()))))
+        p_hi = math.asin(max(-1.0, min(1.0, float(th.max()))))
+
+    # Azimuth angles visible through the antenna pattern. Pad accounts for
+    # pattern lookup interpolation and for the pulses being offset from the
+    # subaperture origin by up to the subaperture length.
+    g_el0, g_az0, g_el1, g_az1 = g_extent
+    max_offset = float(torch.linalg.norm(pos_local[:, :2], dim=-1).max())
+    psi_pad = 2.0 * g_daz + max_offset / max(r_lo, 1e-3)
+    psi_lo = g_az0 + float(yaw.min()) - psi_pad
+    psi_hi = g_az1 + float(yaw.max()) + psi_pad
+    # Polar grid theta cannot represent the rear half plane.
+    if psi_lo > math.pi / 2 or psi_hi < -math.pi / 2:
+        return None
+    p_lo = max(p_lo, psi_lo)
+    p_hi = min(p_hi, psi_hi)
+    if p_hi <= p_lo or r_hi <= r_lo:
+        return None
+
+    r_lo = max(r_floor, r_lo - margin * sub_dr)
+    r_hi = r_hi + margin * sub_dr
+    p_lo = max(-math.pi / 2, p_lo - margin * sub_dpsi)
+    p_hi = min(math.pi / 2, p_hi + margin * sub_dpsi)
+
+    nr = max(min_nr, int(math.ceil((r_hi - r_lo) / sub_dr)))
+    ntheta = max(min_ntheta, int(math.ceil((p_hi - p_lo) / sub_dpsi)))
+    return {"r": (r_lo, r_hi), "theta": (p_lo, p_hi), "nr": nr, "ntheta": ntheta}
+
+
+def _ffbp_tx_power_impl(
+    wa: Tensor,
+    pos: Tensor,
+    att: Tensor,
+    boundary: Tensor,
+    stages: int,
+    divisions: int,
+    g: Tensor,
+    g_extent: list,
+    g_daz: float,
+    normalization: str | None,
+    sub_dr: float,
+    sub_dpsi: float,
+    margin: int,
+    min_nr: int,
+    min_ntheta: int,
+    min_nsweeps: int,
+    dr_ref: float,
+    h_ref: float,
+    altitude: float,
+    grid_out: dict | None = None,
+    is_top_level: bool = True,
+    dem: Tensor | None = None,
+    dem_grid: dict | None = None,
+    dem_off: Tensor | None = None,
+) -> tuple[Tensor, dict, Tensor] | None:
+    """Recursive tx_power accumulator map computation.
+
+    Returns (acc, grid, frame_offset) where frame_offset is the origin of the
+    accumulator map frame relative to this node's frame, or None if no pulse
+    of this node illuminates the output grid.
+
+    dem is the top-level [3, dem_nr, dem_ntheta] (z, dz/dx, dz/dy) stack on
+    dem_grid; dem_off is the cumulative xy offset of this node's frame from
+    the top-level frame. The accumulators are phase-free, so the DEM only
+    enters the leaf kernels; the merges are untouched.
+    """
+    nsweeps = wa.shape[0]
+    device = wa.device
+
+    # Grid for the intermediate merges of this node.
+    grid_node = _tx_power_node_grid(
+        boundary, pos, att[:, 2], g_extent, g_daz, sub_dr, sub_dpsi,
+        margin, min_nr, min_ntheta, altitude)
+    if grid_node is None:
+        return None
+
+    nodes = []
+    edges = split_bounds(nsweeps, divisions)
+    for d_idx in range(divisions):
+        i0 = int(edges[d_idx])
+        i1 = int(edges[d_idx + 1])
+        if i1 - i0 < 1:
+            continue
+        pos_local, origin_local = center_pos(pos[i0:i1])
+        o = origin_local[0]
+        boundary_local = boundary - o[None, :2]
+        wa_local = wa[i0:i1]
+        att_local = att[i0:i1]
+        dem_off_local = dem_off + o[:2] if dem is not None else None
+
+        if stages > 1 and i1 - i0 > min_nsweeps:
+            child = _ffbp_tx_power_impl(
+                wa_local, pos_local, att_local, boundary_local,
+                stages - 1, divisions, g, g_extent, g_daz, normalization,
+                sub_dr, sub_dpsi, margin, min_nr, min_ntheta, min_nsweeps,
+                dr_ref, h_ref, altitude, grid_out=None, is_top_level=False,
+                dem=dem, dem_grid=dem_grid, dem_off=dem_off_local)
+            if child is None:
+                continue
+            acc, grid_local, child_offset = child
+            offset = o + child_offset
+        else:
+            grid_local = _tx_power_node_grid(
+                boundary_local, pos_local, att_local[:, 2], g_extent, g_daz,
+                sub_dr, sub_dpsi, margin, min_nr, min_ntheta, altitude)
+            if grid_local is None:
+                continue
+            dem_local = None
+            if dem is not None:
+                dem_local = _dem_on_node_grid(
+                    dem, dem_grid, grid_local, dem_off_local,
+                    theta_psi_out=True)
+            acc = _backprojection_polar_2d_tx_power_accum(
+                wa_local, g, g_extent, grid_local, pos_local, att_local,
+                normalization, dr_ref, h_ref, altitude, theta_psi=True,
+                dem=dem_local)
+            offset = o
+        nodes.append((acc, grid_local, offset))
+
+    if len(nodes) == 0:
+        return None
+
+    while len(nodes) > 1:
+        n1 = nodes[0]
+        n2 = nodes[1]
+        is_final_merge = is_top_level and len(nodes) == 2
+        grid_new = grid_out if is_final_merge else grid_node
+        # dorigin = merged frame origin - input frame origin
+        dorigin1 = -n1[2].clone()
+        dorigin2 = -n2[2].clone()
+        dorigin1[2] = 0.0
+        dorigin2[2] = 0.0
+        merged = ffbp_tx_power_merge2(
+            n1[0], n2[0], dorigin1, dorigin2, [n1[1], n2[1]], grid_new,
+            altitude=altitude, in_psi=True, out_psi=not is_final_merge)
+        nodes = nodes[2:] + [(merged, grid_new, torch.zeros(3, device=device))]
+
+    return nodes[0]
+
+
+def backprojection_polar_2d_tx_power_ffbp(
+    wa: Tensor,
+    g: Tensor,
+    g_extent: list,
+    grid: "PolarGrid | dict",
+    r_res: float,
+    pos: Tensor,
+    att: Tensor,
+    stages: int,
+    divisions: int = 2,
+    normalization: str | None = None,
+    azimuth_resolution: bool = True,
+    downsample_r: float = 4.0,
+    downsample_theta: float = 4.0,
+    min_nsweeps: int = 64,
+    min_nr: int = 32,
+    min_ntheta: int = 32,
+    margin: int = 4,
+    altitude: float = 0.0,
+    beam_theta_samples: float = 32.0,
+    dem: Tensor | None = None,
+) -> Tensor:
+    """
+    Fast factorized version of :func:`backprojection_polar_2d_tx_power`.
+
+    Splits the track recursively into subapertures like :func:`ffbp`,
+    computes coarse per-subaperture accumulator maps and merges them
+    pairwise with bilinear interpolation. Unlike the coherent FFBP the
+    accumulated fields are smooth and phase-free, so the subaperture maps
+    can be sampled much more coarsely than the output grid
+    (``downsample_r``, ``downsample_theta``) and the azimuth resolution
+    moments merge exactly (Chan's parallel variance formula).
+
+    Each subaperture gets its own grid extents computed from the output grid
+    geometry as seen from the subaperture center, intersected with the
+    azimuth range visible through the antenna pattern. Subapertures on a
+    long or curved track that see the scene at a different angle than the
+    output grid theta range are handled correctly, and subapertures that
+    cannot see the output grid at all are skipped.
+
+    Implements the same moment-based azimuth resolution model as the direct
+    function. Output matches the direct function up to interpolation errors,
+    except near illumination edges where pixels with very few contributing
+    pulses can differ. With ``altitude > 0`` the region just outside the
+    nadir shadow zone is also approximate because the slant range to ground
+    range mapping is singular at the shadow boundary and the interpolated
+    fields vary too fast there.
+
+    Parameters
+    ----------
+    wa : Tensor
+        Weighting coefficient for amplitude of each pulse, shape: [nsweeps].
+    g : Tensor
+        Square-root of two-way antenna gain in spherical coordinates,
+        shape: [elevation, azimuth]. (0, 0) angle is at the beam center.
+    g_extent : list
+        Antenna pattern extent: [g_el0, g_az0, g_el1, g_az1] in radians.
+    grid : PolarGrid or dict
+        Polar grid definition. Can be:
+
+        - PolarGrid object: ``PolarGrid(r_range=(50, 100), theta_range=(-1, 1), nr=200, ntheta=400)``
+        - dict: ``{"r": (r0, r1), "theta": (theta0, theta1), "nr": nr, "ntheta": ntheta}``
+
+        where ``theta`` represents sin of angle (-1, 1 for 180 degree view).
+    r_res : float
+        Range bin resolution. Unused, kept for signature parity with
+        :func:`backprojection_polar_2d_tx_power`.
+    pos : Tensor
+        Position of the platform at each data point. Shape should be [nsweeps, 3].
+    att : Tensor
+        Euler angles of the radar antenna at each data point. Shape should be
+        [nsweeps, 3]. [Roll, pitch, yaw]. Pitch rotates the antenna pattern about its
+        boresight (the along-track attitude angle for a side-looking
+        antenna).
+    stages : int
+        Number of recursions.
+    divisions : int
+        Number of subaperture divisions per stage. Default is 2.
+    normalization : str or None
+        Valid choices are:
+            "sigma" to divide each value by sin of incidence angle.
+            "gamma" to divide each value by of tan of incidence angle.
+            "beta" or None for no incidence angle normalization.
+            "point" to normalize to constant reflectivity (no ground patch).
+    azimuth_resolution : bool
+        If True (default), also normalize for the varying azimuth resolution.
+        See :func:`backprojection_polar_2d_tx_power`.
+    downsample_r : float
+        Subaperture map range step relative to the output grid range step.
+        The accumulated fields are smooth, so values well above 1 are
+        usually fine. Default is 4.
+    downsample_theta : float
+        Subaperture map azimuth step relative to the output grid theta step.
+        The subaperture maps are sampled uniformly in azimuth angle
+        psi = asin(theta), so relative to the output theta grid the maps get
+        denser towards |theta| = 1 where the sin mapping compresses the
+        antenna pattern features. Default is 4.
+    min_nsweeps : int
+        Do not recurse into subapertures with fewer pulses than this.
+    min_nr : int
+        Minimum number of range points in a subaperture map. Avoids large
+        interpolation errors near edges of very small maps.
+    min_ntheta : int
+        Minimum number of theta points in a subaperture map.
+    margin : int
+        Extra margin in subaperture map cells around the computed extents.
+    altitude : float
+        If greater than zero, use slant plane grid semantics identical to
+        :func:`backprojection_polar_2d_tx_power_slant` with this reference
+        altitude. Default 0 uses ground plane grid.
+    beam_theta_samples : float
+        Minimum number of subaperture map azimuth samples across the half
+        amplitude azimuth beamwidth of the antenna pattern. The interpolation
+        error scales as the squared ratio of the azimuth step to the azimuth
+        beamwidth, so a beam that is thin compared to the output grid theta
+        step needs subaperture maps finer than ``downsample_theta`` implies.
+        The azimuth step is the smaller of ``downsample_theta`` times the
+        output grid theta step and the beamwidth divided by this value.
+        A quarter of the same sample density is applied to the range step
+        relative to the elevation beamwidth, which matters only when the
+        near edge of the grid approaches nadir.
+    dem : Tensor or None
+        Digital elevation model heights on the output polar grid, same
+        convention as :func:`backprojection_polar_2d_tx_power` (shape
+        [dem_nr, dem_ntheta] covering the grid extent, resolution can be
+        lower). Resampled onto each subaperture node grid; the phase-free
+        accumulator merges need no DEM. Not supported with ``altitude > 0``.
+        With ``normalization="gamma"`` the illumination goes to zero where
+        the terrain approaches grazing local incidence; inside those
+        near-null bands the interpolated maps are approximate like the
+        illumination edges.
+
+    Returns
+    -------
+    tx_power : Tensor
+        Pseudo-polar format image of square root of power returned from each
+        pixel assuming constant reflectivity, shape [nr, ntheta].
+    """
+    if hasattr(grid, "to_dict"):
+        grid = grid.to_dict()
+    r0, r1, theta0, theta1, nr, ntheta, dr, dtheta = unpack_polar_grid(grid)
+
+    assert wa.dim() == 1, "backprojection_polar_2d_tx_power_ffbp supports only a single batch"
+    nsweeps = wa.shape[0]
+    assert pos.shape == (nsweeps, 3)
+    assert att.shape == (nsweeps, 3)
+    device = wa.device
+
+    dem3 = None
+    dem_grid = None
+    dem_off0 = None
+    if dem is not None:
+        if altitude > 0.0:
+            raise NotImplementedError(
+                "dem is not supported with a slant-range grid (altitude > 0)")
+        if dem.ndim != 2:
+            raise ValueError(f"dem must be a 2D [dem_nr, dem_ntheta] tensor, got shape {dem.shape}")
+        if dem.dtype != torch.float32:
+            raise ValueError(f"dem must be float32, got {dem.dtype}")
+        if dem.device != device:
+            raise ValueError(f"dem must be on the same device as wa ({device}), got {dem.device}")
+        from ..util import polar_dem_slopes
+        dem3 = polar_dem_slopes(dem, grid)
+        dem_grid = {"r": grid["r"], "theta": grid["theta"],
+                    "nr": dem.shape[0], "ntheta": dem.shape[1]}
+        dem_off0 = torch.zeros(2, device=device, dtype=torch.float32)
+
+    g_el0, g_az0, g_el1, g_az1 = g_extent
+    g_daz = (g_az1 - g_az0) / g.shape[1]
+
+    h_ref = altitude if altitude > 0 else float(pos[nsweeps // 2, 2])
+    sub_dr = dr * downsample_r
+
+    # Subaperture maps are sampled uniformly in azimuth angle psi = asin(theta)
+    # rather than theta, see _tx_power_node_grid. The step is downsample_theta
+    # output grid cells at scene center, additionally capped so that the
+    # azimuth beamwidth stays resolved: the illumination fields vary at the
+    # scale of the beamwidth, not the output grid step, and a beam that is
+    # thin compared to the output theta step degrades the bilinear
+    # interpolation badly (see beam_theta_samples).
+    sub_dpsi = dtheta * downsample_theta
+    p_az = torch.amax(g, dim=0)
+    above = (p_az >= 0.5 * float(p_az.max())).nonzero()
+    if len(above) > 0:
+        half_width = float(above[-1] - above[0] + 1) * g_daz
+        sub_dpsi = min(sub_dpsi, half_width / beam_theta_samples)
+
+    # Same in range: an elevation pattern feature of angular size del maps to
+    # a range interval del * (r^2 + h^2) / h, smallest at near range. Only
+    # binding when the near edge of the grid is close to nadir. The fields
+    # vary more slowly in range than in azimuth (no track-parallel geometry),
+    # so a quarter of the azimuth sample density is enough.
+    g_del = (g_el1 - g_el0) / g.shape[0]
+    p_el = torch.amax(g, dim=1)
+    above = (p_el >= 0.5 * float(p_el.max())).nonzero()
+    if len(above) > 0 and h_ref > 0:
+        el_half_width = float(above[-1] - above[0] + 1) * g_del
+        if altitude > 0.0:
+            # Slant grid: r is slant range, dr/dl = sqrt(r^2 - h^2).
+            rg0 = math.sqrt(max(altitude * 0.1, r0**2 - altitude**2))
+            r_scale = rg0 * r0 / altitude
+        else:
+            r_scale = (r0**2 + h_ref**2) / h_ref
+        r_cap = 4.0 * el_half_width / beam_theta_samples * r_scale
+        sub_dr = min(sub_dr, max(dr, r_cap))
+
+    # Output grid boundary in ground coordinates. Subaperture grid extents
+    # are computed from these points shifted to each subaperture frame.
+    nb = 64
+    rr = torch.linspace(r0, r1, nb, device=device)
+    tt = torch.linspace(theta0, theta1, nb, device=device)
+    r_s = torch.cat((torch.full_like(tt, r0), torch.full_like(tt, r1), rr, rr))
+    t_s = torch.cat((tt, tt, torch.full_like(rr, theta0), torch.full_like(rr, theta1)))
+    if altitude > 0.0:
+        gx = torch.sqrt(torch.clamp(r_s**2 * (1 - t_s**2) - altitude**2, min=0.0))
+    else:
+        gx = r_s * torch.sqrt(torch.clamp(1 - t_s**2, min=0.0))
+    gy = r_s * t_s
+    boundary = torch.stack((gx, gy), dim=1)
+
+    node = _ffbp_tx_power_impl(
+        wa, pos, att, boundary, stages, divisions, g, g_extent, g_daz,
+        normalization, sub_dr, sub_dpsi, margin, min_nr, min_ntheta,
+        min_nsweeps, dr, h_ref, altitude, grid_out=grid, is_top_level=True,
+        dem=dem3, dem_grid=dem_grid, dem_off=dem_off0)
+
+    if node is None:
+        acc = torch.zeros((4, nr, ntheta), dtype=torch.float32, device=device)
+    elif node[1] is not grid or bool(torch.any(node[2] != 0)):
+        # Single surviving subaperture: regrid it to the output grid.
+        dorigin = -node[2].clone()
+        dorigin[2] = 0.0
+        acc = ffbp_tx_power_merge2(
+            node[0], None, dorigin, None, [node[1], node[1]], grid,
+            altitude=altitude, in_psi=True, out_psi=False)
+    else:
+        acc = node[0]
+
+    # Finishing step. Matches the direct kernel epilogue.
+    r_vec = r0 + dr * torch.arange(nr, dtype=torch.float32, device=device)
+    if altitude > 0.0:
+        Rg = torch.sqrt(torch.clamp(r_vec**2 - altitude**2, min=0.0))
+    else:
+        Rg = r_vec
+    out = _tx_power_finish(acc, Rg[:, None], azimuth_resolution)
+    if altitude > 0.0:
+        # Shadow zone below nadir is zero in the direct kernel.
+        t_vec = theta0 + dtheta * torch.arange(ntheta, dtype=torch.float32, device=device)
+        shadow = r_vec[:, None]**2 * (1 - t_vec[None, :]**2) < altitude**2
+        out = torch.where(shadow, torch.zeros_like(out), out)
+    return out
+
+

@@ -1,0 +1,19 @@
+# Raw SAR and MATLAB datasets (kept locally; too large for the Git remote)
+*.mat
+*.dat
+*.npy
+*.npz
+
+# Python caches and generated scratch/output folders
+__pycache__/
+*.py[cod]
+/tmp/
+/output/
+
+# Generated numerical products; retain only source code and lightweight figures
+/fast_bp/results/**/*.npy
+
+# Editor and OS metadata
+.DS_Store
+Thumbs.db
+.vscode/

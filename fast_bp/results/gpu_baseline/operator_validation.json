@@ -1,0 +1,342 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "k_sign": -1,
+      "side": 1,
+      "mode": "fp64",
+      "ffbp_vs_cpu": {
+        "relative_complex_error": 7.610565167797637e-10,
+        "ser_db": 182.37166181822323,
+        "complex_coherence": 1.0000000000000027,
+        "relative_magnitude_error": 3.9169988309645455e-10,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": 2.512695613399681e-10,
+        "phase_std_deg_above_minus30db": 3.49669436135843e-08,
+        "phase_median_abs_deg_above_minus30db": 2.512695613399681e-10,
+        "phase_p95_abs_deg_above_minus30db": 2.512695613399681e-10,
+        "phase_mask_samples": 6570,
+        "peak_amplitude_difference_db": 0.0,
+        "reference_peak_pixel": [
+          7,
+          73
+        ],
+        "estimate_peak_pixel": [
+          7,
+          73
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      },
+      "direct_vs_cpu": {
+        "relative_complex_error": 6.103897689213112e-10,
+        "ser_db": 184.28785508881765,
+        "complex_coherence": 1.0000000000000062,
+        "relative_magnitude_error": 4.217182151716533e-10,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": 9.408203025825805e-10,
+        "phase_std_deg_above_minus30db": 4.1419189496558394e-08,
+        "phase_median_abs_deg_above_minus30db": 9.408203025825805e-10,
+        "phase_p95_abs_deg_above_minus30db": 9.408203025825805e-10,
+        "phase_mask_samples": 6589,
+        "peak_amplitude_difference_db": 0.0,
+        "reference_peak_pixel": [
+          33,
+          29
+        ],
+        "estimate_peak_pixel": [
+          33,
+          29
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "k_sign": -1,
+      "side": 1,
+      "mode": "fp32",
+      "ffbp_vs_cpu": {
+        "relative_complex_error": 0.007462441926228619,
+        "ser_db": 42.54238071180182,
+        "complex_coherence": 0.9999728318503656,
+        "relative_magnitude_error": 0.0037565738431358,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": -0.07429877210541498,
+        "phase_std_deg_above_minus30db": 0.5297040930401204,
+        "phase_median_abs_deg_above_minus30db": 0.268320847982481,
+        "phase_p95_abs_deg_above_minus30db": 0.9717479556155179,
+        "phase_mask_samples": 6570,
+        "peak_amplitude_difference_db": -0.013590576139197046,
+        "reference_peak_pixel": [
+          7,
+          73
+        ],
+        "estimate_peak_pixel": [
+          7,
+          74
+        ],
+        "peak_shift_pixels": [
+          0,
+          1
+        ]
+      },
+      "direct_vs_cpu": {
+        "relative_complex_error": 0.004648304438674419,
+        "ser_db": 46.65410871516619,
+        "complex_coherence": 0.9999893213247126,
+        "relative_magnitude_error": 0.0022886825039632763,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": -0.029395332388443482,
+        "phase_std_deg_above_minus30db": 0.3380596020588111,
+        "phase_median_abs_deg_above_minus30db": 0.18548363297422332,
+        "phase_p95_abs_deg_above_minus30db": 0.6285157454484791,
+        "phase_mask_samples": 6589,
+        "peak_amplitude_difference_db": -0.015792907824612356,
+        "reference_peak_pixel": [
+          33,
+          29
+        ],
+        "estimate_peak_pixel": [
+          33,
+          29
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "k_sign": -1,
+      "side": 1,
+      "mode": "mixed",
+      "ffbp_vs_cpu": {
+        "relative_complex_error": 1.591121784361832e-07,
+        "ser_db": 135.96593156417504,
+        "complex_coherence": 0.999999999999987,
+        "relative_magnitude_error": 1.231979906963389e-07,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": -1.9636431006551406e-07,
+        "phase_std_deg_above_minus30db": 1.0811270767792179e-05,
+        "phase_median_abs_deg_above_minus30db": 4.381951016761013e-06,
+        "phase_p95_abs_deg_above_minus30db": 2.0031714777227005e-05,
+        "phase_mask_samples": 6570,
+        "peak_amplitude_difference_db": 9.407321547255424e-07,
+        "reference_peak_pixel": [
+          7,
+          73
+        ],
+        "estimate_peak_pixel": [
+          7,
+          73
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      },
+      "direct_vs_cpu": {
+        "relative_complex_error": 1.2446224062081752e-07,
+        "ser_db": 138.09924769863983,
+        "complex_coherence": 0.9999999999999932,
+        "relative_magnitude_error": 9.998781222419439e-08,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": 1.0397926227152139e-07,
+        "phase_std_deg_above_minus30db": 7.1544016393479545e-06,
+        "phase_median_abs_deg_above_minus30db": 3.2220995929673576e-06,
+        "phase_p95_abs_deg_above_minus30db": 1.3321991328615405e-05,
+        "phase_mask_samples": 6589,
+        "peak_amplitude_difference_db": 5.363568991064496e-07,
+        "reference_peak_pixel": [
+          33,
+          29
+        ],
+        "estimate_peak_pixel": [
+          33,
+          29
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "k_sign": 1,
+      "side": -1,
+      "mode": "fp64",
+      "ffbp_vs_cpu": {
+        "relative_complex_error": 1.6685606767041628e-09,
+        "ser_db": 175.5531599146919,
+        "complex_coherence": 1.0000000000000018,
+        "relative_magnitude_error": 1.0025329186711284e-09,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": 2.4398535403072054e-09,
+        "phase_std_deg_above_minus30db": 1.125271375526702e-07,
+        "phase_median_abs_deg_above_minus30db": 2.4398535403072054e-09,
+        "phase_p95_abs_deg_above_minus30db": 2.4398535403072054e-09,
+        "phase_mask_samples": 6600,
+        "peak_amplitude_difference_db": 0.0,
+        "reference_peak_pixel": [
+          34,
+          1
+        ],
+        "estimate_peak_pixel": [
+          34,
+          1
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      },
+      "direct_vs_cpu": {
+        "relative_complex_error": 1.2296241733625763e-11,
+        "ser_db": 218.2045521513051,
+        "complex_coherence": 1.000000000000003,
+        "relative_magnitude_error": 1.4536665641561172e-13,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": 3.7767814195013334e-13,
+        "phase_std_deg_above_minus30db": 1.4200897308525358e-09,
+        "phase_median_abs_deg_above_minus30db": 3.7767814195013334e-13,
+        "phase_p95_abs_deg_above_minus30db": 3.7767814195013334e-13,
+        "phase_mask_samples": 6590,
+        "peak_amplitude_difference_db": 0.0,
+        "reference_peak_pixel": [
+          74,
+          23
+        ],
+        "estimate_peak_pixel": [
+          74,
+          23
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "k_sign": 1,
+      "side": -1,
+      "mode": "fp32",
+      "ffbp_vs_cpu": {
+        "relative_complex_error": 0.007501245931761614,
+        "ser_db": 42.49733191523572,
+        "complex_coherence": 0.9999744752555808,
+        "relative_magnitude_error": 0.003766427386682079,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": -0.14063842598945137,
+        "phase_std_deg_above_minus30db": 0.5021853421052533,
+        "phase_median_abs_deg_above_minus30db": 0.266544626136368,
+        "phase_p95_abs_deg_above_minus30db": 0.9465015687003402,
+        "phase_mask_samples": 6600,
+        "peak_amplitude_difference_db": 0.010053867070398445,
+        "reference_peak_pixel": [
+          34,
+          1
+        ],
+        "estimate_peak_pixel": [
+          34,
+          1
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      },
+      "direct_vs_cpu": {
+        "relative_complex_error": 0.004584366275716295,
+        "ser_db": 46.774413819209364,
+        "complex_coherence": 0.9999895081150614,
+        "relative_magnitude_error": 0.0022573042892396174,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": -0.008728926446537055,
+        "phase_std_deg_above_minus30db": 0.33225717298474167,
+        "phase_median_abs_deg_above_minus30db": 0.18020687138246214,
+        "phase_p95_abs_deg_above_minus30db": 0.617310078754021,
+        "phase_mask_samples": 6590,
+        "peak_amplitude_difference_db": 0.0035611917658458546,
+        "reference_peak_pixel": [
+          74,
+          23
+        ],
+        "estimate_peak_pixel": [
+          74,
+          23
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "k_sign": 1,
+      "side": -1,
+      "mode": "mixed",
+      "ffbp_vs_cpu": {
+        "relative_complex_error": 1.6101643200731622e-07,
+        "ser_db": 135.86259602396498,
+        "complex_coherence": 0.9999999999999867,
+        "relative_magnitude_error": 1.2562450163418342e-07,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": -4.4592362923815415e-08,
+        "phase_std_deg_above_minus30db": 1.0767782618097266e-05,
+        "phase_median_abs_deg_above_minus30db": 4.4097167431078855e-06,
+        "phase_p95_abs_deg_above_minus30db": 2.034692873031109e-05,
+        "phase_mask_samples": 6600,
+        "peak_amplitude_difference_db": 2.299779645450238e-07,
+        "reference_peak_pixel": [
+          34,
+          1
+        ],
+        "estimate_peak_pixel": [
+          34,
+          1
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      },
+      "direct_vs_cpu": {
+        "relative_complex_error": 1.244103279982608e-07,
+        "ser_db": 138.10287129861624,
+        "complex_coherence": 0.9999999999999938,
+        "relative_magnitude_error": 9.97415967168332e-08,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": 5.1984114835521896e-08,
+        "phase_std_deg_above_minus30db": 7.215017765817658e-06,
+        "phase_median_abs_deg_above_minus30db": 3.242924178281007e-06,
+        "phase_p95_abs_deg_above_minus30db": 1.3980855968881388e-05,
+        "phase_mask_samples": 6590,
+        "peak_amplitude_difference_db": -1.420659775874507e-06,
+        "reference_peak_pixel": [
+          74,
+          23
+        ],
+        "estimate_peak_pixel": [
+          74,
+          23
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      }
+    }
+  ],
+  "coverage": [
+    "positive and negative signed carrier wavenumber",
+    "left and right looking geometry",
+    "odd pulse count and recursive tail split",
+    "nonzero per-pulse phase",
+    "fractional four-point Lagrange interpolation"
+  ]
+}

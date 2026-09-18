@@ -1,0 +1,4 @@
+# Kept compatible with the existing Numba CPU pipeline.
+numpy==1.26.4
+cupy-cuda12x==13.6.0
+

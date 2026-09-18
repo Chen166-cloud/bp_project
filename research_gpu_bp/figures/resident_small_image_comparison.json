@@ -1,0 +1,134 @@
+{
+  "reference": "D:\\Users\\Chen\\Desktop\\research\\试验数据\\fast_bp\\results\\resident_20260917\\small_direct_reference.npy",
+  "reference_peak_magnitude": 230143891.17725527,
+  "reference_shape": [
+    360,
+    365
+  ],
+  "coordinates": "polar: rows r (m), columns u = sin(theta); not Cartesian",
+  "r_center_endpoints_m": [
+    1380.2499999999998,
+    1469.9999999999998
+  ],
+  "u_center_endpoints": [
+    -0.0298358876449322,
+    0.029901009599748948
+  ],
+  "normalization": "all amplitude and complex-difference panels divided by the same reference peak",
+  "alignment": "none: no global phase, amplitude, shift, or per-candidate normalization fit",
+  "ser_definition": "10*log10(sum(abs(reference)**2) / sum(abs(candidate-reference)**2))",
+  "metrics_arithmetic": "CPU NumPy complex128 differences and float64 energy reductions",
+  "amplitude_display_limits_db": [
+    -45.0,
+    0.0
+  ],
+  "difference_display_limits_db": [
+    -65.0,
+    -15.0
+  ],
+  "metrics_use_unclipped_images": true,
+  "boundary_width_pixels": 8,
+  "source_sha256": {
+    "D:\\Users\\Chen\\Desktop\\research\\试验数据\\fast_bp\\results\\resident_20260917\\small_direct_reference.npy": "56ee2c93b08faee38808e7f6403289f5bbe0ef3cce26fe655cb1c6403805a0e2",
+    "D:\\Users\\Chen\\Desktop\\research\\试验数据\\fast_bp\\results\\resident_20260917\\small_axes.npz": "c3225acfdd085145ec5e62af211bcbbd2f692fee8b7def5da74eacc9bcb8f7bc",
+    "D:\\Users\\Chen\\Desktop\\research\\试验数据\\fast_bp\\results\\resident_20260917\\batch_small_fp32_batched_graph.npy": "754ed55822cb076e1f97f33d1247d31dc169a9eae583f9675951903f952e9e6c",
+    "D:\\Users\\Chen\\Desktop\\research\\试验数据\\fast_bp\\results\\resident_20260917\\guard_l1024_os12_g8_fp32.npy": "67362438f5394038b3cd607713ff116c5203330e58e3b3f95afea62f8bf6b965",
+    "D:\\Users\\Chen\\Desktop\\research\\试验数据\\fast_bp\\results\\resident_20260917\\guard_l1024_os12_g8_mixed.npy": "8dc18f2ba433e47c85fc0ad9981b3de1bf3e3b83cecac6b8d8260928221b2183"
+  },
+  "candidates": [
+    {
+      "file": "batch_small_fp32_batched_graph.npy",
+      "label": "Batched FFBP, FP32",
+      "relative_complex_l2_error": 0.03497070835934515,
+      "ser_db": 29.125911412471627,
+      "ser_infinite": false,
+      "reference_energy": 5.962121164390198e+18,
+      "complex_error_energy": 7291378720131057.0,
+      "boundary_width_pixels": 8,
+      "boundary_definition": "union of first/last 8 rows and first/last 8 columns on the output polar grid",
+      "interpretation": "descriptive energy partition only; no attribution of the error mechanism",
+      "boundary": {
+        "pixels": 11344,
+        "pixel_fraction": 0.08633181126331811,
+        "error_energy": 115651593203625.44,
+        "fraction_of_total_error_energy": 0.015861416289393714,
+        "error_energy_per_pixel": 10194957087.766699,
+        "reference_energy": 8.004301336123955e+16,
+        "relative_complex_l2_error": 0.03801142008856348
+      },
+      "interior": {
+        "pixels": 120056,
+        "pixel_fraction": 0.9136681887366819,
+        "error_energy": 7175727126927432.0,
+        "fraction_of_total_error_energy": 0.9841385837106064,
+        "error_energy_per_pixel": 59769833468.776505,
+        "reference_energy": 5.882078151028959e+18,
+        "relative_complex_l2_error": 0.03492750491821989
+      }
+    },
+    {
+      "file": "guard_l1024_os12_g8_fp32.npy",
+      "label": "Refined FFBP, FP32",
+      "relative_complex_l2_error": 0.010455642917856169,
+      "ser_db": 39.6129851448409,
+      "ser_infinite": false,
+      "reference_energy": 5.962121164390198e+18,
+      "complex_error_energy": 651781880886859.5,
+      "boundary_width_pixels": 8,
+      "boundary_definition": "union of first/last 8 rows and first/last 8 columns on the output polar grid",
+      "interpretation": "descriptive energy partition only; no attribution of the error mechanism",
+      "boundary": {
+        "pixels": 11344,
+        "pixel_fraction": 0.08633181126331811,
+        "error_energy": 8343082040963.279,
+        "fraction_of_total_error_energy": 0.01280042033327331,
+        "error_energy_per_pixel": 735462098.1103032,
+        "reference_energy": 8.004301336123955e+16,
+        "relative_complex_l2_error": 0.010209431088161153
+      },
+      "interior": {
+        "pixels": 120056,
+        "pixel_fraction": 0.9136681887366819,
+        "error_energy": 643438798845896.4,
+        "fraction_of_total_error_energy": 0.9871995796667269,
+        "error_energy_per_pixel": 5359488895.56454,
+        "reference_energy": 5.882078151028959e+18,
+        "relative_complex_l2_error": 0.010458953383110686
+      }
+    },
+    {
+      "file": "guard_l1024_os12_g8_mixed.npy",
+      "label": "Refined FFBP, mixed",
+      "relative_complex_l2_error": 0.007128952368207661,
+      "ser_db": 42.939485739948886,
+      "ser_infinite": false,
+      "reference_energy": 5.962121164390198e+18,
+      "complex_error_energy": 303006694470069.56,
+      "boundary_width_pixels": 8,
+      "boundary_definition": "union of first/last 8 rows and first/last 8 columns on the output polar grid",
+      "interpretation": "descriptive energy partition only; no attribution of the error mechanism",
+      "boundary": {
+        "pixels": 11344,
+        "pixel_fraction": 0.08633181126331811,
+        "error_energy": 2173079935582.2568,
+        "fraction_of_total_error_energy": 0.007171722523763941,
+        "error_energy_per_pixel": 191562053.55978993,
+        "reference_energy": 8.004301336123955e+16,
+        "relative_complex_l2_error": 0.00521046083620234
+      },
+      "interior": {
+        "pixels": 120056,
+        "pixel_fraction": 0.9136681887366819,
+        "error_energy": 300833614534487.3,
+        "fraction_of_total_error_energy": 0.992828277476236,
+        "error_energy_per_pixel": 2505777424.989066,
+        "reference_energy": 5.882078151028959e+18,
+        "relative_complex_l2_error": 0.0071515105840057125
+      }
+    }
+  ],
+  "figures": [
+    "D:\\Users\\Chen\\Desktop\\research\\试验数据\\research_gpu_bp\\figures\\resident_small_image_comparison.png",
+    "D:\\Users\\Chen\\Desktop\\research\\试验数据\\research_gpu_bp\\figures\\resident_small_image_comparison.pdf"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "sinc": {
+    "valid": true,
+    "sidelobes_valid": true,
+    "irw_m": 0.8858929593315604,
+    "peak_offset_m": 0.0,
+    "pslr_db": -13.261462656659326,
+    "islr_db": -9.795109866050487,
+    "mainlobe_bounds_m": [
+      -1.0,
+      1.0
+    ],
+    "mainlobe_minima_db": [
+      -328.18278041945166,
+      -328.18278041945166
+    ],
+    "integration_bounds_m": [
+      -40.0,
+      40.0
+    ],
+    "step_m": 0.0009999999999976694
+  },
+  "zero_energy_rejected": true,
+  "passed": true
+}

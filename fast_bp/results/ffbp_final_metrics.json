@@ -1,0 +1,106 @@
+{
+  "capture": {
+    "file": "D:\\Users\\Chen\\Desktop\\research\\璇曢獙鏁版嵁\\2018-08-14_18-54-08.dat",
+    "bytes": 1073741824,
+    "first_frame_offset": 58112,
+    "frame_bytes": 80192,
+    "complete_frame_slots": 13388,
+    "valid_frames": 12757,
+    "invalid_slots": 631,
+    "first_pulse": 26781,
+    "last_pulse": 39537,
+    "missing_pulses": 0,
+    "range_samples": 20000,
+    "sample_rate_hz": 400000000.0,
+    "carrier_hz": 1400000000.0,
+    "bandwidth_hz": 200000000.0,
+    "pulse_width_s": 1e-06,
+    "sampling_delay_s": 3e-06,
+    "prf_hz": 1000.0,
+    "duration_s": 12.756,
+    "discarded_partial_bytes": 73216
+  },
+  "geometry": {
+    "mode": "velocity",
+    "height_reference_m": 18.0,
+    "along_enu": [
+      0.9200662491867141,
+      -0.3917628072028933
+    ],
+    "left_enu": [
+      0.3917628072028933,
+      0.9200662491867141
+    ],
+    "mean_speed_m_s": 17.090231752021637,
+    "mean_course_deg": 113.06423096595245,
+    "extent_m": [
+      0.19447183234241017,
+      218.00264752724775,
+      0.4393799999999892
+    ],
+    "effective_autofocus_correction_rms_m": [
+      0.09905330324345972,
+      0.12904158902680984,
+      0.0
+    ],
+    "autofocus_position_file": "D:\\Users\\Chen\\Desktop\\research\\璇曢獙鏁版嵁\\fast_bp\\results\\autofocus_position.npy"
+  },
+  "options": {
+    "input": "D:\\Users\\Chen\\Desktop\\research\\璇曢獙鏁版嵁\\2018-08-14_18-54-08.dat",
+    "output": "D:\\Users\\Chen\\Desktop\\research\\璇曢獙鏁版嵁\\fast_bp\\results",
+    "rmin": 500.0,
+    "rmax": 2800.0,
+    "umin": -0.65,
+    "umax": 0.55,
+    "side": 1,
+    "phase_sign": -1,
+    "height": 18.0,
+    "trajectory": "velocity",
+    "leaf": 64,
+    "dr": 0.25,
+    "angular_oversample": 3.0,
+    "range_shift": -74.9481145,
+    "position_file": "fast_bp\\results\\autofocus_position.npy",
+    "name": "ffbp_final"
+  },
+  "ffbp": {
+    "leaves": 256,
+    "merges": 255,
+    "leaf_pixel_pulse_products": 8147868752,
+    "merged_pixels": 1225359940,
+    "elapsed_s": 56.47678509999969,
+    "shape": [
+      9200,
+      7312
+    ]
+  },
+  "validation": {
+    "points": 4000,
+    "relative_complex_error": 0.029451060197910706,
+    "complex_coherence": 0.9999433517836752,
+    "direct_bp_sample_seconds": 2.3329561999998987,
+    "comparison": "identical data, geometry, aperture weights and pixels",
+    "passed": true
+  },
+  "display": {
+    "preview_db_limits": [
+      -65.0,
+      -10.0
+    ],
+    "preview_cross_track_m": [
+      450,
+      2650
+    ],
+    "preview_along_track_m": [
+      -800,
+      800
+    ],
+    "operation": "fixed logarithmic display window only; complex image unchanged",
+    "ground_shape": [
+      2601,
+      2351
+    ],
+    "ground_finite": true,
+    "ground_nonzero_pixels": 4569239
+  }
+}

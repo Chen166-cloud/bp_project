@@ -1,0 +1,14 @@
+[
+  {
+    "Path": "D:\\Users\\Chen\\Desktop\\research\\试验数据\\fast_bp\\results\\range_compressed.npy",
+    "Bytes": 2041120128,
+    "LastWriteTimeUtc": "2026-09-10T14:20:19.3245718Z",
+    "SHA256": "1F3EB07B1B7DFBBE3BE6F887466F13F1EA548C7D3D7767F61A4F9F45B9443EEE"
+  },
+  {
+    "Path": "D:\\Users\\Chen\\Desktop\\research\\试验数据\\fast_bp\\results\\autofocus_position.npy",
+    "Bytes": 306296,
+    "LastWriteTimeUtc": "2026-09-10T14:28:38.7795315Z",
+    "SHA256": "C836F296D6825458E95A5BFA1A33E2F5AADA37F915904611E4D19AE7FB5603B6"
+  }
+]

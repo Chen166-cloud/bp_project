@@ -1,0 +1,85 @@
+{
+  "provenance": "Existing 2026-09-16 saved GPU outputs; CPU analysis only on 2026-09-17",
+  "reference": "cpu_direct_reference.npy; complex64 stored output, cast to complex128 for comparison",
+  "rows": [
+    {
+      "algorithm": "direct",
+      "precision": "fp64",
+      "resident_ms": 1158.5535888671875,
+      "total_relative_error_vs_cpu_direct": 2.133716413097964e-10,
+      "total_ser_db_vs_cpu_direct": 193.4172660413499,
+      "same_algorithm_relative_error": 2.133716413097964e-10,
+      "host_ram_to_result_estimate_ms": 2176.3554999979533
+    },
+    {
+      "algorithm": "direct",
+      "precision": "fp32",
+      "resident_ms": 38.0497932434082,
+      "total_relative_error_vs_cpu_direct": 0.003684929016954109,
+      "total_ser_db_vs_cpu_direct": 48.67141747138789,
+      "same_algorithm_relative_error": 0.003684929016954109,
+      "host_ram_to_result_estimate_ms": 1055.6806000004144
+    },
+    {
+      "algorithm": "direct",
+      "precision": "mixed",
+      "resident_ms": 611.3594970703125,
+      "total_relative_error_vs_cpu_direct": 1.879038052850529e-06,
+      "total_ser_db_vs_cpu_direct": 114.52128849617293,
+      "same_algorithm_relative_error": 1.879038052850529e-06,
+      "host_ram_to_result_estimate_ms": 1628.9930999992066
+    },
+    {
+      "algorithm": "ffbp",
+      "precision": "fp64",
+      "resident_ms": 93.85311889648438,
+      "total_relative_error_vs_cpu_direct": 0.03285835371264128,
+      "total_ser_db_vs_cpu_direct": 29.667083992350378,
+      "same_algorithm_relative_error": 7.313930773178845e-09,
+      "host_ram_to_result_estimate_ms": 1111.5043999980116
+    },
+    {
+      "algorithm": "ffbp",
+      "precision": "fp32",
+      "resident_ms": 45.87721633911133,
+      "total_relative_error_vs_cpu_direct": 0.034970708358032225,
+      "total_ser_db_vs_cpu_direct": 29.125911412797727,
+      "same_algorithm_relative_error": 0.011503549176838188,
+      "host_ram_to_result_estimate_ms": 1063.4891999980027
+    },
+    {
+      "algorithm": "ffbp",
+      "precision": "mixed",
+      "resident_ms": 50.0849609375,
+      "total_relative_error_vs_cpu_direct": 0.032858348609230106,
+      "total_ser_db_vs_cpu_direct": 29.66708534140365,
+      "same_algorithm_relative_error": 2.0398300668990334e-07,
+      "host_ram_to_result_estimate_ms": 1067.7669999986392
+    }
+  ],
+  "direct_roi_window_estimate": {
+    "scope": "Final direct-BP ROI only; not FFBP intermediate grids",
+    "method": "AABB conservative range bounds, 4-point interpolation support plus guards",
+    "x_bounds_m": [
+      1379.5201761892154,
+      1469.8943203150898
+    ],
+    "y_bounds_m": [
+      -43.05788821618556,
+      44.74888542293441
+    ],
+    "bins_per_pulse_min": 249,
+    "bins_per_pulse_median": 256.0,
+    "bins_per_pulse_max": 264,
+    "full_input_bytes": 2041120000,
+    "packed_window_bytes": 26122944,
+    "common_window_bytes": 27453064,
+    "packing_reduction_factor": 78.13514433901477,
+    "caveat": "Geometric byte estimate, not measured speedup or a validated cropped implementation"
+  },
+  "amdahl_bound": {
+    "scope": "Same serial upload/download path and same measured transfer durations",
+    "mixed_ffbp_compute_to_zero_host_stage_speedup_bound": 1.0493167585025454,
+    "excludes": "raw decoding, range compression, autofocus, plan construction, compilation"
+  }
+}

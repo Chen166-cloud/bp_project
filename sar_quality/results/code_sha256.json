@@ -1,0 +1,18 @@
+{
+  "sar_quality\\build_report.py": "d12056329f2405631d5984f82b80b9e1d2f81bc1e5b26f60f972cce45b27fef1",
+  "sar_quality\\evaluate.py": "affc1b1c94fa36b319fabdc555cef0975470a81f1d99ea67b03fdd7304224fab",
+  "sar_quality\\metrics.py": "56159a2f96c14f39932fd26b8af6046a0785a32e853464452a32ef8cffb451b3",
+  "sar_quality\\dot_probe.m": "bf1a4cac9fd7c9f13e8d2a94c90698f3efab4a1f23b8325a2643ba8214f41cc8",
+  "sar_quality\\legacy_probe.m": "7295e1e3a6641ad172320dde24d19bb3b189ffd2608edd5a88d1e88dd2f22155",
+  "fast_bp\\autofocus.py": "7834f2f90375c1d0d80c11fe5af841ada226f640f64f06cd0ad8b334177e3baa",
+  "fast_bp\\benchmark.py": "a53c781ca51035f4cd53cf2937f1293f3607ce2b6cdac764c500d3e3410fdb43",
+  "fast_bp\\diagnose.py": "3e01c6a47d9216a1323f2f3bbbfef5ee34e18e9481eed707205ca9a2e950429d",
+  "fast_bp\\ffbp.py": "9fda65dbbf5c36e773fd98122352fa39ead3f7856134f836a541b21b19774883",
+  "fast_bp\\focus_diagnostic.py": "3dd7689d0fc8a0bb7659137404f9d77a122a59aaca60787b0c614bd73dca2e7d",
+  "fast_bp\\pilot.py": "844972091430f0191fc00baa1800e30c00cfb4d1bca3c9f411aa6a622df95fc5",
+  "fast_bp\\render_results.py": "66703af9069fb3280bd1d85a56788e99bd4fdabcf22deae1306083308a3016d2",
+  "fast_bp\\run.py": "3e6744114c581e0100c9e641822340bdadec5f0259af1198e739ce1d318ea088",
+  "fast_bp\\sar_io.py": "95f27fb54d79bdb832e21abc680b002288f8a27eec4ded1ab3f422fa30056ca1",
+  "fast_bp\\validate.py": "16f66dfb958188ea5bade9551d6f9713b6c4a4ed1d1359c720d28442b8c128fd",
+  "fast_bp\\validate_autofocus.py": "6ca8506cf2c484be9948f6d291ad632bda681945fb892d571dd164706d32e6df"
+}

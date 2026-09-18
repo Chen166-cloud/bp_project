@@ -1,0 +1,51 @@
+{
+  "status": "completed",
+  "started_unix": 1789622717.6026697,
+  "environment": {
+    "gpu": "NVIDIA GeForce RTX 4070 Laptop GPU",
+    "compute_capability": "8.9",
+    "gpu_memory_bytes": 8585216000,
+    "gpu_free_bytes_at_query": 7409238016,
+    "driver_version": 13030,
+    "cuda_runtime_version": 12090,
+    "nvrtc_version": [
+      12,
+      2
+    ],
+    "cupy_version": "13.6.0",
+    "numpy_version": "1.26.4",
+    "python_version": "3.12.3",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "cuda_root": "D:\\Program Files\\MATLAB\\R2024a\\sys\\cuda\\win64\\cuda",
+    "cuda_dll_dirs": [
+      "D:\\Program Files\\MATLAB\\R2024a\\sys\\cuda\\win64\\cuda\\bin",
+      "D:\\Program Files\\MATLAB\\R2024a\\bin\\win64"
+    ],
+    "kernel_backend": "CuPy RawModule / NVIDIA NVRTC",
+    "fast_math": false
+  },
+  "arguments": {
+    "suite": "all",
+    "scales": [
+      "small",
+      "medium",
+      "large"
+    ],
+    "repeats": 11,
+    "warmups": 3,
+    "output": "D:\\Users\\Chen\\Desktop\\research\\试验数据\\fast_bp\\results\\resident_20260917"
+  },
+  "source_sha256": {
+    "D:\\Users\\Chen\\Desktop\\research\\试验数据\\fast_bp\\resident_followup.py": "cec528ca2d3efdca516413818ad37c2a534dfa7c8b0cd8a0526821966116c642",
+    "D:\\Users\\Chen\\Desktop\\research\\试验数据\\fast_bp\\batched_resident_backend.py": "707a111b35802328fce07d9be53d11a9b57012ef8a5b2f80b832d4ca5b9550c2",
+    "D:\\Users\\Chen\\Desktop\\research\\试验数据\\fast_bp\\resident_backend.py": "4ec15d025e8d8d280d41accb777c3f8fefbef174742640b3bcd2b73f4a0820ee",
+    "D:\\Users\\Chen\\Desktop\\research\\试验数据\\fast_bp\\resident_experiment.py": "c84651ad8d2477a2d1f87801eb6a01a3345f1e0bfdeca9e66ee12631cb88f40a",
+    "D:\\Users\\Chen\\Desktop\\research\\试验数据\\fast_bp\\resident_plan_audit.py": "fbd861c13ea8db1f631507303b717ddaac366bcefd6c3c7c7ab41892c22946bd",
+    "D:\\Users\\Chen\\Desktop\\research\\试验数据\\fast_bp\\resident_precision.py": "767865f7af309966bc4648bd5c066abb5d54aa1fd1a2d25945c3c2d711e78528",
+    "D:\\Users\\Chen\\Desktop\\research\\试验数据\\fast_bp\\gpu\\batched_resident_kernels.cu": "13dc50463376e48a865c79309c0ea715a5000d604c5ef7fbadd5ce395ab0d08a",
+    "D:\\Users\\Chen\\Desktop\\research\\试验数据\\fast_bp\\gpu\\kernels.cu": "516be4ff3c11c82e344ff8d1d330653d53e48f787036930bd3077d2dc0f153f9",
+    "D:\\Users\\Chen\\Desktop\\research\\试验数据\\fast_bp\\gpu\\precision_probe.cu": "394e43024c4cc83a862970cb085178c0746d1cca4c4baff99de5b03b7c6dbed4",
+    "D:\\Users\\Chen\\Desktop\\research\\试验数据\\fast_bp\\gpu\\resident_kernels.cu": "8c6735fd7ba4858e05819268c83f2292a233fdfc72618f1c086ea4312544342e"
+  },
+  "completed_unix": 1789622830.1973124
+}

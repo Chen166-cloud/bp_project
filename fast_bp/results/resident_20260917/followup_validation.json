@@ -1,0 +1,529 @@
+{
+  "passed": true,
+  "records": [
+    {
+      "sign": -1,
+      "side": 1,
+      "mode": "fp64",
+      "variant": "batched",
+      "quality": {
+        "relative_complex_error": 0.0,
+        "ser_db": 6000.0,
+        "complex_coherence": 1.0000000000000013,
+        "relative_magnitude_error": 0.0,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": 0.0,
+        "phase_std_deg_above_minus30db": 0.0,
+        "phase_median_abs_deg_above_minus30db": 0.0,
+        "phase_p95_abs_deg_above_minus30db": 0.0,
+        "phase_mask_samples": 6673,
+        "peak_amplitude_difference_db": 0.0,
+        "reference_peak_pixel": [
+          51,
+          38
+        ],
+        "estimate_peak_pixel": [
+          51,
+          38
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      },
+      "bitwise_equal": true,
+      "graph_equal": true
+    },
+    {
+      "sign": -1,
+      "side": 1,
+      "mode": "fp32",
+      "variant": "batched",
+      "quality": {
+        "relative_complex_error": 0.0,
+        "ser_db": 6000.0,
+        "complex_coherence": 1.0000000000000004,
+        "relative_magnitude_error": 0.0,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": 0.0,
+        "phase_std_deg_above_minus30db": 0.0,
+        "phase_median_abs_deg_above_minus30db": 0.0,
+        "phase_p95_abs_deg_above_minus30db": 0.0,
+        "phase_mask_samples": 6672,
+        "peak_amplitude_difference_db": 0.0,
+        "reference_peak_pixel": [
+          51,
+          38
+        ],
+        "estimate_peak_pixel": [
+          51,
+          38
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      },
+      "bitwise_equal": true,
+      "graph_equal": true
+    },
+    {
+      "sign": -1,
+      "side": 1,
+      "mode": "mixed",
+      "variant": "batched",
+      "quality": {
+        "relative_complex_error": 0.0,
+        "ser_db": 6000.0,
+        "complex_coherence": 1.000000000000004,
+        "relative_magnitude_error": 0.0,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": 0.0,
+        "phase_std_deg_above_minus30db": 0.0,
+        "phase_median_abs_deg_above_minus30db": 0.0,
+        "phase_p95_abs_deg_above_minus30db": 0.0,
+        "phase_mask_samples": 6673,
+        "peak_amplitude_difference_db": 0.0,
+        "reference_peak_pixel": [
+          51,
+          38
+        ],
+        "estimate_peak_pixel": [
+          51,
+          38
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      },
+      "bitwise_equal": true,
+      "graph_equal": true
+    },
+    {
+      "sign": -1,
+      "side": 1,
+      "mode": "mixed",
+      "variant": "phase_lut",
+      "quality": {
+        "relative_complex_error": 3.7295708564410327e-07,
+        "ser_db": 128.56682274935872,
+        "complex_coherence": 0.9999999999999328,
+        "relative_magnitude_error": 2.631275654867805e-07,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": 3.9722701901413005e-07,
+        "phase_std_deg_above_minus30db": 3.063802062579335e-05,
+        "phase_median_abs_deg_above_minus30db": 1.1869711537598079e-05,
+        "phase_p95_abs_deg_above_minus30db": 5.952319787821675e-05,
+        "phase_mask_samples": 6659,
+        "peak_amplitude_difference_db": 1.4911310111019283e-06,
+        "reference_peak_pixel": [
+          47,
+          31
+        ],
+        "estimate_peak_pixel": [
+          47,
+          31
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      },
+      "graph_equal": true
+    },
+    {
+      "sign": -1,
+      "side": -1,
+      "mode": "fp64",
+      "variant": "batched",
+      "quality": {
+        "relative_complex_error": 0.0,
+        "ser_db": 6000.0,
+        "complex_coherence": 1.0000000000000033,
+        "relative_magnitude_error": 0.0,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": 0.0,
+        "phase_std_deg_above_minus30db": 0.0,
+        "phase_median_abs_deg_above_minus30db": 0.0,
+        "phase_p95_abs_deg_above_minus30db": 0.0,
+        "phase_mask_samples": 6659,
+        "peak_amplitude_difference_db": 0.0,
+        "reference_peak_pixel": [
+          9,
+          31
+        ],
+        "estimate_peak_pixel": [
+          9,
+          31
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      },
+      "bitwise_equal": true,
+      "graph_equal": true
+    },
+    {
+      "sign": -1,
+      "side": -1,
+      "mode": "fp32",
+      "variant": "batched",
+      "quality": {
+        "relative_complex_error": 0.0,
+        "ser_db": 6000.0,
+        "complex_coherence": 1.0000000000000004,
+        "relative_magnitude_error": 0.0,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": 0.0,
+        "phase_std_deg_above_minus30db": 0.0,
+        "phase_median_abs_deg_above_minus30db": 0.0,
+        "phase_p95_abs_deg_above_minus30db": 0.0,
+        "phase_mask_samples": 6660,
+        "peak_amplitude_difference_db": 0.0,
+        "reference_peak_pixel": [
+          9,
+          31
+        ],
+        "estimate_peak_pixel": [
+          9,
+          31
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      },
+      "bitwise_equal": true,
+      "graph_equal": true
+    },
+    {
+      "sign": -1,
+      "side": -1,
+      "mode": "mixed",
+      "variant": "batched",
+      "quality": {
+        "relative_complex_error": 0.0,
+        "ser_db": 6000.0,
+        "complex_coherence": 1.0000000000000038,
+        "relative_magnitude_error": 0.0,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": 0.0,
+        "phase_std_deg_above_minus30db": 0.0,
+        "phase_median_abs_deg_above_minus30db": 0.0,
+        "phase_p95_abs_deg_above_minus30db": 0.0,
+        "phase_mask_samples": 6659,
+        "peak_amplitude_difference_db": 0.0,
+        "reference_peak_pixel": [
+          9,
+          31
+        ],
+        "estimate_peak_pixel": [
+          9,
+          31
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      },
+      "bitwise_equal": true,
+      "graph_equal": true
+    },
+    {
+      "sign": -1,
+      "side": -1,
+      "mode": "mixed",
+      "variant": "phase_lut",
+      "quality": {
+        "relative_complex_error": 4.7048092696656813e-07,
+        "ser_db": 126.54915955870136,
+        "complex_coherence": 0.9999999999998909,
+        "relative_magnitude_error": 3.280893758729227e-07,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": 5.619675709425449e-07,
+        "phase_std_deg_above_minus30db": 3.823015959923921e-05,
+        "phase_median_abs_deg_above_minus30db": 1.5399374436265294e-05,
+        "phase_p95_abs_deg_above_minus30db": 7.436663098256273e-05,
+        "phase_mask_samples": 6649,
+        "peak_amplitude_difference_db": 8.756950203418893e-07,
+        "reference_peak_pixel": [
+          9,
+          32
+        ],
+        "estimate_peak_pixel": [
+          9,
+          32
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      },
+      "graph_equal": true
+    },
+    {
+      "sign": 1,
+      "side": 1,
+      "mode": "fp64",
+      "variant": "batched",
+      "quality": {
+        "relative_complex_error": 0.0,
+        "ser_db": 6000.0,
+        "complex_coherence": 1.0000000000000029,
+        "relative_magnitude_error": 0.0,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": 0.0,
+        "phase_std_deg_above_minus30db": 0.0,
+        "phase_median_abs_deg_above_minus30db": 0.0,
+        "phase_p95_abs_deg_above_minus30db": 0.0,
+        "phase_mask_samples": 6651,
+        "peak_amplitude_difference_db": 0.0,
+        "reference_peak_pixel": [
+          56,
+          10
+        ],
+        "estimate_peak_pixel": [
+          56,
+          10
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      },
+      "bitwise_equal": true,
+      "graph_equal": true
+    },
+    {
+      "sign": 1,
+      "side": 1,
+      "mode": "fp32",
+      "variant": "batched",
+      "quality": {
+        "relative_complex_error": 0.0,
+        "ser_db": 6000.0,
+        "complex_coherence": 1.0000000000000029,
+        "relative_magnitude_error": 0.0,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": 0.0,
+        "phase_std_deg_above_minus30db": 0.0,
+        "phase_median_abs_deg_above_minus30db": 0.0,
+        "phase_p95_abs_deg_above_minus30db": 0.0,
+        "phase_mask_samples": 6653,
+        "peak_amplitude_difference_db": 0.0,
+        "reference_peak_pixel": [
+          56,
+          10
+        ],
+        "estimate_peak_pixel": [
+          56,
+          10
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      },
+      "bitwise_equal": true,
+      "graph_equal": true
+    },
+    {
+      "sign": 1,
+      "side": 1,
+      "mode": "mixed",
+      "variant": "batched",
+      "quality": {
+        "relative_complex_error": 0.0,
+        "ser_db": 6000.0,
+        "complex_coherence": 1.000000000000003,
+        "relative_magnitude_error": 0.0,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": 0.0,
+        "phase_std_deg_above_minus30db": 0.0,
+        "phase_median_abs_deg_above_minus30db": 0.0,
+        "phase_p95_abs_deg_above_minus30db": 0.0,
+        "phase_mask_samples": 6651,
+        "peak_amplitude_difference_db": 0.0,
+        "reference_peak_pixel": [
+          56,
+          10
+        ],
+        "estimate_peak_pixel": [
+          56,
+          10
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      },
+      "bitwise_equal": true,
+      "graph_equal": true
+    },
+    {
+      "sign": 1,
+      "side": 1,
+      "mode": "mixed",
+      "variant": "phase_lut",
+      "quality": {
+        "relative_complex_error": 3.67925553399536e-07,
+        "ser_db": 128.6848009644962,
+        "complex_coherence": 0.999999999999933,
+        "relative_magnitude_error": 2.5688119534755525e-07,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": -9.48303300468945e-08,
+        "phase_std_deg_above_minus30db": 2.87429858968599e-05,
+        "phase_median_abs_deg_above_minus30db": 1.1920015836600863e-05,
+        "phase_p95_abs_deg_above_minus30db": 5.581264599879861e-05,
+        "phase_mask_samples": 6660,
+        "peak_amplitude_difference_db": -5.844759733018451e-07,
+        "reference_peak_pixel": [
+          56,
+          10
+        ],
+        "estimate_peak_pixel": [
+          56,
+          10
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      },
+      "graph_equal": true
+    },
+    {
+      "sign": 1,
+      "side": -1,
+      "mode": "fp64",
+      "variant": "batched",
+      "quality": {
+        "relative_complex_error": 0.0,
+        "ser_db": 6000.0,
+        "complex_coherence": 1.000000000000003,
+        "relative_magnitude_error": 0.0,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": 0.0,
+        "phase_std_deg_above_minus30db": 0.0,
+        "phase_median_abs_deg_above_minus30db": 0.0,
+        "phase_p95_abs_deg_above_minus30db": 0.0,
+        "phase_mask_samples": 6666,
+        "peak_amplitude_difference_db": 0.0,
+        "reference_peak_pixel": [
+          15,
+          2
+        ],
+        "estimate_peak_pixel": [
+          15,
+          2
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      },
+      "bitwise_equal": true,
+      "graph_equal": true
+    },
+    {
+      "sign": 1,
+      "side": -1,
+      "mode": "fp32",
+      "variant": "batched",
+      "quality": {
+        "relative_complex_error": 0.0,
+        "ser_db": 6000.0,
+        "complex_coherence": 1.0000000000000027,
+        "relative_magnitude_error": 0.0,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": 0.0,
+        "phase_std_deg_above_minus30db": 0.0,
+        "phase_median_abs_deg_above_minus30db": 0.0,
+        "phase_p95_abs_deg_above_minus30db": 0.0,
+        "phase_mask_samples": 6668,
+        "peak_amplitude_difference_db": 0.0,
+        "reference_peak_pixel": [
+          15,
+          2
+        ],
+        "estimate_peak_pixel": [
+          15,
+          2
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      },
+      "bitwise_equal": true,
+      "graph_equal": true
+    },
+    {
+      "sign": 1,
+      "side": -1,
+      "mode": "mixed",
+      "variant": "batched",
+      "quality": {
+        "relative_complex_error": 0.0,
+        "ser_db": 6000.0,
+        "complex_coherence": 1.0000000000000033,
+        "relative_magnitude_error": 0.0,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": 0.0,
+        "phase_std_deg_above_minus30db": 0.0,
+        "phase_median_abs_deg_above_minus30db": 0.0,
+        "phase_p95_abs_deg_above_minus30db": 0.0,
+        "phase_mask_samples": 6666,
+        "peak_amplitude_difference_db": 0.0,
+        "reference_peak_pixel": [
+          15,
+          2
+        ],
+        "estimate_peak_pixel": [
+          15,
+          2
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      },
+      "bitwise_equal": true,
+      "graph_equal": true
+    },
+    {
+      "sign": 1,
+      "side": -1,
+      "mode": "mixed",
+      "variant": "phase_lut",
+      "quality": {
+        "relative_complex_error": 4.680360132069899e-07,
+        "ser_db": 126.59441457375982,
+        "complex_coherence": 0.9999999999998915,
+        "relative_magnitude_error": 3.2413413692065403e-07,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": -1.8395299989447728e-07,
+        "phase_std_deg_above_minus30db": 3.6968326902180336e-05,
+        "phase_median_abs_deg_above_minus30db": 1.5122541761916602e-05,
+        "phase_p95_abs_deg_above_minus30db": 7.307771534623624e-05,
+        "phase_mask_samples": 6669,
+        "peak_amplitude_difference_db": 4.2581796264287175e-08,
+        "reference_peak_pixel": [
+          42,
+          39
+        ],
+        "estimate_peak_pixel": [
+          42,
+          39
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      },
+      "graph_equal": true
+    }
+  ]
+}

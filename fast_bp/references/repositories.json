@@ -1,0 +1,44 @@
+[
+  {
+    "url": "https://raw.githubusercontent.com/Ttl/torchbp/master/torchbp/ops/ffbp.py",
+    "snapshot_file": "torchbp_torchbp_ops_ffbp.py",
+    "sha256": "b6bc458723a47367e3612d1e481bed04a5832724a35af3fcc0306556cef8a3a4",
+    "accessed": "2026-09-10"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/Ttl/torchbp/master/torchbp/ops/polar_interp.py",
+    "snapshot_file": "torchbp_torchbp_ops_polar_interp.py",
+    "sha256": "eb992fe68609dca65f93fab71a74e07804616349fa2bfaf9e0986f472cea06c8",
+    "accessed": "2026-09-10"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/Ttl/torchbp/master/LICENSE",
+    "snapshot_file": "torchbp_LICENSE",
+    "sha256": "ef1e314e1859a8ad4ce085c8fe4c9dfcd27d0af1261abfe2c1961e23d36fde51",
+    "accessed": "2026-09-10"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/dm6718/RITSAR/master/ritsar/imgTools.py",
+    "snapshot_file": "RITSAR_ritsar_imgTools.py",
+    "sha256": "8acde83edb7e15eaaf4c74d330564d988647e4fba0d5ab22c1b19692d035ccdb",
+    "accessed": "2026-09-10"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/dm6718/RITSAR/master/README.md",
+    "snapshot_file": "RITSAR_README.md",
+    "sha256": "7914ac8623a5ec88abdbdbf6539e688d804c8a4b909a0be4975905bd89a9b5c5",
+    "accessed": "2026-09-10"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/tbensonatl/gotcha-back/master/README.md",
+    "snapshot_file": "gotcha-back_README.md",
+    "sha256": "f539feced696bd92576589210b1d0075f47e57477319fd553714ee38972fa2e4",
+    "accessed": "2026-09-10"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/tbensonatl/gotcha-back/master/LICENSE",
+    "snapshot_file": "gotcha-back_LICENSE",
+    "sha256": "0b9210629f57419162075019c6aa800a9e1a86010a9423c325d33fc743af5b31",
+    "accessed": "2026-09-10"
+  }
+]

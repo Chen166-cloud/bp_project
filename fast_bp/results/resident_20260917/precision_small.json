@@ -1,0 +1,1132 @@
+{
+  "key": "precision_small",
+  "seed": 20260918,
+  "repeats": 11,
+  "warmups": 3,
+  "orders": [
+    [
+      2,
+      4,
+      1,
+      3,
+      0
+    ],
+    [
+      3,
+      4,
+      0,
+      2,
+      1
+    ],
+    [
+      3,
+      0,
+      2,
+      4,
+      1
+    ],
+    [
+      1,
+      4,
+      0,
+      2,
+      3
+    ],
+    [
+      1,
+      3,
+      2,
+      4,
+      0
+    ],
+    [
+      3,
+      0,
+      1,
+      4,
+      2
+    ],
+    [
+      0,
+      3,
+      1,
+      4,
+      2
+    ],
+    [
+      2,
+      1,
+      3,
+      0,
+      4
+    ],
+    [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    [
+      2,
+      4,
+      1,
+      0,
+      3
+    ],
+    [
+      2,
+      4,
+      3,
+      1,
+      0
+    ]
+  ],
+  "records": [
+    {
+      "name": "precision_direct_fp32_c256_graph",
+      "graph": true,
+      "mode": "fp32",
+      "variant": "original",
+      "chunk": 256,
+      "warmup_ms": [
+        36.94038391113281,
+        40.86988830566406,
+        43.51283264160156
+      ],
+      "samples": [
+        {
+          "round": 0,
+          "start_unix": 1789622807.766059,
+          "event_ms": 37.808128356933594,
+          "wall_ms": 37.890000000061264
+        },
+        {
+          "round": 1,
+          "start_unix": 1789622808.7089818,
+          "event_ms": 37.61561584472656,
+          "wall_ms": 37.70370000006551
+        },
+        {
+          "round": 2,
+          "start_unix": 1789622810.3299656,
+          "event_ms": 37.385215759277344,
+          "wall_ms": 37.47590000011769
+        },
+        {
+          "round": 3,
+          "start_unix": 1789622812.936357,
+          "event_ms": 38.61299133300781,
+          "wall_ms": 38.721099999975195
+        },
+        {
+          "round": 4,
+          "start_unix": 1789622815.8617654,
+          "event_ms": 38.298622131347656,
+          "wall_ms": 38.42150000014044
+        },
+        {
+          "round": 5,
+          "start_unix": 1789622816.410795,
+          "event_ms": 39.653377532958984,
+          "wall_ms": 39.73210000003746
+        },
+        {
+          "round": 6,
+          "start_unix": 1789622817.9013047,
+          "event_ms": 37.00716781616211,
+          "wall_ms": 37.09359999993467
+        },
+        {
+          "round": 7,
+          "start_unix": 1789622821.4541276,
+          "event_ms": 37.49264144897461,
+          "wall_ms": 37.55899999987378
+        },
+        {
+          "round": 8,
+          "start_unix": 1789622821.861703,
+          "event_ms": 33.44790267944336,
+          "wall_ms": 33.52560000007543
+        },
+        {
+          "round": 9,
+          "start_unix": 1789622825.3500926,
+          "event_ms": 51.71507263183594,
+          "wall_ms": 51.801299999851835
+        },
+        {
+          "round": 10,
+          "start_unix": 1789622827.9431138,
+          "event_ms": 32.145408630371094,
+          "wall_ms": 32.23240000011174
+        }
+      ],
+      "quality_vs_direct_fp64": {
+        "relative_complex_error": 0.003684929016377085,
+        "ser_db": 48.67141747274802,
+        "complex_coherence": 0.9999942730041788,
+        "relative_magnitude_error": 0.00045543826088698564,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": 0.029215916556363623,
+        "phase_std_deg_above_minus30db": 0.19741861290835516,
+        "phase_median_abs_deg_above_minus30db": 0.14025359359986625,
+        "phase_p95_abs_deg_above_minus30db": 0.37777233766358403,
+        "phase_mask_samples": 7295,
+        "peak_amplitude_difference_db": 0.000808105255973625,
+        "reference_peak_pixel": [
+          222,
+          201
+        ],
+        "estimate_peak_pixel": [
+          222,
+          201
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      },
+      "timing": {
+        "samples_ms": [
+          37.808128356933594,
+          37.61561584472656,
+          37.385215759277344,
+          38.61299133300781,
+          38.298622131347656,
+          39.653377532958984,
+          37.00716781616211,
+          37.49264144897461,
+          33.44790267944336,
+          51.71507263183594,
+          32.145408630371094
+        ],
+        "median_ms": 37.61561584472656,
+        "min_ms": 32.145408630371094,
+        "max_ms": 51.71507263183594,
+        "q1_ms": 37.19619178771973,
+        "q3_ms": 38.455806732177734,
+        "coefficient_of_variation": 0.12380472563506546
+      },
+      "wall_timing": {
+        "samples_ms": [
+          37.890000000061264,
+          37.70370000006551,
+          37.47590000011769,
+          38.721099999975195,
+          38.42150000014044,
+          39.73210000003746,
+          37.09359999993467,
+          37.55899999987378,
+          33.52560000007543,
+          51.801299999851835,
+          32.23240000011174
+        ],
+        "median_ms": 37.70370000006551,
+        "min_ms": 32.23240000011174,
+        "max_ms": 51.801299999851835,
+        "q1_ms": 37.28475000002618,
+        "q3_ms": 38.57130000005782,
+        "coefficient_of_variation": 0.12354271899219951
+      },
+      "launch_count": 50,
+      "program": {
+        "algorithm": "direct",
+        "variant": "original",
+        "mode": "fp32",
+        "shape": [
+          360,
+          365
+        ],
+        "block_size": 128,
+        "chunk_pulses": 256,
+        "kernel_launch_count": 50,
+        "kernel_counts": {
+          "direct_chunk_fp32": 50
+        },
+        "memset_count": 1,
+        "device_operation_count": 51,
+        "workspace_bytes": 1051200,
+        "workspace_buffer_count": 1,
+        "origin_table_bytes": 6132,
+        "total_owned_device_bytes": 1057332,
+        "workspace_policy": "all schedule buffers preallocated; no liveness reuse",
+        "input_data_shared": true,
+        "output_dtype": "complex64",
+        "zeroing_in_execute": true,
+        "graph_supported": true,
+        "graph_error": null,
+        "arithmetic": "baseline kernels; no fast_math",
+        "fusion": null
+      },
+      "vs_first_candidate": {
+        "bitwise_equal": true,
+        "quality": {
+          "relative_complex_error": 0.0,
+          "ser_db": 6000.0,
+          "complex_coherence": 1.000000000000002,
+          "relative_magnitude_error": 0.0,
+          "finite_fraction": 1.0,
+          "phase_bias_deg": 0.0,
+          "phase_std_deg_above_minus30db": 0.0,
+          "phase_median_abs_deg_above_minus30db": 0.0,
+          "phase_p95_abs_deg_above_minus30db": 0.0,
+          "phase_mask_samples": 7295,
+          "peak_amplitude_difference_db": 0.0,
+          "reference_peak_pixel": [
+            222,
+            201
+          ],
+          "estimate_peak_pixel": [
+            222,
+            201
+          ],
+          "peak_shift_pixels": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "name": "precision_direct_mixed_c256_graph",
+      "graph": true,
+      "mode": "mixed",
+      "variant": "original",
+      "chunk": 256,
+      "warmup_ms": [
+        698.871826171875,
+        691.1710815429688,
+        690.2405395507812
+      ],
+      "samples": [
+        {
+          "round": 0,
+          "start_unix": 1789622806.5755029,
+          "event_ms": 691.846923828125,
+          "wall_ms": 691.9044000001122
+        },
+        {
+          "round": 1,
+          "start_unix": 1789622809.1663852,
+          "event_ms": 666.355712890625,
+          "wall_ms": 666.4212999999108
+        },
+        {
+          "round": 2,
+          "start_unix": 1789622811.1654272,
+          "event_ms": 690.4071655273438,
+          "wall_ms": 690.4623000000356
+        },
+        {
+          "round": 3,
+          "start_unix": 1789622811.8559954,
+          "event_ms": 691.8184814453125,
+          "wall_ms": 691.8786999999611
+        },
+        {
+          "round": 4,
+          "start_unix": 1789622813.8916447,
+          "event_ms": 691.7929077148438,
+          "wall_ms": 691.8556000000535
+        },
+        {
+          "round": 5,
+          "start_unix": 1789622816.4504652,
+          "event_ms": 684.7344360351562,
+          "wall_ms": 684.812200000124
+        },
+        {
+          "round": 6,
+          "start_unix": 1789622818.4509842,
+          "event_ms": 679.3707275390625,
+          "wall_ms": 679.455599999983
+        },
+        {
+          "round": 7,
+          "start_unix": 1789622820.2890232,
+          "event_ms": 678.170654296875,
+          "wall_ms": 678.2419999999547
+        },
+        {
+          "round": 8,
+          "start_unix": 1789622821.8951294,
+          "event_ms": 713.8170776367188,
+          "wall_ms": 713.8798000000861
+        },
+        {
+          "round": 9,
+          "start_unix": 1789622824.6809638,
+          "event_ms": 669.5186767578125,
+          "wall_ms": 669.5846999998594
+        },
+        {
+          "round": 10,
+          "start_unix": 1789622827.2534142,
+          "event_ms": 689.517578125,
+          "wall_ms": 689.5904000000428
+        }
+      ],
+      "quality_vs_direct_fp64": {
+        "relative_complex_error": 1.8790380000208911e-06,
+        "ser_db": 114.52128874037895,
+        "complex_coherence": 0.9999999999982335,
+        "relative_magnitude_error": 1.604547672364807e-06,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": 1.658619865809767e-07,
+        "phase_std_deg_above_minus30db": 6.20578666838626e-05,
+        "phase_median_abs_deg_above_minus30db": 3.42422733700242e-05,
+        "phase_p95_abs_deg_above_minus30db": 0.00012845884545972043,
+        "phase_mask_samples": 7295,
+        "peak_amplitude_difference_db": -4.087030202262439e-06,
+        "reference_peak_pixel": [
+          222,
+          201
+        ],
+        "estimate_peak_pixel": [
+          222,
+          201
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      },
+      "timing": {
+        "samples_ms": [
+          691.846923828125,
+          666.355712890625,
+          690.4071655273438,
+          691.8184814453125,
+          691.7929077148438,
+          684.7344360351562,
+          679.3707275390625,
+          678.170654296875,
+          713.8170776367188,
+          669.5186767578125,
+          689.517578125
+        ],
+        "median_ms": 689.517578125,
+        "min_ms": 666.355712890625,
+        "max_ms": 713.8170776367188,
+        "q1_ms": 678.7706909179688,
+        "q3_ms": 691.8056945800781,
+        "coefficient_of_variation": 0.017965607918561704
+      },
+      "wall_timing": {
+        "samples_ms": [
+          691.9044000001122,
+          666.4212999999108,
+          690.4623000000356,
+          691.8786999999611,
+          691.8556000000535,
+          684.812200000124,
+          679.455599999983,
+          678.2419999999547,
+          713.8798000000861,
+          669.5846999998594,
+          689.5904000000428
+        ],
+        "median_ms": 689.5904000000428,
+        "min_ms": 666.4212999999108,
+        "max_ms": 713.8798000000861,
+        "q1_ms": 678.8487999999688,
+        "q3_ms": 691.8671500000073,
+        "coefficient_of_variation": 0.017959633053543554
+      },
+      "launch_count": 50,
+      "program": {
+        "algorithm": "direct",
+        "variant": "original",
+        "mode": "mixed",
+        "shape": [
+          360,
+          365
+        ],
+        "block_size": 128,
+        "chunk_pulses": 256,
+        "kernel_launch_count": 50,
+        "kernel_counts": {
+          "direct_chunk_mixed": 50
+        },
+        "memset_count": 1,
+        "device_operation_count": 51,
+        "workspace_bytes": 1051200,
+        "workspace_buffer_count": 1,
+        "origin_table_bytes": 12264,
+        "total_owned_device_bytes": 1063464,
+        "workspace_policy": "all schedule buffers preallocated; no liveness reuse",
+        "input_data_shared": true,
+        "output_dtype": "complex64",
+        "zeroing_in_execute": true,
+        "graph_supported": true,
+        "graph_error": null,
+        "arithmetic": "baseline kernels; no fast_math",
+        "fusion": null
+      },
+      "vs_first_candidate": {
+        "bitwise_equal": false,
+        "quality": {
+          "relative_complex_error": 0.0036849262240174403,
+          "ser_db": 48.67142405473014,
+          "complex_coherence": 0.9999942730629473,
+          "relative_magnitude_error": 0.00045544234950106537,
+          "finite_fraction": 1.0,
+          "phase_bias_deg": -0.029304973715183116,
+          "phase_std_deg_above_minus30db": 0.1973949058608887,
+          "phase_median_abs_deg_above_minus30db": 0.14032742875251816,
+          "phase_p95_abs_deg_above_minus30db": 0.3774157868952732,
+          "phase_mask_samples": 7295,
+          "peak_amplitude_difference_db": -0.0008121922861754942,
+          "reference_peak_pixel": [
+            222,
+            201
+          ],
+          "estimate_peak_pixel": [
+            222,
+            201
+          ],
+          "peak_shift_pixels": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "name": "precision_direct_phase32_c256_graph",
+      "graph": true,
+      "mode": "mixed",
+      "variant": "phase32",
+      "chunk": 256,
+      "warmup_ms": [
+        395.9715881347656,
+        395.1244201660156,
+        395.14105224609375
+      ],
+      "samples": [
+        {
+          "round": 0,
+          "start_unix": 1789622805.7923148,
+          "event_ms": 394.66290283203125,
+          "wall_ms": 394.7611000000961
+        },
+        {
+          "round": 1,
+          "start_unix": 1789622808.7464807,
+          "event_ms": 419.7724304199219,
+          "wall_ms": 419.84049999996387
+        },
+        {
+          "round": 2,
+          "start_unix": 1789622810.3665576,
+          "event_ms": 409.30816650390625,
+          "wall_ms": 409.4691000000239
+        },
+        {
+          "round": 3,
+          "start_unix": 1789622812.9752383,
+          "event_ms": 419.3699951171875,
+          "wall_ms": 419.4583999999395
+        },
+        {
+          "round": 4,
+          "start_unix": 1789622815.0796037,
+          "event_ms": 395.6068115234375,
+          "wall_ms": 395.802200000162
+        },
+        {
+          "round": 5,
+          "start_unix": 1789622817.5122497,
+          "event_ms": 388.9879150390625,
+          "wall_ms": 389.05750000003536
+        },
+        {
+          "round": 6,
+          "start_unix": 1789622819.5098474,
+          "event_ms": 389.48760986328125,
+          "wall_ms": 389.57700000014484
+        },
+        {
+          "round": 7,
+          "start_unix": 1789622819.8997517,
+          "event_ms": 389.0716552734375,
+          "wall_ms": 389.15350000002036
+        },
+        {
+          "round": 8,
+          "start_unix": 1789622822.6086774,
+          "event_ms": 396.7303771972656,
+          "wall_ms": 396.82119999997667
+        },
+        {
+          "round": 9,
+          "start_unix": 1789622823.8936095,
+          "event_ms": 397.85333251953125,
+          "wall_ms": 397.92239999997037
+        },
+        {
+          "round": 10,
+          "start_unix": 1789622825.9657009,
+          "event_ms": 399.7685852050781,
+          "wall_ms": 399.84819999995125
+        }
+      ],
+      "quality_vs_direct_fp64": {
+        "relative_complex_error": 1.8912567662983967e-06,
+        "ser_db": 114.46499010404611,
+        "complex_coherence": 0.9999999999982069,
+        "relative_magnitude_error": 1.6124838075243645e-06,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": 1.062640786329585e-07,
+        "phase_std_deg_above_minus30db": 6.26061487163982e-05,
+        "phase_median_abs_deg_above_minus30db": 3.413673969393579e-05,
+        "phase_p95_abs_deg_above_minus30db": 0.00012779648738020868,
+        "phase_mask_samples": 7295,
+        "peak_amplitude_difference_db": -1.7323570532535482e-06,
+        "reference_peak_pixel": [
+          222,
+          201
+        ],
+        "estimate_peak_pixel": [
+          222,
+          201
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      },
+      "timing": {
+        "samples_ms": [
+          394.66290283203125,
+          419.7724304199219,
+          409.30816650390625,
+          419.3699951171875,
+          395.6068115234375,
+          388.9879150390625,
+          389.48760986328125,
+          389.0716552734375,
+          396.7303771972656,
+          397.85333251953125,
+          399.7685852050781
+        ],
+        "median_ms": 396.7303771972656,
+        "min_ms": 388.9879150390625,
+        "max_ms": 419.7724304199219,
+        "q1_ms": 392.07525634765625,
+        "q3_ms": 404.5383758544922,
+        "coefficient_of_variation": 0.026827922062678068
+      },
+      "wall_timing": {
+        "samples_ms": [
+          394.7611000000961,
+          419.84049999996387,
+          409.4691000000239,
+          419.4583999999395,
+          395.802200000162,
+          389.05750000003536,
+          389.57700000014484,
+          389.15350000002036,
+          396.82119999997667,
+          397.92239999997037,
+          399.84819999995125
+        ],
+        "median_ms": 396.82119999997667,
+        "min_ms": 389.05750000003536,
+        "max_ms": 419.84049999996387,
+        "q1_ms": 392.1690500001205,
+        "q3_ms": 404.6586499999876,
+        "coefficient_of_variation": 0.026822470449230255
+      },
+      "launch_count": 50,
+      "program": {
+        "algorithm": "direct",
+        "variant": "original",
+        "mode": "mixed",
+        "shape": [
+          360,
+          365
+        ],
+        "block_size": 128,
+        "chunk_pulses": 256,
+        "kernel_launch_count": 50,
+        "kernel_counts": {
+          "direct_chunk_mixed": 50
+        },
+        "memset_count": 1,
+        "device_operation_count": 51,
+        "workspace_bytes": 1051200,
+        "workspace_buffer_count": 1,
+        "origin_table_bytes": 12264,
+        "total_owned_device_bytes": 1063464,
+        "workspace_policy": "all schedule buffers preallocated; no liveness reuse",
+        "input_data_shared": true,
+        "output_dtype": "complex64",
+        "zeroing_in_execute": true,
+        "graph_supported": true,
+        "graph_error": null,
+        "arithmetic": "baseline kernels; no fast_math",
+        "fusion": null
+      },
+      "vs_first_candidate": {
+        "bitwise_equal": false,
+        "quality": {
+          "relative_complex_error": 0.0036849266750708562,
+          "ser_db": 48.67142299153383,
+          "complex_coherence": 0.9999942730547442,
+          "relative_magnitude_error": 0.00045543960127284117,
+          "finite_fraction": 1.0,
+          "phase_bias_deg": -0.029305025661919174,
+          "phase_std_deg_above_minus30db": 0.19739498012168752,
+          "phase_median_abs_deg_above_minus30db": 0.14032671589062665,
+          "phase_p95_abs_deg_above_minus30db": 0.3774008861567854,
+          "phase_mask_samples": 7295,
+          "peak_amplitude_difference_db": -0.0008098376130265539,
+          "reference_peak_pixel": [
+            222,
+            201
+          ],
+          "estimate_peak_pixel": [
+            222,
+            201
+          ],
+          "peak_shift_pixels": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "name": "precision_direct_phase32_wrapped_c256_graph",
+      "graph": true,
+      "mode": "mixed",
+      "variant": "phase32_wrapped",
+      "chunk": 256,
+      "warmup_ms": [
+        499.69049072265625,
+        497.16839599609375,
+        497.1325378417969
+      ],
+      "samples": [
+        {
+          "round": 0,
+          "start_unix": 1789622807.2676306,
+          "event_ms": 498.0765686035156,
+          "wall_ms": 498.1424000000061
+        },
+        {
+          "round": 1,
+          "start_unix": 1789622807.8037748,
+          "event_ms": 515.6454467773438,
+          "wall_ms": 515.7676999999694
+        },
+        {
+          "round": 2,
+          "start_unix": 1789622809.8332112,
+          "event_ms": 496.87860107421875,
+          "wall_ms": 496.9771999999466
+        },
+        {
+          "round": 3,
+          "start_unix": 1789622813.394853,
+          "event_ms": 496.6277160644531,
+          "wall_ms": 496.71439999997347
+        },
+        {
+          "round": 4,
+          "start_unix": 1789622814.5833073,
+          "event_ms": 496.3000183105469,
+          "wall_ms": 496.3694000000487
+        },
+        {
+          "round": 5,
+          "start_unix": 1789622815.900611,
+          "event_ms": 509.7574462890625,
+          "wall_ms": 509.8355000000083
+        },
+        {
+          "round": 6,
+          "start_unix": 1789622817.9387193,
+          "event_ms": 513.0629272460938,
+          "wall_ms": 513.2367000001068
+        },
+        {
+          "round": 7,
+          "start_unix": 1789622820.9670072,
+          "event_ms": 487.3512878417969,
+          "wall_ms": 487.41629999994984
+        },
+        {
+          "round": 8,
+          "start_unix": 1789622823.005995,
+          "event_ms": 498.40740966796875,
+          "wall_ms": 498.49159999985204
+        },
+        {
+          "round": 9,
+          "start_unix": 1789622825.402635,
+          "event_ms": 563.4447631835938,
+          "wall_ms": 563.5446999999658
+        },
+        {
+          "round": 10,
+          "start_unix": 1789622826.7552536,
+          "event_ms": 498.2005615234375,
+          "wall_ms": 498.285899999928
+        }
+      ],
+      "quality_vs_direct_fp64": {
+        "relative_complex_error": 1.8791437754047018e-06,
+        "ser_db": 114.52079980537508,
+        "complex_coherence": 0.9999999999982285,
+        "relative_magnitude_error": 1.6050580079606958e-06,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": 1.9874286681345027e-07,
+        "phase_std_deg_above_minus30db": 6.212286673023702e-05,
+        "phase_median_abs_deg_above_minus30db": 3.4412606350905685e-05,
+        "phase_p95_abs_deg_above_minus30db": 0.0001278402013718744,
+        "phase_mask_samples": 7295,
+        "peak_amplitude_difference_db": -4.087030202262439e-06,
+        "reference_peak_pixel": [
+          222,
+          201
+        ],
+        "estimate_peak_pixel": [
+          222,
+          201
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      },
+      "timing": {
+        "samples_ms": [
+          498.0765686035156,
+          515.6454467773438,
+          496.87860107421875,
+          496.6277160644531,
+          496.3000183105469,
+          509.7574462890625,
+          513.0629272460938,
+          487.3512878417969,
+          498.40740966796875,
+          563.4447631835938,
+          498.2005615234375
+        ],
+        "median_ms": 498.2005615234375,
+        "min_ms": 487.3512878417969,
+        "max_ms": 563.4447631835938,
+        "q1_ms": 496.75315856933594,
+        "q3_ms": 511.4101867675781,
+        "coefficient_of_variation": 0.0387721708385419
+      },
+      "wall_timing": {
+        "samples_ms": [
+          498.1424000000061,
+          515.7676999999694,
+          496.9771999999466,
+          496.71439999997347,
+          496.3694000000487,
+          509.8355000000083,
+          513.2367000001068,
+          487.41629999994984,
+          498.49159999985204,
+          563.5446999999658,
+          498.285899999928
+        ],
+        "median_ms": 498.285899999928,
+        "min_ms": 487.41629999994984,
+        "max_ms": 563.5446999999658,
+        "q1_ms": 496.84579999996004,
+        "q3_ms": 511.53610000005756,
+        "coefficient_of_variation": 0.03878597877786862
+      },
+      "launch_count": 50,
+      "program": {
+        "algorithm": "direct",
+        "variant": "original",
+        "mode": "mixed",
+        "shape": [
+          360,
+          365
+        ],
+        "block_size": 128,
+        "chunk_pulses": 256,
+        "kernel_launch_count": 50,
+        "kernel_counts": {
+          "direct_chunk_mixed": 50
+        },
+        "memset_count": 1,
+        "device_operation_count": 51,
+        "workspace_bytes": 1051200,
+        "workspace_buffer_count": 1,
+        "origin_table_bytes": 12264,
+        "total_owned_device_bytes": 1063464,
+        "workspace_policy": "all schedule buffers preallocated; no liveness reuse",
+        "input_data_shared": true,
+        "output_dtype": "complex64",
+        "zeroing_in_execute": true,
+        "graph_supported": true,
+        "graph_error": null,
+        "arithmetic": "baseline kernels; no fast_math",
+        "fusion": null
+      },
+      "vs_first_candidate": {
+        "bitwise_equal": false,
+        "quality": {
+          "relative_complex_error": 0.003684927537218542,
+          "ser_db": 48.67142095933091,
+          "complex_coherence": 0.9999942730576777,
+          "relative_magnitude_error": 0.0004554424489402011,
+          "finite_fraction": 1.0,
+          "phase_bias_deg": -0.029304938434721626,
+          "phase_std_deg_above_minus30db": 0.1973949423506861,
+          "phase_median_abs_deg_above_minus30db": 0.1403273934720567,
+          "phase_p95_abs_deg_above_minus30db": 0.3774075758963115,
+          "phase_mask_samples": 7295,
+          "peak_amplitude_difference_db": -0.0008121922861754942,
+          "reference_peak_pixel": [
+            222,
+            201
+          ],
+          "estimate_peak_pixel": [
+            222,
+            201
+          ],
+          "peak_shift_pixels": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "name": "precision_direct_phase_lut_c256_graph",
+      "graph": true,
+      "mode": "mixed",
+      "variant": "phase_lut",
+      "chunk": 256,
+      "warmup_ms": [
+        389.2920227050781,
+        388.46875,
+        389.2825012207031
+      ],
+      "samples": [
+        {
+          "round": 0,
+          "start_unix": 1789622806.1872077,
+          "event_ms": 388.1123962402344,
+          "wall_ms": 388.1978000001709
+        },
+        {
+          "round": 1,
+          "start_unix": 1789622808.319895,
+          "event_ms": 389.02783203125,
+          "wall_ms": 389.09639999997125
+        },
+        {
+          "round": 2,
+          "start_unix": 1789622810.7770648,
+          "event_ms": 388.5342712402344,
+          "wall_ms": 388.60299999987546
+        },
+        {
+          "round": 3,
+          "start_unix": 1789622812.5479593,
+          "event_ms": 388.10498046875,
+          "wall_ms": 388.1799000000683
+        },
+        {
+          "round": 4,
+          "start_unix": 1789622815.4756153,
+          "event_ms": 386.4883117675781,
+          "wall_ms": 386.60509999999704
+        },
+        {
+          "round": 5,
+          "start_unix": 1789622817.135055,
+          "event_ms": 376.96820068359375,
+          "wall_ms": 377.0764999999301
+        },
+        {
+          "round": 6,
+          "start_unix": 1789622819.130879,
+          "event_ms": 378.5284729003906,
+          "wall_ms": 378.64109999986795
+        },
+        {
+          "round": 7,
+          "start_unix": 1789622821.4921243,
+          "event_ms": 369.3442687988281,
+          "wall_ms": 369.40309999999954
+        },
+        {
+          "round": 8,
+          "start_unix": 1789622823.5042362,
+          "event_ms": 389.185546875,
+          "wall_ms": 389.2692000001716
+        },
+        {
+          "round": 9,
+          "start_unix": 1789622824.2916584,
+          "event_ms": 388.9295349121094,
+          "wall_ms": 389.0022000000499
+        },
+        {
+          "round": 10,
+          "start_unix": 1789622826.365899,
+          "event_ms": 389.0093994140625,
+          "wall_ms": 389.108300000089
+        }
+      ],
+      "quality_vs_direct_fp64": {
+        "relative_complex_error": 1.872570789314313e-06,
+        "ser_db": 114.55123511126176,
+        "complex_coherence": 0.9999999999982438,
+        "relative_magnitude_error": 1.5996740879912372e-06,
+        "finite_fraction": 1.0,
+        "phase_bias_deg": 2.8511637350049004e-07,
+        "phase_std_deg_above_minus30db": 6.222371126699663e-05,
+        "phase_median_abs_deg_above_minus30db": 3.409206239174016e-05,
+        "phase_p95_abs_deg_above_minus30db": 0.00012754538733160363,
+        "phase_mask_samples": 7295,
+        "peak_amplitude_difference_db": -4.675698583950324e-06,
+        "reference_peak_pixel": [
+          222,
+          201
+        ],
+        "estimate_peak_pixel": [
+          222,
+          201
+        ],
+        "peak_shift_pixels": [
+          0,
+          0
+        ]
+      },
+      "timing": {
+        "samples_ms": [
+          388.1123962402344,
+          389.02783203125,
+          388.5342712402344,
+          388.10498046875,
+          386.4883117675781,
+          376.96820068359375,
+          378.5284729003906,
+          369.3442687988281,
+          389.185546875,
+          388.9295349121094,
+          389.0093994140625
+        ],
+        "median_ms": 388.1123962402344,
+        "min_ms": 369.3442687988281,
+        "max_ms": 389.185546875,
+        "q1_ms": 382.5083923339844,
+        "q3_ms": 388.96946716308594,
+        "coefficient_of_variation": 0.016625552576821613
+      },
+      "wall_timing": {
+        "samples_ms": [
+          388.1978000001709,
+          389.09639999997125,
+          388.60299999987546,
+          388.1799000000683,
+          386.60509999999704,
+          377.0764999999301,
+          378.64109999986795,
+          369.40309999999954,
+          389.2692000001716,
+          389.0022000000499,
+          389.108300000089
+        ],
+        "median_ms": 388.1978000001709,
+        "min_ms": 369.40309999999954,
+        "max_ms": 389.2692000001716,
+        "q1_ms": 382.6230999999325,
+        "q3_ms": 389.0493000000106,
+        "coefficient_of_variation": 0.01661977671487514
+      },
+      "launch_count": 50,
+      "program": {
+        "algorithm": "direct",
+        "variant": "matx_inspired_phase_lut",
+        "mode": "mixed",
+        "shape": [
+          360,
+          365
+        ],
+        "block_size": 128,
+        "chunk_pulses": 256,
+        "kernel_launch_count": 50,
+        "kernel_counts": {
+          "direct_chunk_mixed_phase_lut": 50
+        },
+        "memset_count": 1,
+        "device_operation_count": 51,
+        "workspace_bytes": 1211200,
+        "workspace_buffer_count": 2,
+        "origin_table_bytes": 12264,
+        "total_owned_device_bytes": 1223464,
+        "workspace_policy": "all schedule buffers preallocated; no liveness reuse",
+        "input_data_shared": true,
+        "output_dtype": "complex64",
+        "zeroing_in_execute": true,
+        "graph_supported": true,
+        "graph_error": null,
+        "arithmetic": "FP64 geometry and range coordinates; four-point FP32 Lagrange; FP64-generated complex64 LUT; ordinary sincosf fractional phase; FP32 accumulation; no fast_math",
+        "fusion": null,
+        "inspiration": "MatX integer-bin/fractional-bin phase LUT; not full MatX reproduction",
+        "inspiration_source": "https://github.com/NVIDIA/MatX/blob/a108745201415478e17fa72e9e328dc0514ae7fb/include/matx/kernels/sar_bp.cuh",
+        "lut_bytes": 160000,
+        "lut_entries": 20000,
+        "lut_dtype": "complex64",
+        "lut_generation_precision": "FP64 sincos, then complex64 storage",
+        "lut_dependency_key": {
+          "samples": 20000,
+          "range_start": 374.74057250000004,
+          "data_dr": 0.3747405725,
+          "k": -58.68366061464709
+        },
+        "prepare_ms": 0.5123000000821776,
+        "prepare_ms_scope": "LUT allocation, generation and synchronization; excludes compilation and program workspace",
+        "lut_generation_device_ms": 0.16124799847602844,
+        "module_compile_host_ms": 0.09799999997994746,
+        "lut_preparation_in_execute": false,
+        "per_pixel_reference_phase_in_execute": "FP64 sincos(-k*r), once per pixel per chunk",
+        "large_pulse_phase_limit": "large phase[n] can still incur FP32 increment-angle quantization",
+        "workspace_bytes_includes_lut": true
+      },
+      "vs_first_candidate": {
+        "bitwise_equal": false,
+        "quality": {
+          "relative_complex_error": 0.0036849245156043847,
+          "ser_db": 48.671428081701045,
+          "complex_coherence": 0.9999942730724136,
+          "relative_magnitude_error": 0.00045544000639523394,
+          "finite_fraction": 1.0,
+          "phase_bias_deg": -0.029304859150184628,
+          "phase_std_deg_above_minus30db": 0.19739471756807722,
+          "phase_median_abs_deg_above_minus30db": 0.14032652579168658,
+          "phase_p95_abs_deg_above_minus30db": 0.37740421197988067,
+          "phase_mask_samples": 7295,
+          "peak_amplitude_difference_db": -0.0008127809545571644,
+          "reference_peak_pixel": [
+            222,
+            201
+          ],
+          "estimate_peak_pixel": [
+            222,
+            201
+          ],
+          "peak_shift_pixels": [
+            0,
+            0
+          ]
+        }
+      }
+    }
+  ]
+}

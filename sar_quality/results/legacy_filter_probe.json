@@ -1,0 +1,9 @@
+{
+  "Na": 5000,
+  "cutoff_hz": 158.77781113446079,
+  "complex_D_count": 3413,
+  "nonfinite_Haz_count": 3411,
+  "Haz_count": 5000,
+  "conjugate_transpose_used": true,
+  "zero_times_infinite_is_nan": true
+}

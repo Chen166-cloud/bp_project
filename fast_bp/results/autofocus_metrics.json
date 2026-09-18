@@ -1,0 +1,120 @@
+{
+  "iterations": [
+    {
+      "targets": 74,
+      "cutoff_hz": 12,
+      "median_gradient_coherence": 0.9999259483667327,
+      "delta_rms_m": [
+        0.09905330324345972,
+        0.1290415890268097,
+        0.0
+      ],
+      "delta_max_m": [
+        0.3145565737666635,
+        0.49427240301503084,
+        0.0
+      ],
+      "iteration": 0,
+      "input_contrast": 3979.1243802254853,
+      "elapsed_s": 21.43841429999884
+    },
+    {
+      "targets": 64,
+      "cutoff_hz": 8,
+      "median_gradient_coherence": 0.9999810747136253,
+      "delta_rms_m": [
+        0.030254307538355545,
+        0.07004481872552187,
+        0.0
+      ],
+      "delta_max_m": [
+        0.08366728463970537,
+        0.19004649247606864,
+        0.0
+      ],
+      "iteration": 1,
+      "input_contrast": 8174.595205128793,
+      "elapsed_s": 40.41454749999684
+    },
+    {
+      "targets": 68,
+      "cutoff_hz": 5,
+      "median_gradient_coherence": 0.9999905702478376,
+      "delta_rms_m": [
+        0.0076743813269373636,
+        0.056986212211582954,
+        0.0
+      ],
+      "delta_max_m": [
+        0.02203890119596092,
+        0.1594969783157824,
+        0.0
+      ],
+      "iteration": 2,
+      "input_contrast": 5963.369468060681,
+      "elapsed_s": 60.336190199996054
+    },
+    {
+      "targets": 71,
+      "cutoff_hz": 3,
+      "median_gradient_coherence": 0.9999959557364043,
+      "delta_rms_m": [
+        0.004106078794974909,
+        0.025952987792115505,
+        0.0
+      ],
+      "delta_max_m": [
+        0.01077703376687252,
+        0.05004303547681012,
+        0.0
+      ],
+      "iteration": 3,
+      "input_contrast": 5598.718175938584,
+      "elapsed_s": 83.42358759999479
+    },
+    {
+      "targets": 73,
+      "cutoff_hz": 2,
+      "median_gradient_coherence": 0.9999975305019584,
+      "delta_rms_m": [
+        0.0030040358682931756,
+        0.018567002783508414,
+        0.0
+      ],
+      "delta_max_m": [
+        0.005461041425400548,
+        0.04036982782515303,
+        0.0
+      ],
+      "iteration": 4,
+      "input_contrast": 5280.908188856256,
+      "elapsed_s": 110.26028149999911
+    },
+    {
+      "targets": 73,
+      "cutoff_hz": 1,
+      "median_gradient_coherence": 0.9999986993566663,
+      "delta_rms_m": [
+        0.007839931888494666,
+        0.036362481054903195,
+        0.0
+      ],
+      "delta_max_m": [
+        0.019405309297106127,
+        0.08754480090728388,
+        0.0
+      ],
+      "iteration": 5,
+      "input_contrast": 5086.372008736396,
+      "elapsed_s": 137.20008189999498
+    }
+  ],
+  "range_shift_m": -74.9481145,
+  "total_correction_rms_m": [
+    0.09905330324345972,
+    0.12904158902680984,
+    0.0
+  ],
+  "selected_iteration": 1,
+  "selection": "maximum measured global intensity contrast on the fixed diagnostic sector"
+}

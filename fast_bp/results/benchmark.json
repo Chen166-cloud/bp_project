@@ -1,0 +1,15 @@
+{
+  "pulses": 12757,
+  "image_shape": [
+    360,
+    365
+  ],
+  "ffbp_seconds": 0.49125119999371236,
+  "direct_bp_seconds": 10.36345359999541,
+  "speedup": 21.09603722113667,
+  "relative_complex_error": 0.03285834938287735,
+  "complex_coherence": 0.9998335242271423,
+  "threads": 16,
+  "hardware": "Intel Core i9-14900HX, CPU only",
+  "timing_scope": "Same input pulses and output grid; warmed kernels; excludes range compression, JIT, disk export and autofocus"
+}

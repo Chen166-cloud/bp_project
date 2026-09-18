@@ -1,0 +1,30 @@
+{
+  "audit_date_local": "2026-09-17",
+  "audit_type": "Read-only tool discovery; no GPU kernels or profiler sessions launched by auditor",
+  "gpu_query": {
+    "source": "nvidia-smi --query-gpu=name,driver_version,memory.total,compute_cap --format=csv,noheader",
+    "name": "NVIDIA GeForce RTX 4070 Laptop GPU",
+    "driver_version": "610.88",
+    "memory_total_reported": "8188 MiB",
+    "compute_capability": "8.9"
+  },
+  "tools": {
+    "nsys": {"found": false, "path": null, "performance_counter_permission_tested": false},
+    "ncu": {"found": false, "path": null, "performance_counter_permission_tested": false},
+    "nvidia_smi": {"found": true, "path": "C:/WINDOWS/system32/nvidia-smi.exe"},
+    "nvcc": {"found": true, "on_path": false, "path": "D:/Program Files/MATLAB/R2024a/sys/cuda/win64/cuda/bin/nvcc.exe", "version": "12.2.140"},
+    "nvrtc": {"found": true, "path": "D:/Program Files/MATLAB/R2024a/bin/win64/nvrtc64_120_0.dll", "builtins_path": "D:/Program Files/MATLAB/R2024a/bin/win64/nvrtc-builtins64_122.dll"},
+    "msvc_cl": {"found": false, "path": null},
+    "vswhere": {"found": false, "path": null},
+    "python_on_path": {"path": "D:/develop/Anaconda/python.exe", "note": "Discovery only; experiment runner must select its known CuPy-capable interpreter"}
+  },
+  "search": {
+    "path_commands": ["nsys", "ncu", "nvcc", "nvidia-smi", "cl"],
+    "exact_filename_scan": ["nsys.exe", "ncu.exe", "nv-nsight-cu-cli.exe", "nv-nsight-cu.exe", "nvcc.exe", "cl.exe", "vswhere.exe", "vcvarsall.bat"],
+    "roots": ["C:/Program Files", "C:/Program Files (x86)", "D:/Program Files", "C:/Users/Chen/AppData/Local/Programs", "C:/ProgramData/NVIDIA Corporation", "D:/Users/Chen/Desktop/research"],
+    "method": "PowerShell Get-Command and rg --files; nonexistent or inaccessible roots ignored",
+    "scope_caveat": "No Nsight executable was found in PATH or these searched roots; this is not a full-volume proof of absence"
+  },
+  "actions_taken": {"installed_software": false, "changed_driver": false, "changed_permissions": false, "launched_gpu_work": false},
+  "implication": "Run resident timing, Graph and fusion ablations with CUDA events now; Nsight timeline/counter bottleneck attribution remains unavailable. Timing changes alone cannot identify DRAM, cache, SFU, or occupancy as the cause."
+}
