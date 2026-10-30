@@ -13,6 +13,10 @@ __pycache__/
 # Generated numerical products; retain only source code and lightweight figures
 /fast_bp/results/**/*.npy
 
+# Report layout QA renders are local-only intermediates
+/vancouver_bp/results/pdf_qa/
+/vancouver_bp/results/docx_qa/
+
 # Editor and OS metadata
 .DS_Store
 Thumbs.db

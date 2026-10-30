@@ -1,0 +1,1060 @@
+[
+  {
+    "id": "C7",
+    "candidate": {
+      "i": 692,
+      "j": 316,
+      "r_m": 997505.7881968125,
+      "u": -0.03008461911389165,
+      "y_m": -30009.58170180338,
+      "amplitude": 69478.0703125,
+      "relative_db": -20.05039930343628
+    },
+    "metrics": {
+      "peak": {
+        "range_m": 997510.2881968124,
+        "azimuth_m": 1.29864094877587,
+        "index": [
+          178,
+          177
+        ],
+        "amplitude": 87668.72486743717,
+        "power": 7685805319.882396
+      },
+      "coordinates": {
+        "range": "slant-range metres supplied by caller",
+        "azimuth": "along-track metres supplied by caller"
+      },
+      "range": {
+        "valid": true,
+        "sidelobes_valid": true,
+        "width_definition": "power half-maximum; -3.0102999566 dB",
+        "sidelobe_definition": "1-D first-qualified-minima mainlobe; finite integration window",
+        "background_subtracted": false,
+        "expected_irw_m": 6.5,
+        "warnings": [],
+        "peak_coordinate_m": 997510.2881968124,
+        "peak_sample_index": 178,
+        "peak_power": 7685805319.882396,
+        "peak_amplitude": 87668.72486743717,
+        "step_m": 0.5,
+        "uniform_axis": true,
+        "integration_bounds_m": [
+          997460.2881968124,
+          997560.2881968124
+        ],
+        "requested_integration_half_width_m": 50,
+        "integration_window_truncated": false,
+        "irw_m": 9.810928295715712,
+        "apparent_resolution_m": 9.810928295715712,
+        "half_power_bounds_m": [
+          997504.4677175954,
+          997514.2786458911
+        ],
+        "samples_per_irw": 19.621856591431424,
+        "irw_to_expected_ratio": 1.5093735839562634,
+        "minima_detection_smoothing_sigma_samples": 0.784874263657257,
+        "pslr_db": -9.675733792644126,
+        "islr_db": -7.667068498938297,
+        "mainlobe_bounds_m": [
+          997493.7881968124,
+          997518.7881968124
+        ],
+        "first_minima_width_m": 25.0,
+        "mainlobe_minima_db": [
+          -34.81473630815692,
+          -35.41825573728501
+        ],
+        "mainlobe_sample_indices": [
+          145,
+          195
+        ],
+        "normalized_main_energy_m": 10.204226264903088,
+        "normalized_side_energy_m": 1.7461165554876714,
+        "outer_background_median_db": -14.654493610424966,
+        "estimated_peak_to_outer_background_db": 14.654493610424966,
+        "half_power_components": 1,
+        "sidelobe_confidence": "qualified"
+      },
+      "azimuth": {
+        "valid": true,
+        "sidelobes_valid": false,
+        "width_definition": "power half-maximum; -3.0102999566 dB",
+        "sidelobe_definition": "1-D first-qualified-minima mainlobe; finite integration window",
+        "background_subtracted": false,
+        "expected_irw_m": 8.0,
+        "warnings": [
+          "mainlobe minima shallower than -15 dB: sidelobe ratios include clutter or overlapping responses"
+        ],
+        "peak_coordinate_m": 1.29864094877587,
+        "peak_sample_index": 177,
+        "peak_power": 7685805319.882396,
+        "peak_amplitude": 87668.72486743717,
+        "step_m": 0.4848238255565178,
+        "uniform_axis": true,
+        "integration_bounds_m": [
+          -48.63821308338008,
+          51.23549498093182
+        ],
+        "requested_integration_half_width_m": 50,
+        "integration_window_truncated": false,
+        "irw_m": 12.450089781570426,
+        "apparent_resolution_m": 12.450089781570426,
+        "half_power_bounds_m": [
+          -5.4048309598919015,
+          7.045258821678526
+        ],
+        "samples_per_irw": 25.6796162343698,
+        "irw_to_expected_ratio": 1.5562612226963033,
+        "minima_detection_smoothing_sigma_samples": 1.027184649374792,
+        "pslr_db": -8.455015236415832,
+        "islr_db": -9.318873933947351,
+        "mainlobe_bounds_m": [
+          -12.761249992318364,
+          14.388884238757052
+        ],
+        "first_minima_width_m": 27.150134231075416,
+        "mainlobe_minima_db": [
+          -30.06051759021212,
+          -14.64126733046843
+        ],
+        "mainlobe_sample_indices": [
+          148,
+          204
+        ],
+        "normalized_main_energy_m": 12.569449592010727,
+        "normalized_side_energy_m": 1.470377563653479,
+        "outer_background_median_db": -26.301157353374137,
+        "estimated_peak_to_outer_background_db": 26.301157353374137,
+        "half_power_components": 1,
+        "sidelobe_confidence": "limited"
+      },
+      "apparent_resolution_m": {
+        "slant_range": 9.810928295715712,
+        "azimuth": 12.450089781570426
+      },
+      "interpretation": "Uncalibrated strong-scatterer apparent response; no independent point-target or ground-range resolution certification.",
+      "background_subtracted": false,
+      "two_dimensional_first_minima_rectangle": {
+        "valid": false,
+        "definition": "2-D rectangle bounded by the two 1-D qualified first minima; same finite cut window",
+        "islr_db": 3.6615751554760174,
+        "pslr_db": -0.9784706348110079,
+        "mainlobe_rectangle_m": [
+          997493.7881968124,
+          997518.7881968124,
+          -12.761249992318364,
+          14.388884238757052
+        ],
+        "integration_rectangle_m": [
+          997460.2881968124,
+          997560.2881968124,
+          -48.63821308338008,
+          51.23549498093182
+        ]
+      }
+    },
+    "timing": {
+      "algorithm": "bp",
+      "kernel_ms": 193.53395080566406,
+      "wall_ms": 193.82000000041444,
+      "download_ms": 0.6682999992335681,
+      "shape": [
+        340,
+        350
+      ],
+      "plan_counts": {
+        "leaves": 32,
+        "merges": 31,
+        "leaf_pixel_pulse_products": 17339616,
+        "merged_pixels": 1638152,
+        "nodes": 63,
+        "shape": [
+          340,
+          350
+        ],
+        "direct_pixel_pulse_products": 205632000
+      }
+    }
+  },
+  {
+    "id": "C8",
+    "candidate": {
+      "i": 684,
+      "j": 322,
+      "r_m": 997441.7881968125,
+      "u": -0.0300408956648086,
+      "y_m": -29964.044690940562,
+      "amplitude": 61330.875,
+      "relative_db": -21.13377094268799
+    },
+    "metrics": {
+      "peak": {
+        "range_m": 997444.2881968124,
+        "azimuth_m": 0.3234063323451955,
+        "index": [
+          174,
+          175
+        ],
+        "amplitude": 68180.5505481045,
+        "power": 4648587473.042632
+      },
+      "coordinates": {
+        "range": "slant-range metres supplied by caller",
+        "azimuth": "along-track metres supplied by caller"
+      },
+      "range": {
+        "valid": true,
+        "sidelobes_valid": true,
+        "width_definition": "power half-maximum; -3.0102999566 dB",
+        "sidelobe_definition": "1-D first-qualified-minima mainlobe; finite integration window",
+        "background_subtracted": false,
+        "expected_irw_m": 6.5,
+        "warnings": [],
+        "peak_coordinate_m": 997444.2881968124,
+        "peak_sample_index": 174,
+        "peak_power": 4648587473.042632,
+        "peak_amplitude": 68180.5505481045,
+        "step_m": 0.5,
+        "uniform_axis": true,
+        "integration_bounds_m": [
+          997394.2881968124,
+          997494.2881968124
+        ],
+        "requested_integration_half_width_m": 50,
+        "integration_window_truncated": false,
+        "irw_m": 9.133197293616831,
+        "apparent_resolution_m": 9.133197293616831,
+        "half_power_bounds_m": [
+          997439.8944389988,
+          997449.0276362924
+        ],
+        "samples_per_irw": 18.266394587233663,
+        "irw_to_expected_ratio": 1.405107275941051,
+        "minima_detection_smoothing_sigma_samples": 0.7306557834893466,
+        "pslr_db": -7.09478756363343,
+        "islr_db": -7.527178052371356,
+        "mainlobe_bounds_m": [
+          997435.2881968124,
+          997461.2881968124
+        ],
+        "first_minima_width_m": 26.0,
+        "mainlobe_minima_db": [
+          -28.23503164595448,
+          -22.123096351404374
+        ],
+        "mainlobe_sample_indices": [
+          156,
+          208
+        ],
+        "normalized_main_energy_m": 9.514855922779207,
+        "normalized_side_energy_m": 1.6814517563559186,
+        "outer_background_median_db": -33.06713661922441,
+        "estimated_peak_to_outer_background_db": 33.06713661922441,
+        "half_power_components": 1,
+        "sidelobe_confidence": "qualified"
+      },
+      "azimuth": {
+        "valid": true,
+        "sidelobes_valid": true,
+        "width_definition": "power half-maximum; -3.0102999566 dB",
+        "sidelobe_definition": "1-D first-qualified-minima mainlobe; finite integration window",
+        "background_subtracted": false,
+        "expected_irw_m": 8.0,
+        "warnings": [],
+        "peak_coordinate_m": 0.3234063323451955,
+        "peak_sample_index": 175,
+        "peak_power": 4648587473.042632,
+        "peak_amplitude": 68180.5505481045,
+        "step_m": 0.4847920814353941,
+        "uniform_axis": true,
+        "integration_bounds_m": [
+          -49.61017805533468,
+          50.25699072002507
+        ],
+        "requested_integration_half_width_m": 50,
+        "integration_window_truncated": false,
+        "irw_m": 8.241349999828453,
+        "apparent_resolution_m": 8.241349999828453,
+        "half_power_bounds_m": [
+          -3.3781420899887435,
+          4.8632079098397085
+        ],
+        "samples_per_irw": 16.99976199162968,
+        "irw_to_expected_ratio": 1.0301687499785566,
+        "minima_detection_smoothing_sigma_samples": 0.6799904796651871,
+        "pslr_db": -7.424855971489443,
+        "islr_db": -6.416672872626121,
+        "mainlobe_bounds_m": [
+          -7.918059052028884,
+          28.926139136936776
+        ],
+        "first_minima_width_m": 36.84419818896566,
+        "mainlobe_minima_db": [
+          -16.626242976729024,
+          -36.68308220697828
+        ],
+        "mainlobe_sample_indices": [
+          158,
+          234
+        ],
+        "normalized_main_energy_m": 9.33480649151801,
+        "normalized_side_energy_m": 2.130286583928418,
+        "outer_background_median_db": -25.89618780167662,
+        "estimated_peak_to_outer_background_db": 25.89618780167662,
+        "half_power_components": 1,
+        "sidelobe_confidence": "qualified"
+      },
+      "apparent_resolution_m": {
+        "slant_range": 9.133197293616831,
+        "azimuth": 8.241349999828453
+      },
+      "interpretation": "Uncalibrated strong-scatterer apparent response; no independent point-target or ground-range resolution certification.",
+      "background_subtracted": false,
+      "two_dimensional_first_minima_rectangle": {
+        "valid": true,
+        "definition": "2-D rectangle bounded by the two 1-D qualified first minima; same finite cut window",
+        "islr_db": 5.589731984215386,
+        "pslr_db": 1.1833040413310336,
+        "mainlobe_rectangle_m": [
+          997435.2881968124,
+          997461.2881968124,
+          -7.918059052028884,
+          28.926139136936776
+        ],
+        "integration_rectangle_m": [
+          997394.2881968124,
+          997494.2881968124,
+          -49.61017805533468,
+          50.25699072002507
+        ]
+      }
+    },
+    "timing": {
+      "algorithm": "bp",
+      "kernel_ms": 139.81610107421875,
+      "wall_ms": 139.86359999944398,
+      "download_ms": 0.34190000042144675,
+      "shape": [
+        340,
+        350
+      ],
+      "plan_counts": {
+        "leaves": 32,
+        "merges": 31,
+        "leaf_pixel_pulse_products": 17339616,
+        "merged_pixels": 1638152,
+        "nodes": 63,
+        "shape": [
+          340,
+          350
+        ],
+        "direct_pixel_pulse_products": 205632000
+      }
+    }
+  },
+  {
+    "id": "C9",
+    "candidate": {
+      "i": 951,
+      "j": 442,
+      "r_m": 999577.7881968125,
+      "u": -0.02916642668314756,
+      "y_m": -29154.112273545135,
+      "amplitude": 61143.83203125,
+      "relative_db": -21.16029977798462
+    },
+    "metrics": {
+      "peak": {
+        "range_m": 999578.2881968124,
+        "azimuth_m": 1.9613621046642506,
+        "index": [
+          170,
+          178
+        ],
+        "amplitude": 64134.03315693539,
+        "power": 4113174208.974888
+      },
+      "coordinates": {
+        "range": "slant-range metres supplied by caller",
+        "azimuth": "along-track metres supplied by caller"
+      },
+      "range": {
+        "valid": true,
+        "sidelobes_valid": true,
+        "width_definition": "power half-maximum; -3.0102999566 dB",
+        "sidelobe_definition": "1-D first-qualified-minima mainlobe; finite integration window",
+        "background_subtracted": false,
+        "expected_irw_m": 6.5,
+        "warnings": [],
+        "peak_coordinate_m": 999578.2881968124,
+        "peak_sample_index": 170,
+        "peak_power": 4113174208.974888,
+        "peak_amplitude": 64134.03315693539,
+        "step_m": 0.5,
+        "uniform_axis": true,
+        "integration_bounds_m": [
+          999528.2881968124,
+          999628.2881968124
+        ],
+        "requested_integration_half_width_m": 50,
+        "integration_window_truncated": false,
+        "irw_m": 9.256102150655352,
+        "apparent_resolution_m": 9.256102150655352,
+        "half_power_bounds_m": [
+          999573.8424257371,
+          999583.0985278877
+        ],
+        "samples_per_irw": 18.512204301310703,
+        "irw_to_expected_ratio": 1.4240157154854387,
+        "minima_detection_smoothing_sigma_samples": 0.7404881720524281,
+        "pslr_db": -18.05800965091023,
+        "islr_db": -15.742993308321157,
+        "mainlobe_bounds_m": [
+          999560.2881968124,
+          999595.2881968124
+        ],
+        "first_minima_width_m": 35.0,
+        "mainlobe_minima_db": [
+          -31.08143546535521,
+          -21.272476202835307
+        ],
+        "mainlobe_sample_indices": [
+          134,
+          204
+        ],
+        "normalized_main_energy_m": 10.067871441088906,
+        "normalized_side_energy_m": 0.26831090892309756,
+        "outer_background_median_db": -25.773965755558287,
+        "estimated_peak_to_outer_background_db": 25.773965755558287,
+        "half_power_components": 1,
+        "sidelobe_confidence": "qualified"
+      },
+      "azimuth": {
+        "valid": true,
+        "sidelobes_valid": true,
+        "width_definition": "power half-maximum; -3.0102999566 dB",
+        "sidelobe_definition": "1-D first-qualified-minima mainlobe; finite integration window",
+        "background_subtracted": false,
+        "expected_irw_m": 8.0,
+        "warnings": [],
+        "peak_coordinate_m": 1.9613621046642506,
+        "peak_sample_index": 178,
+        "peak_power": 4113174208.974888,
+        "peak_amplitude": 64134.03315693539,
+        "step_m": 0.4858176653908046,
+        "uniform_axis": true,
+        "integration_bounds_m": [
+          -47.5920397650316,
+          51.514763974363575
+        ],
+        "requested_integration_half_width_m": 50,
+        "integration_window_truncated": false,
+        "irw_m": 12.761822285031805,
+        "apparent_resolution_m": 12.761822285031805,
+        "half_power_bounds_m": [
+          -4.607361029261741,
+          8.154461255770064
+        ],
+        "samples_per_irw": 26.268748944659837,
+        "irw_to_expected_ratio": 1.5952277856289756,
+        "minima_detection_smoothing_sigma_samples": 1.0507499577863935,
+        "pslr_db": -20.588387930583995,
+        "islr_db": -20.46291523446242,
+        "mainlobe_bounds_m": [
+          -17.957162176292947,
+          26.738063039515648
+        ],
+        "first_minima_width_m": 44.69522521580859,
+        "mainlobe_minima_db": [
+          -48.97888855081007,
+          -34.964296579691755
+        ],
+        "mainlobe_sample_indices": [
+          137,
+          229
+        ],
+        "normalized_main_energy_m": 13.928801172592358,
+        "normalized_side_energy_m": 0.1252051565638069,
+        "outer_background_median_db": -23.999355295136713,
+        "estimated_peak_to_outer_background_db": 23.999355295136713,
+        "half_power_components": 1,
+        "sidelobe_confidence": "qualified"
+      },
+      "apparent_resolution_m": {
+        "slant_range": 9.256102150655352,
+        "azimuth": 12.761822285031805
+      },
+      "interpretation": "Uncalibrated strong-scatterer apparent response; no independent point-target or ground-range resolution certification.",
+      "background_subtracted": false,
+      "two_dimensional_first_minima_rectangle": {
+        "valid": true,
+        "definition": "2-D rectangle bounded by the two 1-D qualified first minima; same finite cut window",
+        "islr_db": -8.480653502463806,
+        "pslr_db": -15.016240097053489,
+        "mainlobe_rectangle_m": [
+          999560.2881968124,
+          999595.2881968124,
+          -17.957162176292947,
+          26.738063039515648
+        ],
+        "integration_rectangle_m": [
+          999528.2881968124,
+          999628.2881968124,
+          -47.5920397650316,
+          51.514763974363575
+        ]
+      }
+    },
+    "timing": {
+      "algorithm": "bp",
+      "kernel_ms": 139.5589141845703,
+      "wall_ms": 139.59889999932784,
+      "download_ms": 0.3561000012268778,
+      "shape": [
+        340,
+        349
+      ],
+      "plan_counts": {
+        "leaves": 32,
+        "merges": 31,
+        "leaf_pixel_pulse_products": 17339616,
+        "merged_pixels": 1637436,
+        "nodes": 63,
+        "shape": [
+          340,
+          349
+        ],
+        "direct_pixel_pulse_products": 205044480
+      }
+    }
+  },
+  {
+    "id": "C10",
+    "candidate": {
+      "i": 477,
+      "j": 815,
+      "r_m": 995785.7881968125,
+      "u": -0.026448285598484507,
+      "y_m": -26336.8269211413,
+      "amplitude": 45877.2734375,
+      "relative_db": -23.655402660369873
+    },
+    "metrics": {
+      "peak": {
+        "range_m": 995788.2881968124,
+        "azimuth_m": -2.730530007344481,
+        "index": [
+          174,
+          169
+        ],
+        "amplitude": 53569.27570865467,
+        "power": 2869667299.949859
+      },
+      "coordinates": {
+        "range": "slant-range metres supplied by caller",
+        "azimuth": "along-track metres supplied by caller"
+      },
+      "range": {
+        "valid": true,
+        "sidelobes_valid": true,
+        "width_definition": "power half-maximum; -3.0102999566 dB",
+        "sidelobe_definition": "1-D first-qualified-minima mainlobe; finite integration window",
+        "background_subtracted": false,
+        "expected_irw_m": 6.5,
+        "warnings": [],
+        "peak_coordinate_m": 995788.2881968124,
+        "peak_sample_index": 174,
+        "peak_power": 2869667299.949859,
+        "peak_amplitude": 53569.27570865467,
+        "step_m": 0.5,
+        "uniform_axis": true,
+        "integration_bounds_m": [
+          995738.2881968124,
+          995838.2881968124
+        ],
+        "requested_integration_half_width_m": 50,
+        "integration_window_truncated": false,
+        "irw_m": 8.587483376264572,
+        "apparent_resolution_m": 8.587483376264572,
+        "half_power_bounds_m": [
+          995784.0307030359,
+          995792.6181864121
+        ],
+        "samples_per_irw": 17.174966752529144,
+        "irw_to_expected_ratio": 1.321151288656088,
+        "minima_detection_smoothing_sigma_samples": 0.6869986701011658,
+        "pslr_db": -18.93646119393499,
+        "islr_db": -16.934070892127032,
+        "mainlobe_bounds_m": [
+          995777.2881968124,
+          995804.2881968124
+        ],
+        "first_minima_width_m": 27.0,
+        "mainlobe_minima_db": [
+          -23.28629069147377,
+          -36.90714074511248
+        ],
+        "mainlobe_sample_indices": [
+          152,
+          206
+        ],
+        "normalized_main_energy_m": 9.000563456222645,
+        "normalized_side_energy_m": 0.1823318795699624,
+        "outer_background_median_db": -33.13048454098699,
+        "estimated_peak_to_outer_background_db": 33.13048454098699,
+        "half_power_components": 1,
+        "sidelobe_confidence": "qualified"
+      },
+      "azimuth": {
+        "valid": true,
+        "sidelobes_valid": true,
+        "width_definition": "power half-maximum; -3.0102999566 dB",
+        "sidelobe_definition": "1-D first-qualified-minima mainlobe; finite integration window",
+        "background_subtracted": false,
+        "expected_irw_m": 8.0,
+        "warnings": [],
+        "peak_coordinate_m": -2.730530007344481,
+        "peak_sample_index": 169,
+        "peak_power": 2869667299.949859,
+        "peak_amplitude": 53569.27570865467,
+        "step_m": 0.48393805878192353,
+        "uniform_axis": true,
+        "integration_bounds_m": [
+          -52.57615006172044,
+          47.11509004702802
+        ],
+        "requested_integration_half_width_m": 50,
+        "integration_window_truncated": false,
+        "irw_m": 11.415383119960392,
+        "apparent_resolution_m": 11.415383119960392,
+        "half_power_bounds_m": [
+          -8.173897101641096,
+          3.2414860183192955
+        ],
+        "samples_per_irw": 23.588521119196564,
+        "irw_to_expected_ratio": 1.426922889995049,
+        "minima_detection_smoothing_sigma_samples": 0.9435408447678627,
+        "pslr_db": -14.426397880451404,
+        "islr_db": -11.983743573239368,
+        "mainlobe_bounds_m": [
+          -22.08805235855932,
+          10.819735638504524
+        ],
+        "first_minima_width_m": 32.90778799706384,
+        "mainlobe_minima_db": [
+          -31.657943946034152,
+          -31.26913391082967
+        ],
+        "mainlobe_sample_indices": [
+          129,
+          197
+        ],
+        "normalized_main_energy_m": 11.899370557329014,
+        "normalized_side_energy_m": 0.7536151694394155,
+        "outer_background_median_db": -25.75228661853608,
+        "estimated_peak_to_outer_background_db": 25.75228661853608,
+        "half_power_components": 1,
+        "sidelobe_confidence": "qualified"
+      },
+      "apparent_resolution_m": {
+        "slant_range": 8.587483376264572,
+        "azimuth": 11.415383119960392
+      },
+      "interpretation": "Uncalibrated strong-scatterer apparent response; no independent point-target or ground-range resolution certification.",
+      "background_subtracted": false,
+      "two_dimensional_first_minima_rectangle": {
+        "valid": true,
+        "definition": "2-D rectangle bounded by the two 1-D qualified first minima; same finite cut window",
+        "islr_db": -4.427078432699846,
+        "pslr_db": -6.706527559354843,
+        "mainlobe_rectangle_m": [
+          995777.2881968124,
+          995804.2881968124,
+          -22.08805235855932,
+          10.819735638504524
+        ],
+        "integration_rectangle_m": [
+          995738.2881968124,
+          995838.2881968124,
+          -52.57615006172044,
+          47.11509004702802
+        ]
+      }
+    },
+    "timing": {
+      "algorithm": "bp",
+      "kernel_ms": 140.4416046142578,
+      "wall_ms": 140.75339999908465,
+      "download_ms": 0.33090000033553224,
+      "shape": [
+        340,
+        351
+      ],
+      "plan_counts": {
+        "leaves": 32,
+        "merges": 31,
+        "leaf_pixel_pulse_products": 17339616,
+        "merged_pixels": 1639586,
+        "nodes": 63,
+        "shape": [
+          340,
+          351
+        ],
+        "direct_pixel_pulse_products": 206219520
+      }
+    }
+  },
+  {
+    "id": "C11",
+    "candidate": {
+      "i": 683,
+      "j": 853,
+      "r_m": 997433.7881968125,
+      "u": -0.026171370420958514,
+      "y_m": -26104.209141278658,
+      "amplitude": 34564.73046875,
+      "relative_db": -26.11469030380249
+    },
+    "metrics": {
+      "peak": {
+        "range_m": 997431.2881968124,
+        "azimuth_m": -0.6560352075316078,
+        "index": [
+          164,
+          173
+        ],
+        "amplitude": 38186.88156996459,
+        "power": 1458237924.0385015
+      },
+      "coordinates": {
+        "range": "slant-range metres supplied by caller",
+        "azimuth": "along-track metres supplied by caller"
+      },
+      "range": {
+        "valid": true,
+        "sidelobes_valid": true,
+        "width_definition": "power half-maximum; -3.0102999566 dB",
+        "sidelobe_definition": "1-D first-qualified-minima mainlobe; finite integration window",
+        "background_subtracted": false,
+        "expected_irw_m": 6.5,
+        "warnings": [],
+        "peak_coordinate_m": 997431.2881968124,
+        "peak_sample_index": 164,
+        "peak_power": 1458237924.0385015,
+        "peak_amplitude": 38186.88156996459,
+        "step_m": 0.5,
+        "uniform_axis": true,
+        "integration_bounds_m": [
+          997381.2881968124,
+          997481.2881968124
+        ],
+        "requested_integration_half_width_m": 50,
+        "integration_window_truncated": false,
+        "irw_m": 9.837584986467846,
+        "apparent_resolution_m": 9.837584986467846,
+        "half_power_bounds_m": [
+          997426.4035460019,
+          997436.2411309883
+        ],
+        "samples_per_irw": 19.67516997293569,
+        "irw_to_expected_ratio": 1.5134746133027455,
+        "minima_detection_smoothing_sigma_samples": 0.7870067989174276,
+        "pslr_db": -10.372702513666578,
+        "islr_db": -11.02916118858301,
+        "mainlobe_bounds_m": [
+          997413.2881968124,
+          997446.2881968124
+        ],
+        "first_minima_width_m": 33.0,
+        "mainlobe_minima_db": [
+          -22.397912794904006,
+          -18.172686316641776
+        ],
+        "mainlobe_sample_indices": [
+          128,
+          194
+        ],
+        "normalized_main_energy_m": 10.638915034636836,
+        "normalized_side_energy_m": 0.8394236901009865,
+        "outer_background_median_db": -23.023727934414122,
+        "estimated_peak_to_outer_background_db": 23.023727934414122,
+        "half_power_components": 1,
+        "sidelobe_confidence": "qualified"
+      },
+      "azimuth": {
+        "valid": true,
+        "sidelobes_valid": true,
+        "width_definition": "power half-maximum; -3.0102999566 dB",
+        "sidelobe_definition": "1-D first-qualified-minima mainlobe; finite integration window",
+        "background_subtracted": false,
+        "expected_irw_m": 8.0,
+        "warnings": [],
+        "peak_coordinate_m": -0.6560352075316078,
+        "peak_sample_index": 173,
+        "peak_power": 1458237924.0385015,
+        "peak_amplitude": 38186.88156996459,
+        "step_m": 0.48473542984337215,
+        "uniform_axis": true,
+        "integration_bounds_m": [
+          -50.583784481233174,
+          49.27171406616996
+        ],
+        "requested_integration_half_width_m": 50,
+        "integration_window_truncated": false,
+        "irw_m": 10.850268171602082,
+        "apparent_resolution_m": 10.850268171602082,
+        "half_power_bounds_m": [
+          -7.735516201096795,
+          3.114751970505286
+        ],
+        "samples_per_irw": 22.38389749044757,
+        "irw_to_expected_ratio": 1.3562835214502602,
+        "minima_detection_smoothing_sigma_samples": 0.8953558996179027,
+        "pslr_db": -13.40057918728365,
+        "islr_db": -11.45322667650948,
+        "mainlobe_bounds_m": [
+          -18.106510681837758,
+          14.8554985474045
+        ],
+        "first_minima_width_m": 32.962009229242256,
+        "mainlobe_minima_db": [
+          -42.3196152974521,
+          -16.738700480730092
+        ],
+        "mainlobe_sample_indices": [
+          137,
+          205
+        ],
+        "normalized_main_energy_m": 11.269296982188314,
+        "normalized_side_energy_m": 0.8064438911229115,
+        "outer_background_median_db": -21.75038233021052,
+        "estimated_peak_to_outer_background_db": 21.75038233021052,
+        "half_power_components": 1,
+        "sidelobe_confidence": "qualified"
+      },
+      "apparent_resolution_m": {
+        "slant_range": 9.837584986467846,
+        "azimuth": 10.850268171602082
+      },
+      "interpretation": "Uncalibrated strong-scatterer apparent response; no independent point-target or ground-range resolution certification.",
+      "background_subtracted": false,
+      "two_dimensional_first_minima_rectangle": {
+        "valid": true,
+        "definition": "2-D rectangle bounded by the two 1-D qualified first minima; same finite cut window",
+        "islr_db": -1.3233729544731145,
+        "pslr_db": -3.3221085659440175,
+        "mainlobe_rectangle_m": [
+          997413.2881968124,
+          997446.2881968124,
+          -18.106510681837758,
+          14.8554985474045
+        ],
+        "integration_rectangle_m": [
+          997381.2881968124,
+          997481.2881968124,
+          -50.583784481233174,
+          49.27171406616996
+        ]
+      }
+    },
+    "timing": {
+      "algorithm": "bp",
+      "kernel_ms": 140.74368286132812,
+      "wall_ms": 140.80339999964053,
+      "download_ms": 0.32760000067355577,
+      "shape": [
+        340,
+        350
+      ],
+      "plan_counts": {
+        "leaves": 32,
+        "merges": 31,
+        "leaf_pixel_pulse_products": 17339616,
+        "merged_pixels": 1638152,
+        "nodes": 63,
+        "shape": [
+          340,
+          350
+        ],
+        "direct_pixel_pulse_products": 205632000
+      }
+    }
+  },
+  {
+    "id": "C12",
+    "candidate": {
+      "i": 512,
+      "j": 830,
+      "r_m": 996065.7881968125,
+      "u": -0.02633897697577688,
+      "y_m": -26235.353861674896,
+      "amplitude": 32509.96484375,
+      "relative_db": -26.647024154663086
+    },
+    "metrics": {
+      "peak": {
+        "range_m": 996066.7881968124,
+        "azimuth_m": -2.2235619148664614,
+        "index": [
+          171,
+          170
+        ],
+        "amplitude": 34225.798957439605,
+        "power": 1171405314.275074
+      },
+      "coordinates": {
+        "range": "slant-range metres supplied by caller",
+        "azimuth": "along-track metres supplied by caller"
+      },
+      "range": {
+        "valid": true,
+        "sidelobes_valid": true,
+        "width_definition": "power half-maximum; -3.0102999566 dB",
+        "sidelobe_definition": "1-D first-qualified-minima mainlobe; finite integration window",
+        "background_subtracted": false,
+        "expected_irw_m": 6.5,
+        "warnings": [],
+        "peak_coordinate_m": 996066.7881968124,
+        "peak_sample_index": 171,
+        "peak_power": 1171405314.275074,
+        "peak_amplitude": 34225.798957439605,
+        "step_m": 0.5,
+        "uniform_axis": true,
+        "integration_bounds_m": [
+          996016.7881968124,
+          996116.7881968124
+        ],
+        "requested_integration_half_width_m": 50,
+        "integration_window_truncated": false,
+        "irw_m": 9.455410688417032,
+        "apparent_resolution_m": 9.455410688417032,
+        "half_power_bounds_m": [
+          996061.5466393927,
+          996071.0020500812
+        ],
+        "samples_per_irw": 18.910821376834065,
+        "irw_to_expected_ratio": 1.454678567448774,
+        "minima_detection_smoothing_sigma_samples": 0.7564328550733626,
+        "pslr_db": -15.737108065089458,
+        "islr_db": -12.693901791548507,
+        "mainlobe_bounds_m": [
+          996043.7881968124,
+          996077.2881968124
+        ],
+        "first_minima_width_m": 33.5,
+        "mainlobe_minima_db": [
+          -27.705401179639345,
+          -16.95114612117012
+        ],
+        "mainlobe_sample_indices": [
+          125,
+          192
+        ],
+        "normalized_main_energy_m": 10.527658968928586,
+        "normalized_side_energy_m": 0.5661631890687853,
+        "outer_background_median_db": -21.260171587619013,
+        "estimated_peak_to_outer_background_db": 21.260171587619013,
+        "half_power_components": 1,
+        "sidelobe_confidence": "qualified"
+      },
+      "azimuth": {
+        "valid": true,
+        "sidelobes_valid": true,
+        "width_definition": "power half-maximum; -3.0102999566 dB",
+        "sidelobe_definition": "1-D first-qualified-minima mainlobe; finite integration window",
+        "background_subtracted": false,
+        "expected_irw_m": 8.0,
+        "warnings": [],
+        "peak_coordinate_m": -2.2235619148664614,
+        "peak_sample_index": 170,
+        "peak_power": 1171405314.275074,
+        "peak_amplitude": 34225.798957439605,
+        "step_m": 0.4840727373415703,
+        "uniform_axis": true,
+        "integration_bounds_m": [
+          -52.083053860883034,
+          47.6359300311501
+        ],
+        "requested_integration_half_width_m": 50,
+        "integration_window_truncated": false,
+        "irw_m": 10.889812972549253,
+        "apparent_resolution_m": 10.889812972549253,
+        "half_power_bounds_m": [
+          -7.246642365192072,
+          3.643170607357181
+        ],
+        "samples_per_irw": 22.496232761121615,
+        "irw_to_expected_ratio": 1.3612266215686566,
+        "minima_detection_smoothing_sigma_samples": 0.8998493104448646,
+        "pslr_db": -13.656089503529964,
+        "islr_db": -12.958202847058828,
+        "mainlobe_bounds_m": [
+          -16.745744035065396,
+          16.171202104051268
+        ],
+        "first_minima_width_m": 32.91694613911666,
+        "mainlobe_minima_db": [
+          -22.866389085497683,
+          -21.45753044528358
+        ],
+        "mainlobe_sample_indices": [
+          140,
+          208
+        ],
+        "normalized_main_energy_m": 11.417960743979167,
+        "normalized_side_energy_m": 0.5777876581164094,
+        "outer_background_median_db": -21.10630476866576,
+        "estimated_peak_to_outer_background_db": 21.10630476866576,
+        "half_power_components": 1,
+        "sidelobe_confidence": "qualified"
+      },
+      "apparent_resolution_m": {
+        "slant_range": 9.455410688417032,
+        "azimuth": 10.889812972549253
+      },
+      "interpretation": "Uncalibrated strong-scatterer apparent response; no independent point-target or ground-range resolution certification.",
+      "background_subtracted": false,
+      "two_dimensional_first_minima_rectangle": {
+        "valid": true,
+        "definition": "2-D rectangle bounded by the two 1-D qualified first minima; same finite cut window",
+        "islr_db": -3.586278697465251,
+        "pslr_db": -7.6368634461809926,
+        "mainlobe_rectangle_m": [
+          996043.7881968124,
+          996077.2881968124,
+          -16.745744035065396,
+          16.171202104051268
+        ],
+        "integration_rectangle_m": [
+          996016.7881968124,
+          996116.7881968124,
+          -52.083053860883034,
+          47.6359300311501
+        ]
+      }
+    },
+    "timing": {
+      "algorithm": "bp",
+      "kernel_ms": 140.92697143554688,
+      "wall_ms": 140.97229999970295,
+      "download_ms": 0.26760000037029386,
+      "shape": [
+        340,
+        351
+      ],
+      "plan_counts": {
+        "leaves": 32,
+        "merges": 31,
+        "leaf_pixel_pulse_products": 17339616,
+        "merged_pixels": 1638868,
+        "nodes": 63,
+        "shape": [
+          340,
+          351
+        ],
+        "direct_pixel_pulse_products": 206219520
+      }
+    }
+  }
+]

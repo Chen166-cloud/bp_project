@@ -1,0 +1,97 @@
+{
+  "purpose": "Independent analytic-raw, off-grid target validation; no PGA",
+  "model": "Equivalent straight-track slant plane; analytic negative chirp and negative carrier phase",
+  "parameter_source": "RADARSAT.m nominal parameters, exact SI speed of light",
+  "parameters": {
+    "c_m_s": 299792458.0,
+    "carrier_hz": 5300000000.0,
+    "sample_rate_hz": 32317000.0,
+    "prf_hz": 1256.98,
+    "velocity_m_s": 7062.0,
+    "pulse_width_s": 4.174e-05,
+    "chirp_rate_hz_s": -721350000000.0,
+    "first_fast_time_s": 0.0065956
+  },
+  "bp_compensation": "+j*4*pi*fc*R/c for the generated negative carrier phase",
+  "range_timing_convention": "Output index q corresponds to received pulse centre at T0+q/Fs",
+  "scope": "Tests implementation conventions and BP/FFBP consistency. Does not prove the real MAT data timing, orbit or chirp convention.",
+  "script_sha256": "4d50e517a1d9e61b3b6f27a7469b411f1690b174048f8a26a990362611f74525",
+  "ffbp_source_sha256": "9fda65dbbf5c36e773fd98122352fa39ead3f7856134f836a541b21b19774883",
+  "cases": [
+    {
+      "pulses": 256,
+      "doppler_at_aperture_centre_hz": -7040.0,
+      "target_xyz_slant_plane_m": [
+        995385.8680760545,
+        -28075.26963747631,
+        0.0
+      ],
+      "target_range_at_aperture_centre_m": 995781.7266503426,
+      "target_original_sample_fraction": 0.37,
+      "aperture_length_m": 1432.6480930484176,
+      "range_migration_peak_to_peak_m": 40.39235711283982,
+      "compression": {
+        "raw_samples": 3072,
+        "reference_samples": 1349,
+        "linear_correlation_fft_length": 4455,
+        "correlation_output_start_index_before_upsampling": 674,
+        "range_fft_oversample": 4,
+        "compressed_sample_spacing_m": 1.159577227155986,
+        "compressed_first_sample_range_m": 988655.5679924,
+        "minimum_raw_pulse_margin_samples": 855.7202849477835
+      },
+      "max_range_compression_peak_error_original_samples": 0.12446712452197062,
+      "expected_argmax_quantization_half_bin_original_samples": 0.125,
+      "direct_bp_positive_k_along_track_peak_offset_m": 0.0,
+      "negative_k_to_positive_k_peak_amplitude_ratio": 0.03874750807881355,
+      "ffbp_relative_complex_error_on_common_cut": 0.000862908443947539,
+      "ffbp_ser_db_on_common_cut": 61.28070562446098,
+      "ffbp_complex_coherence_on_common_cut": 0.9999999114199084,
+      "ffbp_polar_shape": [
+        160,
+        61
+      ],
+      "ffbp_processing_seconds_including_first_jit_if_needed": 0.04922830000032263,
+      "case_seconds_including_compression_and_jit_if_needed": 0.5627139999996871,
+      "passed": true
+    },
+    {
+      "pulses": 1728,
+      "doppler_at_aperture_centre_hz": -7040.0,
+      "target_xyz_slant_plane_m": [
+        995385.8680760545,
+        -28075.26963747631,
+        0.0
+      ],
+      "target_range_at_aperture_centre_m": 995781.7266503426,
+      "target_original_sample_fraction": 0.37,
+      "aperture_length_m": 9702.679438018107,
+      "range_migration_peak_to_peak_m": 273.5560454177903,
+      "compression": {
+        "raw_samples": 3072,
+        "reference_samples": 1349,
+        "linear_correlation_fft_length": 4455,
+        "correlation_output_start_index_before_upsampling": 674,
+        "range_fft_oversample": 4,
+        "compressed_sample_spacing_m": 1.159577227155986,
+        "compressed_first_sample_range_m": 988655.5679924,
+        "minimum_raw_pulse_margin_samples": 828.095445967366
+      },
+      "max_range_compression_peak_error_original_samples": 0.12506364674936776,
+      "expected_argmax_quantization_half_bin_original_samples": 0.125,
+      "direct_bp_positive_k_along_track_peak_offset_m": 0.0,
+      "negative_k_to_positive_k_peak_amplitude_ratio": 0.036354441195726395,
+      "ffbp_relative_complex_error_on_common_cut": 0.0015972691969395136,
+      "ffbp_ser_db_on_common_cut": 55.93243767105623,
+      "ffbp_complex_coherence_on_common_cut": 0.9999996966991944,
+      "ffbp_polar_shape": [
+        160,
+        413
+      ],
+      "ffbp_processing_seconds_including_first_jit_if_needed": 0.10892049999893061,
+      "case_seconds_including_compression_and_jit_if_needed": 1.7258156999996572,
+      "passed": true
+    }
+  ],
+  "passed": true
+}

@@ -1,0 +1,62 @@
+{
+  "passed": true,
+  "sinc": {
+    "valid": true,
+    "sidelobes_valid": true,
+    "width_definition": "power half-maximum; -3.0102999566 dB",
+    "sidelobe_definition": "1-D first-qualified-minima mainlobe; finite integration window",
+    "background_subtracted": false,
+    "expected_irw_m": null,
+    "warnings": [],
+    "peak_coordinate_m": 5.1159076974727213e-11,
+    "peak_sample_index": 10000,
+    "peak_power": 1.0,
+    "peak_amplitude": 1.0,
+    "step_m": 0.010000000000005116,
+    "uniform_axis": true,
+    "integration_bounds_m": [
+      -100.0,
+      100.00000000010232
+    ],
+    "requested_integration_half_width_m": null,
+    "integration_window_truncated": false,
+    "irw_m": 4.4294664945153155,
+    "apparent_resolution_m": 4.4294664945153155,
+    "half_power_bounds_m": [
+      -2.2147332472576586,
+      2.214733247257657
+    ],
+    "samples_per_irw": 442.94664945130495,
+    "minima_detection_smoothing_sigma_samples": 4.0,
+    "pslr_db": -13.261462656659047,
+    "islr_db": -9.912901066530006,
+    "mainlobe_bounds_m": [
+      -4.999999999951399,
+      5.000000000053717
+    ],
+    "first_minima_width_m": 10.000000000005116,
+    "mainlobe_minima_db": [
+      -220.24646187983777,
+      -219.37723841473792
+    ],
+    "mainlobe_sample_indices": [
+      9500,
+      10500
+    ],
+    "normalized_main_energy_m": 4.514116667904069,
+    "normalized_side_energy_m": 0.46055624187153726,
+    "outer_background_median_db": -38.07701716523434,
+    "estimated_peak_to_outer_background_db": 38.07701716523434,
+    "half_power_components": 1,
+    "sidelobe_confidence": "qualified"
+  },
+  "independent_expectations": {
+    "irw_m": 4.4294647068945245,
+    "pslr_db": -13.26145888404849,
+    "finite_window_islr_db": -9.912901066502295
+  },
+  "gaussian_minima_absent_correctly_flagged": true,
+  "flat_half_power_absent_correctly_flagged": true,
+  "off_grid_peak_irw_m": 4.4294693548945645,
+  "two_dimensional_interface_passed": true
+}

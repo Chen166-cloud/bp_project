@@ -1,0 +1,911 @@
+{
+  "metadata": {
+    "parameters": {
+      "carrier_hz": 5300000000.0,
+      "sample_rate_hz": 32317000.0,
+      "chirp_rate_hz_s": -721350000000.0,
+      "pulse_duration_s": 4.174e-05,
+      "prf_hz": 1256.98,
+      "first_sample_time_s": 0.0065956,
+      "equivalent_speed_m_s": 7062.0,
+      "doppler_ambiguity_number": -6
+    },
+    "raw_shape": [
+      1728,
+      3200
+    ],
+    "raw_sha256": "df5a95324eea4c93a96e7e408c1cb5fa1b5fd51f25654e8398c9374002f988bb",
+    "range_start_m": 988655.5679924,
+    "compressed_spacing_m": 1.159577227155986,
+    "oversample": 4,
+    "range_window": "hamming",
+    "reference_samples": 1349,
+    "correlation_crop_offset_samples": 674,
+    "range_coordinate_convention": "received chirp centre at raw sample k",
+    "valid_full_reference_raw_sample_interval": [
+      674,
+      2525
+    ],
+    "valid_full_reference_slant_range_m": [
+      991781.7881968126,
+      1000367.2979866755
+    ],
+    "baseband_doppler_hz": 501.76159585372113,
+    "total_doppler_centroid_hz": -7040.118404146279,
+    "sin_squint": -0.02819467467377955,
+    "preprocessing_seconds": 0.6895444000001589,
+    "autofocus": false,
+    "agc_compensation": "not repeated; extraction history unavailable",
+    "source": "existing local CDdata1.mat; acquisition provenance and Vancouver attribution unverified; model parameters from local RADARSAT.m",
+    "gpu": {
+      "gpu": "NVIDIA GeForce RTX 4070 Laptop GPU",
+      "compute_capability": "8.9",
+      "gpu_memory_bytes": 8585216000,
+      "gpu_free_bytes_at_query": 7409238016,
+      "driver_version": 13030,
+      "cuda_runtime_version": 12090,
+      "nvrtc_version": [
+        12,
+        2
+      ],
+      "cupy_version": "13.6.0",
+      "numpy_version": "1.26.4",
+      "python_version": "3.12.3",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "cuda_root": "D:\\Program Files\\MATLAB\\R2024a\\sys\\cuda\\win64\\cuda",
+      "cuda_dll_dirs": [
+        "D:\\Program Files\\MATLAB\\R2024a\\sys\\cuda\\win64\\cuda\\bin",
+        "D:\\Program Files\\MATLAB\\R2024a\\bin\\win64"
+      ],
+      "kernel_backend": "CuPy RawModule / NVIDIA NVRTC",
+      "fast_math": false
+    },
+    "azimuth_window": "Hamming across all 1728 recorded pulses",
+    "source_provenance_verified": false,
+    "provenance_record": "provenance.json",
+    "experiment_date": "2026-10-31"
+  },
+  "targets": [
+    {
+      "id": "T1",
+      "source_candidate": "C1",
+      "center": {
+        "r_m": 997315.7881968124,
+        "u": -0.02822460642987689
+      },
+      "source_relative_scene_db": 0.0,
+      "bp": {
+        "metrics": {
+          "peak": {
+            "range_m": 997315.9131968123,
+            "azimuth_m": -0.08127907885642935,
+            "index": [
+              560,
+              576
+            ],
+            "amplitude": 806916.1499170373,
+            "power": 651113672996.9347
+          },
+          "coordinates": {
+            "range": "root-centred slant-range metres",
+            "azimuth": "local isorange tangent metres; du scaled by rc/sqrt(1-uc^2)"
+          },
+          "range": {
+            "valid": true,
+            "sidelobes_valid": true,
+            "width_definition": "power half-maximum; -3.0102999566 dB",
+            "sidelobe_definition": "1-D first-qualified-minima mainlobe; finite integration window",
+            "background_subtracted": false,
+            "expected_irw_m": 6.5,
+            "warnings": [],
+            "peak_coordinate_m": 997315.9131968123,
+            "peak_sample_index": 560,
+            "peak_power": 651113672996.9347,
+            "peak_amplitude": 806916.1499170373,
+            "step_m": 0.125,
+            "uniform_axis": true,
+            "integration_bounds_m": [
+              997265.9131968123,
+              997365.9131968123
+            ],
+            "requested_integration_half_width_m": 50,
+            "integration_window_truncated": false,
+            "irw_m": 7.174841511063278,
+            "apparent_resolution_m": 7.174841511063278,
+            "half_power_bounds_m": [
+              997312.2935683732,
+              997319.4684098843
+            ],
+            "samples_per_irw": 57.39873208850622,
+            "irw_to_expected_ratio": 1.103821770932812,
+            "minima_detection_smoothing_sigma_samples": 2.295949283540249,
+            "pslr_db": -18.76338360065124,
+            "islr_db": -14.074244761070725,
+            "mainlobe_bounds_m": [
+              997302.1631968123,
+              997332.4131968123
+            ],
+            "first_minima_width_m": 30.25,
+            "mainlobe_minima_db": [
+              -34.96210335423297,
+              -25.567355140056016
+            ],
+            "mainlobe_sample_indices": [
+              450,
+              692
+            ],
+            "normalized_main_energy_m": 7.911847172736771,
+            "normalized_side_energy_m": 0.309637401108804,
+            "outer_background_median_db": -29.004413865500286,
+            "estimated_peak_to_outer_background_db": 29.004413865500286,
+            "half_power_components": 1,
+            "sidelobe_confidence": "qualified"
+          },
+          "azimuth": {
+            "valid": true,
+            "sidelobes_valid": true,
+            "width_definition": "power half-maximum; -3.0102999566 dB",
+            "sidelobe_definition": "1-D first-qualified-minima mainlobe; finite integration window",
+            "background_subtracted": false,
+            "expected_irw_m": 8.0,
+            "warnings": [],
+            "peak_coordinate_m": -0.08127907885642935,
+            "peak_sample_index": 576,
+            "peak_power": 651113672996.9347,
+            "peak_amplitude": 806916.1499170373,
+            "step_m": 0.12117629275629938,
+            "uniform_axis": true,
+            "integration_bounds_m": [
+              -50.00591169499775,
+              49.84335353728489
+            ],
+            "requested_integration_half_width_m": 50,
+            "integration_window_truncated": false,
+            "irw_m": 10.234825555524546,
+            "apparent_resolution_m": 10.234825555524546,
+            "half_power_bounds_m": [
+              -5.358009951621761,
+              4.876815603902785
+            ],
+            "samples_per_irw": 84.46227659487863,
+            "irw_to_expected_ratio": 1.2793531944405683,
+            "minima_detection_smoothing_sigma_samples": 3.3784910637951455,
+            "pslr_db": -27.513516940991373,
+            "islr_db": -29.046980188488863,
+            "mainlobe_bounds_m": [
+              -35.828285442355224,
+              26.213976449550806
+            ],
+            "first_minima_width_m": 62.04226189190603,
+            "mainlobe_minima_db": [
+              -46.64307539324191,
+              -27.93533023218734
+            ],
+            "mainlobe_sample_indices": [
+              281,
+              793
+            ],
+            "normalized_main_energy_m": 11.477353708534562,
+            "normalized_side_energy_m": 0.014293669861853823,
+            "outer_background_median_db": -38.43661317590055,
+            "estimated_peak_to_outer_background_db": 38.43661317590055,
+            "half_power_components": 1,
+            "sidelobe_confidence": "qualified"
+          },
+          "apparent_resolution_m": {
+            "slant_range": 7.174841511063278,
+            "azimuth": 10.234825555524546
+          },
+          "interpretation": "Uncalibrated strong-scatterer apparent response; no independent point-target or ground-range resolution certification.",
+          "background_subtracted": false,
+          "two_dimensional_first_minima_rectangle": {
+            "valid": true,
+            "definition": "2-D rectangle bounded by the two 1-D qualified first minima; same finite cut window",
+            "islr_db": -9.800773405695098,
+            "pslr_db": -14.40449651307625,
+            "mainlobe_rectangle_m": [
+              997302.1631968123,
+              997332.4131968123,
+              -35.828285442355224,
+              26.213976449550806
+            ],
+            "integration_rectangle_m": [
+              997265.9131968123,
+              997365.9131968123,
+              -50.00591169499775,
+              49.84335353728489
+            ]
+          }
+        },
+        "timing": {
+          "algorithm": "bp",
+          "kernel_ms": 1595.1656494140625,
+          "wall_ms": 1596.1535999995249,
+          "download_ms": 2.465699999447679,
+          "shape": [
+            1120,
+            1155
+          ],
+          "plan_counts": {
+            "leaves": 32,
+            "merges": 31,
+            "leaf_pixel_pulse_products": 104422932,
+            "merged_pixels": 14382784,
+            "nodes": 63,
+            "shape": [
+              1120,
+              1155
+            ],
+            "direct_pixel_pulse_products": 2235340800
+          }
+        }
+      },
+      "ffbp": {
+        "metrics": {
+          "peak": {
+            "range_m": 997315.9131968123,
+            "azimuth_m": -0.08127907885642935,
+            "index": [
+              560,
+              576
+            ],
+            "amplitude": 806912.9816911918,
+            "power": 651108560021.7697
+          },
+          "coordinates": {
+            "range": "root-centred slant-range metres",
+            "azimuth": "local isorange tangent metres; du scaled by rc/sqrt(1-uc^2)"
+          },
+          "range": {
+            "valid": true,
+            "sidelobes_valid": true,
+            "width_definition": "power half-maximum; -3.0102999566 dB",
+            "sidelobe_definition": "1-D first-qualified-minima mainlobe; finite integration window",
+            "background_subtracted": false,
+            "expected_irw_m": 6.5,
+            "warnings": [],
+            "peak_coordinate_m": 997315.9131968123,
+            "peak_sample_index": 560,
+            "peak_power": 651108560021.7697,
+            "peak_amplitude": 806912.9816911918,
+            "step_m": 0.125,
+            "uniform_axis": true,
+            "integration_bounds_m": [
+              997265.9131968123,
+              997365.9131968123
+            ],
+            "requested_integration_half_width_m": 50,
+            "integration_window_truncated": false,
+            "irw_m": 7.174843770219013,
+            "apparent_resolution_m": 7.174843770219013,
+            "half_power_bounds_m": [
+              997312.2935692155,
+              997319.4684129857
+            ],
+            "samples_per_irw": 57.398750161752105,
+            "irw_to_expected_ratio": 1.1038221184952328,
+            "minima_detection_smoothing_sigma_samples": 2.2959500064700844,
+            "pslr_db": -18.763395836963575,
+            "islr_db": -14.07425704285451,
+            "mainlobe_bounds_m": [
+              997302.1631968123,
+              997332.4131968123
+            ],
+            "first_minima_width_m": 30.25,
+            "mainlobe_minima_db": [
+              -34.962126412263,
+              -25.567340959130156
+            ],
+            "mainlobe_sample_indices": [
+              450,
+              692
+            ],
+            "normalized_main_energy_m": 7.91184976962052,
+            "normalized_side_energy_m": 0.30963662709118817,
+            "outer_background_median_db": -29.004446016482156,
+            "estimated_peak_to_outer_background_db": 29.004446016482156,
+            "half_power_components": 1,
+            "sidelobe_confidence": "qualified"
+          },
+          "azimuth": {
+            "valid": true,
+            "sidelobes_valid": true,
+            "width_definition": "power half-maximum; -3.0102999566 dB",
+            "sidelobe_definition": "1-D first-qualified-minima mainlobe; finite integration window",
+            "background_subtracted": false,
+            "expected_irw_m": 8.0,
+            "warnings": [],
+            "peak_coordinate_m": -0.08127907885642935,
+            "peak_sample_index": 576,
+            "peak_power": 651108560021.7697,
+            "peak_amplitude": 806912.9816911918,
+            "step_m": 0.12117629275629938,
+            "uniform_axis": true,
+            "integration_bounds_m": [
+              -50.00591169499775,
+              49.84335353728489
+            ],
+            "requested_integration_half_width_m": 50,
+            "integration_window_truncated": false,
+            "irw_m": 10.234776448761512,
+            "apparent_resolution_m": 10.234776448761512,
+            "half_power_bounds_m": [
+              -5.357990915791657,
+              4.876785532969854
+            ],
+            "samples_per_irw": 84.4618713442977,
+            "irw_to_expected_ratio": 1.279347056095189,
+            "minima_detection_smoothing_sigma_samples": 3.3784748537719085,
+            "pslr_db": -27.513772051489585,
+            "islr_db": -29.047163421651877,
+            "mainlobe_bounds_m": [
+              -35.828285442355224,
+              26.213976449550806
+            ],
+            "first_minima_width_m": 62.04226189190603,
+            "mainlobe_minima_db": [
+              -46.64360424859613,
+              -27.935396403459816
+            ],
+            "mainlobe_sample_indices": [
+              281,
+              793
+            ],
+            "normalized_main_energy_m": 11.477300590408403,
+            "normalized_side_energy_m": 0.014293000660946999,
+            "outer_background_median_db": -38.437148449717775,
+            "estimated_peak_to_outer_background_db": 38.437148449717775,
+            "half_power_components": 1,
+            "sidelobe_confidence": "qualified"
+          },
+          "apparent_resolution_m": {
+            "slant_range": 7.174843770219013,
+            "azimuth": 10.234776448761512
+          },
+          "interpretation": "Uncalibrated strong-scatterer apparent response; no independent point-target or ground-range resolution certification.",
+          "background_subtracted": false,
+          "two_dimensional_first_minima_rectangle": {
+            "valid": true,
+            "definition": "2-D rectangle bounded by the two 1-D qualified first minima; same finite cut window",
+            "islr_db": -9.800770981564845,
+            "pslr_db": -14.404522244406163,
+            "mainlobe_rectangle_m": [
+              997302.1631968123,
+              997332.4131968123,
+              -35.828285442355224,
+              26.213976449550806
+            ],
+            "integration_rectangle_m": [
+              997265.9131968123,
+              997365.9131968123,
+              -50.00591169499775,
+              49.84335353728489
+            ]
+          }
+        },
+        "timing": {
+          "algorithm": "ffbp",
+          "kernel_ms": 118.09164428710938,
+          "wall_ms": 118.13160000019707,
+          "download_ms": 2.0825999999942724,
+          "shape": [
+            1120,
+            1155
+          ],
+          "plan_counts": {
+            "leaves": 32,
+            "merges": 31,
+            "leaf_pixel_pulse_products": 104422932,
+            "merged_pixels": 14382784,
+            "nodes": 63,
+            "shape": [
+              1120,
+              1155
+            ],
+            "direct_pixel_pulse_products": 2235340800
+          }
+        }
+      },
+      "fidelity": {
+        "relative_complex_error": 7.311207291726739e-06,
+        "ser_db": 102.72021805087732,
+        "complex_coherence": 0.9999999999908873,
+        "relative_amplitude_error": 6.593842509887002e-06
+      },
+      "convergence": {
+        "half_density_grid": {
+          "range": {
+            "irw_m": 7.176127571379766,
+            "irw_difference_m": 0.0012860603164881468,
+            "pslr_difference_db": -0.0006447924340626798,
+            "islr_difference_db": 3.108492088621517e-05
+          },
+          "azimuth": {
+            "irw_m": 10.235589207181956,
+            "irw_difference_m": 0.0007636516574098806,
+            "pslr_difference_db": -0.003524504310536969,
+            "islr_difference_db": -0.06067086339661287
+          }
+        },
+        "range_oversampling_4_to_8": {
+          "range": {
+            "irw_difference_m": -0.0024263295345008373,
+            "pslr_difference_db": -0.0014006295736486152,
+            "islr_difference_db": 0.00014868838609061186,
+            "profile_relative_complex_error": 0.00022598446643294854
+          },
+          "azimuth": {
+            "irw_difference_m": 0.0001341763543845076,
+            "pslr_difference_db": 0.002946811807305494,
+            "islr_difference_db": 0.0016517490541545499,
+            "profile_relative_complex_error": 0.00022015424461024283
+          }
+        }
+      },
+      "ffbp_parameters": {
+        "leaf_size": 64,
+        "range_spacing_m": 0.125,
+        "angular_oversample": 24
+      },
+      "interpretation": "uncalibrated dominant strong scatterer; apparent IRF only"
+    },
+    {
+      "id": "T2",
+      "source_candidate": "C9",
+      "center": {
+        "r_m": 999578.2881968124,
+        "u": -0.029164465327359022
+      },
+      "source_relative_scene_db": -21.16029977798462,
+      "bp": {
+        "metrics": {
+          "peak": {
+            "range_m": 999578.2256968123,
+            "azimuth_m": -0.10295243064592309,
+            "index": [
+              1118,
+              1150
+            ],
+            "amplitude": 64139.8767183784,
+            "power": 4113923785.4487796
+          },
+          "coordinates": {
+            "range": "root-centred slant-range metres",
+            "azimuth": "local isorange tangent metres; du scaled by rc/sqrt(1-uc^2)"
+          },
+          "range": {
+            "valid": true,
+            "sidelobes_valid": true,
+            "width_definition": "power half-maximum; -3.0102999566 dB",
+            "sidelobe_definition": "1-D first-qualified-minima mainlobe; finite integration window",
+            "background_subtracted": false,
+            "expected_irw_m": 6.5,
+            "warnings": [],
+            "peak_coordinate_m": 999578.2256968123,
+            "peak_sample_index": 1118,
+            "peak_power": 4113923785.4487796,
+            "peak_amplitude": 64139.8767183784,
+            "step_m": 0.0625,
+            "uniform_axis": true,
+            "integration_bounds_m": [
+              999528.2256968123,
+              999628.2256968123
+            ],
+            "requested_integration_half_width_m": 50,
+            "integration_window_truncated": false,
+            "irw_m": 9.25163637381047,
+            "apparent_resolution_m": 9.25163637381047,
+            "half_power_bounds_m": [
+              999573.7891722252,
+              999583.040808599
+            ],
+            "samples_per_irw": 148.02618198096752,
+            "irw_to_expected_ratio": 1.4233286728939185,
+            "minima_detection_smoothing_sigma_samples": 4.0,
+            "pslr_db": -18.04364729685409,
+            "islr_db": -15.725751152907005,
+            "mainlobe_bounds_m": [
+              999560.1631968123,
+              999595.3506968123
+            ],
+            "first_minima_width_m": 35.1875,
+            "mainlobe_minima_db": [
+              -30.88175672283066,
+              -21.34660628088521
+            ],
+            "mainlobe_sample_indices": [
+              829,
+              1392
+            ],
+            "normalized_main_energy_m": 10.073063166256407,
+            "normalized_side_energy_m": 0.2695171726399067,
+            "outer_background_median_db": -25.986027456164674,
+            "estimated_peak_to_outer_background_db": 25.986027456164674,
+            "half_power_components": 1,
+            "sidelobe_confidence": "qualified"
+          },
+          "azimuth": {
+            "valid": true,
+            "sidelobes_valid": true,
+            "width_definition": "power half-maximum; -3.0102999566 dB",
+            "sidelobe_definition": "1-D first-qualified-minima mainlobe; finite integration window",
+            "background_subtracted": false,
+            "expected_irw_m": 8.0,
+            "warnings": [],
+            "peak_coordinate_m": -0.10295243064592309,
+            "peak_sample_index": 1150,
+            "peak_power": 4113923785.4487796,
+            "peak_amplitude": 64139.8767183784,
+            "step_m": 0.06072723507435995,
+            "uniform_axis": true,
+            "integration_bounds_m": [
+              -50.08146689596689,
+              49.875562034671574
+            ],
+            "requested_integration_half_width_m": 50,
+            "integration_window_truncated": false,
+            "irw_m": 12.806261522625787,
+            "apparent_resolution_m": 12.806261522625787,
+            "half_power_bounds_m": [
+              -6.681148543750829,
+              6.1251129788749585
+            ],
+            "samples_per_irw": 210.88168277288824,
+            "irw_to_expected_ratio": 1.6007826903282234,
+            "minima_detection_smoothing_sigma_samples": 4.0,
+            "pslr_db": -20.573681211976776,
+            "islr_db": -20.333748403908956,
+            "mainlobe_bounds_m": [
+              -19.778576594391797,
+              24.855941184475647
+            ],
+            "first_minima_width_m": 44.63451777886745,
+            "mainlobe_minima_db": [
+              -48.09231992282377,
+              -34.9899785293221
+            ],
+            "mainlobe_sample_indices": [
+              826,
+              1561
+            ],
+            "normalized_main_energy_m": 13.933121740907437,
+            "normalized_side_energy_m": 0.1290249178991142,
+            "outer_background_median_db": -24.001919681585644,
+            "estimated_peak_to_outer_background_db": 24.001919681585644,
+            "half_power_components": 1,
+            "sidelobe_confidence": "qualified"
+          },
+          "apparent_resolution_m": {
+            "slant_range": 9.25163637381047,
+            "azimuth": 12.806261522625787
+          },
+          "interpretation": "Uncalibrated strong-scatterer apparent response; no independent point-target or ground-range resolution certification.",
+          "background_subtracted": false,
+          "two_dimensional_first_minima_rectangle": {
+            "valid": true,
+            "definition": "2-D rectangle bounded by the two 1-D qualified first minima; same finite cut window",
+            "islr_db": -8.433601381380397,
+            "pslr_db": -15.01596692537721,
+            "mainlobe_rectangle_m": [
+              999560.1631968123,
+              999595.3506968123,
+              -19.778576594391797,
+              24.855941184475647
+            ],
+            "integration_rectangle_m": [
+              999528.2256968123,
+              999628.2256968123,
+              -50.08146689596689,
+              49.875562034671574
+            ]
+          }
+        },
+        "timing": {
+          "algorithm": "bp",
+          "kernel_ms": 6203.00146484375,
+          "wall_ms": 6206.604799999695,
+          "download_ms": 9.573399998771492,
+          "shape": [
+            2240,
+            2305
+          ],
+          "plan_counts": {
+            "leaves": 32,
+            "merges": 31,
+            "leaf_pixel_pulse_products": 345222486,
+            "merged_pixels": 54555864,
+            "nodes": 63,
+            "shape": [
+              2240,
+              2305
+            ],
+            "direct_pixel_pulse_products": 8922009600
+          }
+        }
+      },
+      "ffbp": {
+        "metrics": {
+          "peak": {
+            "range_m": 999578.2256968123,
+            "azimuth_m": -0.10295243064592309,
+            "index": [
+              1118,
+              1150
+            ],
+            "amplitude": 64139.83951082601,
+            "power": 4113919012.4745173
+          },
+          "coordinates": {
+            "range": "root-centred slant-range metres",
+            "azimuth": "local isorange tangent metres; du scaled by rc/sqrt(1-uc^2)"
+          },
+          "range": {
+            "valid": true,
+            "sidelobes_valid": true,
+            "width_definition": "power half-maximum; -3.0102999566 dB",
+            "sidelobe_definition": "1-D first-qualified-minima mainlobe; finite integration window",
+            "background_subtracted": false,
+            "expected_irw_m": 6.5,
+            "warnings": [],
+            "peak_coordinate_m": 999578.2256968123,
+            "peak_sample_index": 1118,
+            "peak_power": 4113919012.4745173,
+            "peak_amplitude": 64139.83951082601,
+            "step_m": 0.0625,
+            "uniform_axis": true,
+            "integration_bounds_m": [
+              999528.2256968123,
+              999628.2256968123
+            ],
+            "requested_integration_half_width_m": 50,
+            "integration_window_truncated": false,
+            "irw_m": 9.251640996197239,
+            "apparent_resolution_m": 9.251640996197239,
+            "half_power_bounds_m": [
+              999573.7891691871,
+              999583.0408101833
+            ],
+            "samples_per_irw": 148.02625593915582,
+            "irw_to_expected_ratio": 1.4233293840303445,
+            "minima_detection_smoothing_sigma_samples": 4.0,
+            "pslr_db": -18.043647803264353,
+            "islr_db": -15.725750776200666,
+            "mainlobe_bounds_m": [
+              999560.1631968123,
+              999595.3506968123
+            ],
+            "first_minima_width_m": 35.1875,
+            "mainlobe_minima_db": [
+              -30.88176144509958,
+              -21.346638346234442
+            ],
+            "mainlobe_sample_indices": [
+              829,
+              1392
+            ],
+            "normalized_main_energy_m": 10.073069539022999,
+            "normalized_side_energy_m": 0.2695173665289936,
+            "outer_background_median_db": -25.986012394094438,
+            "estimated_peak_to_outer_background_db": 25.986012394094438,
+            "half_power_components": 1,
+            "sidelobe_confidence": "qualified"
+          },
+          "azimuth": {
+            "valid": true,
+            "sidelobes_valid": true,
+            "width_definition": "power half-maximum; -3.0102999566 dB",
+            "sidelobe_definition": "1-D first-qualified-minima mainlobe; finite integration window",
+            "background_subtracted": false,
+            "expected_irw_m": 8.0,
+            "warnings": [],
+            "peak_coordinate_m": -0.10295243064592309,
+            "peak_sample_index": 1150,
+            "peak_power": 4113919012.4745173,
+            "peak_amplitude": 64139.83951082601,
+            "step_m": 0.06072723507435995,
+            "uniform_axis": true,
+            "integration_bounds_m": [
+              -50.08146689596689,
+              49.875562034671574
+            ],
+            "requested_integration_half_width_m": 50,
+            "integration_window_truncated": false,
+            "irw_m": 12.806256950685029,
+            "apparent_resolution_m": 12.806256950685029,
+            "half_power_bounds_m": [
+              -6.6811494898166846,
+              6.125107460868345
+            ],
+            "samples_per_irw": 210.88160748639194,
+            "irw_to_expected_ratio": 1.6007821188356286,
+            "minima_detection_smoothing_sigma_samples": 4.0,
+            "pslr_db": -20.573692529715785,
+            "islr_db": -20.33375258257105,
+            "mainlobe_bounds_m": [
+              -19.778576594391797,
+              24.855941184475647
+            ],
+            "first_minima_width_m": 44.63451777886745,
+            "mainlobe_minima_db": [
+              -48.09148980322792,
+              -34.99003060928926
+            ],
+            "mainlobe_sample_indices": [
+              826,
+              1561
+            ],
+            "normalized_main_energy_m": 13.933123691197531,
+            "normalized_side_energy_m": 0.12902481181520378,
+            "outer_background_median_db": -24.00188459888099,
+            "estimated_peak_to_outer_background_db": 24.00188459888099,
+            "half_power_components": 1,
+            "sidelobe_confidence": "qualified"
+          },
+          "apparent_resolution_m": {
+            "slant_range": 9.251640996197239,
+            "azimuth": 12.806256950685029
+          },
+          "interpretation": "Uncalibrated strong-scatterer apparent response; no independent point-target or ground-range resolution certification.",
+          "background_subtracted": false,
+          "two_dimensional_first_minima_rectangle": {
+            "valid": true,
+            "definition": "2-D rectangle bounded by the two 1-D qualified first minima; same finite cut window",
+            "islr_db": -8.433601665866547,
+            "pslr_db": -15.015972403196429,
+            "mainlobe_rectangle_m": [
+              999560.1631968123,
+              999595.3506968123,
+              -19.778576594391797,
+              24.855941184475647
+            ],
+            "integration_rectangle_m": [
+              999528.2256968123,
+              999628.2256968123,
+              -50.08146689596689,
+              49.875562034671574
+            ]
+          }
+        },
+        "timing": {
+          "algorithm": "ffbp",
+          "kernel_ms": 340.496826171875,
+          "wall_ms": 340.5285000008007,
+          "download_ms": 10.405200000604964,
+          "shape": [
+            2240,
+            2305
+          ],
+          "plan_counts": {
+            "leaves": 32,
+            "merges": 31,
+            "leaf_pixel_pulse_products": 345222486,
+            "merged_pixels": 54555864,
+            "nodes": 63,
+            "shape": [
+              2240,
+              2305
+            ],
+            "direct_pixel_pulse_products": 8922009600
+          }
+        }
+      },
+      "fidelity": {
+        "relative_complex_error": 1.980651754552075e-06,
+        "ser_db": 114.0638375399255,
+        "complex_coherence": 0.9999999999978626,
+        "relative_amplitude_error": 1.4132475638050973e-06
+      },
+      "convergence": {
+        "half_density_grid": {
+          "range": {
+            "irw_m": 9.252004906535149,
+            "irw_difference_m": 0.0003685327246785164,
+            "pslr_difference_db": -2.3837851472308103e-05,
+            "islr_difference_db": -0.0008583017915277935
+          },
+          "azimuth": {
+            "irw_m": 12.80656269770188,
+            "irw_difference_m": 0.00030117507609261907,
+            "pslr_difference_db": 0.0,
+            "islr_difference_db": -0.02000672292911787
+          }
+        },
+        "range_oversampling_4_to_8": {
+          "range": {
+            "irw_difference_m": -0.0013379397569224238,
+            "pslr_difference_db": 0.001043580665847088,
+            "islr_difference_db": 0.00037217704523229145,
+            "profile_relative_complex_error": 0.00014230254476815902
+          },
+          "azimuth": {
+            "irw_difference_m": 0.0014150343547445488,
+            "pslr_difference_db": -0.0006841006546096651,
+            "islr_difference_db": -0.0013107913850056718,
+            "profile_relative_complex_error": 0.00019427728725588848
+          }
+        }
+      },
+      "ffbp_parameters": {
+        "leaf_size": 64,
+        "range_spacing_m": 0.0625,
+        "angular_oversample": 48
+      },
+      "interpretation": "uncalibrated dominant strong scatterer; apparent IRF only"
+    }
+  ],
+  "scene": {
+    "bp_timing": {
+      "algorithm": "bp",
+      "kernel_ms": 57313.15625,
+      "wall_ms": 57410.05039999982,
+      "download_ms": 225.25909999967553,
+      "shape": [
+        8225,
+        5489
+      ],
+      "plan_counts": {
+        "leaves": 32,
+        "merges": 31,
+        "leaf_pixel_pulse_products": 2663646174,
+        "merged_pixels": 462312476,
+        "nodes": 63,
+        "shape": [
+          8225,
+          5489
+        ],
+        "direct_pixel_pulse_products": 78014059200
+      }
+    },
+    "ffbp_timing": {
+      "algorithm": "ffbp",
+      "kernel_ms": 2997.811279296875,
+      "wall_ms": 2997.8191000009247,
+      "download_ms": 279.8282999992807,
+      "shape": [
+        8225,
+        5489
+      ],
+      "plan_counts": {
+        "leaves": 32,
+        "merges": 31,
+        "leaf_pixel_pulse_products": 2663646174,
+        "merged_pixels": 462312476,
+        "nodes": 63,
+        "shape": [
+          8225,
+          5489
+        ],
+        "direct_pixel_pulse_products": 78014059200
+      }
+    },
+    "fidelity": {
+      "relative_complex_error": 0.008253657366612056,
+      "ser_db": 41.66707127829805,
+      "complex_coherence": 0.999986436325245,
+      "relative_amplitude_error": 0.007375599231029487
+    },
+    "extent": [
+      991961.7881968126,
+      1000187.2979866755,
+      -0.03019467467377955,
+      -0.026194674673779547
+    ],
+    "range_spacing_m": 1.0,
+    "angular_oversample": 4,
+    "leaf_size": 64,
+    "ambiguity_note": "One selected Doppler ambiguity interval; initial wide scout intentionally not used as final scene"
+  },
+  "execution_seconds": 33.17148850000012,
+  "refinement_seconds": 108.46044919999986,
+  "no_pga_verification": {
+    "passed": true,
+    "record": "no_pga_check.json",
+    "scope": "Processing from existing local CDdata1.mat; pre-MAT history remains unknown",
+    "fixed_trajectory": true,
+    "additional_phase_max_abs_rad": 0.0,
+    "target_reimaging_max_relative_error": 1.2215184597152984e-07,
+    "scene_ffbp_reimaging_relative_error": 2.0159379232609353e-07,
+    "scene_bp_cpu_samples": 256,
+    "scene_bp_cpu_sample_relative_error": 3.050815579349771e-07
+  }
+}

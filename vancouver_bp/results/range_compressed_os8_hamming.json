@@ -1,0 +1,41 @@
+{
+  "parameters": {
+    "carrier_hz": 5300000000.0,
+    "sample_rate_hz": 32317000.0,
+    "chirp_rate_hz_s": -721350000000.0,
+    "pulse_duration_s": 4.174e-05,
+    "prf_hz": 1256.98,
+    "first_sample_time_s": 0.0065956,
+    "equivalent_speed_m_s": 7062.0,
+    "doppler_ambiguity_number": -6
+  },
+  "raw_shape": [
+    1728,
+    3200
+  ],
+  "raw_sha256": "df5a95324eea4c93a96e7e408c1cb5fa1b5fd51f25654e8398c9374002f988bb",
+  "range_start_m": 988655.5679924,
+  "compressed_spacing_m": 0.579788613577993,
+  "oversample": 8,
+  "range_window": "hamming",
+  "reference_samples": 1349,
+  "correlation_crop_offset_samples": 674,
+  "range_coordinate_convention": "received chirp centre at raw sample k",
+  "valid_full_reference_raw_sample_interval": [
+    674,
+    2525
+  ],
+  "valid_full_reference_slant_range_m": [
+    991781.7881968126,
+    1000367.2979866755
+  ],
+  "baseband_doppler_hz": 501.76159585372113,
+  "total_doppler_centroid_hz": -7040.118404146279,
+  "sin_squint": -0.02819467467377955,
+  "preprocessing_seconds": 1.6010190999986662,
+  "autofocus": false,
+  "agc_compensation": "not repeated; extraction history unavailable",
+  "source": "existing local CDdata1.mat; acquisition provenance and Vancouver attribution unverified; model parameters from local RADARSAT.m",
+  "source_provenance_verified": false,
+  "provenance_record": "provenance.json"
+}
