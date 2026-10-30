@@ -16,6 +16,7 @@ __pycache__/
 # Report layout QA renders are local-only intermediates
 /vancouver_bp/results/pdf_qa/
 /vancouver_bp/results/docx_qa/
+/vancouver_bp/results/word_build/
 
 # Editor and OS metadata
 .DS_Store
